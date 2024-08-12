@@ -1100,7 +1100,7 @@ background: #046169;
       font-family: "Muli", sans-serif;
        /* Add this line */
       height: 100vh; /* Add this line */
-      margin: ; /* Add this line */
+      margin: 10px; /* Add this line */
       padding: 0; /* Add this line */
     font-size: 62.5%;
     
