@@ -1,0 +1,115 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About QuikLearn</title>
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+</head>
+
+
+<body>
+    {%include "app/header.html" %}
+    <div class="deraj-ab">
+    
+    <section class="hero">
+        <video autoplay muted loop id="background-video">
+            <source src="/static/images/Anthem_V6.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+        <div class="hero-content">
+            <h1 style="color: aliceblue;">Our Mission is Simple</h1>
+            <p>We provide universal access to the world's best education, partnering with top universities and organizations to offer courses online.</p>
+        </div>
+    </section>
+
+    <section class="about">
+        <div class="container">
+            <h2>About QuikLearn</h2>
+            <p>Welcome to QuikLearn, your gateway to dynamic and accessible online education. At QuikLearn, we believe in the transformative power of learning, enabling individuals worldwide to unlock their potential, advance their careers, and pursue their passions.
+
+QuikLearn emerges as a beacon in the realm of e-learning platforms, offering a diverse range of courses meticulously curated to cater to various interests, skill levels, and professional aspirations. Whether you're a budding entrepreneur, a seasoned professional seeking to upskill, or an avid learner hungry for knowledge, QuikLearn is your trusted partner on your educational journey.</p> <br>
+
+
+
+<p>At QuikLearn, we're not just about disseminating information; we're about fostering a vibrant learning community where individuals from diverse backgrounds come together to exchange ideas, collaborate, and inspire one another. Through our interactive features, discussion forums, and networking opportunities, QuikLearn facilitates meaningful connections that extend beyond the virtual classroom.
+
+Join us at QuikLearn and embark on a transformative educational journey that transcends boundaries and unlocks boundless opportunities. Whether you're looking to acquire new skills, advance your career, or simply indulge your curiosity, QuikLearn is here to support you every step of the way. Discover the joy of learning with QuikLearn - where knowledge knows no limits.
+</p>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="container">
+            <h2>Our Features</h2>
+            <div class="feature">
+                <h3>Flexible Learning</h3>
+                <p>Learn on your schedule with self-paced courses.</p>
+            </div>
+            <div class="feature">
+                <h3>Expert Instructors</h3>
+                <p>Learn from industry experts in business, technology, and more.</p>
+            </div>
+            <div class="feature">
+                <h3>Global Community</h3>
+                <p>Connect with learners from around the world.</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonials">
+        <div class="container">
+            <h2>Testimonials</h2>
+            <div class="testimonial">
+                <p>"QuikLearn has helped me advance my career by providing access to high-quality courses from top universities and organizations."</p>
+                <p class="author">- Deraj Yojith</p>
+            </div>
+            <div class="testimonial">
+                <p>"The courses on QuikLearn are well-structured and engaging, making learning enjoyable and effective."</p>
+                <p class="author">- Sundar</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="team">
+        <div class="container">
+            <h2>Meet Our Team</h2>
+            <div class="team-member">
+                <img src="https://images.generated.photos/_J-D-QPI1lwDeRsDDDNOJ-11YUF8arZHJu8DwgKZgFY/rs:fit:256:256/czM6Ly9pY29uczgu/Z3Bob3Rvcy1wcm9k/LnBob3Rvcy92M18w/ODMzMzUxLmpwZw.jpg" alt="Team Member">
+                <h3>Akshayasree</h3>
+                <p>Co-Founder</p>
+            </div>
+            <div class="team-member">
+                <img src="https://images.generated.photos/nTb3ylxk2one_KgsTcjEahdxAFRZYqdDt2IMLTuDOVM/rs:fit:256:256/czM6Ly9pY29uczgu/Z3Bob3Rvcy1wcm9k/LnBob3Rvcy92M18w/NTQzNzk4LmpwZw.jpg" alt="Team Member">
+                <h3>Tanesh</h3>
+                <p>Lead Instructor</p>
+            </div>
+            <div class="team-member">
+                <img src="https://images.generated.photos/mRyqhkIitrRS9KUpNntl1Up9OMlx497LKIfOH6vK6LA/rs:fit:256:256/czM6Ly9pY29uczgu/Z3Bob3Rvcy1wcm9k/LnBob3Rvcy92M18w/ODQ2MzYwLmpwZw.jpg" alt="Team Member">
+                <h3>Shanmathe</h3>
+                <p>Lead Instructor</p>
+            </div>
+        </div>
+    </section>
+
+    <section class="partners">
+        <div class="container">
+            <h2>Our Partners</h2>
+            <div class="partner">
+                <img src="https://imgs.search.brave.com/vk5i1wRZwV64JvHra2Hi2EBCQ3gvnjGSAtkcJ8GUOUU/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9hc3Nl/dHMuc3RpY2twbmcu/Y29tL2ltYWdlcy81/ODQyZjY4ZmE2NTE1/YjFlMGFkNzViMjIu/cG5n" alt="Partner Logo">
+            </div>
+            <div class="partner">
+                <img src="https://imgs.search.brave.com/SS9uzFrhne_xMg0y1-4kAXpctuoWYoD9N2BK2JIcof8/rs:fit:860:0:0/g:ce/aHR0cHM6Ly9icmFu/ZC5taXQuZWR1L3Np/dGVzL2RlZmF1bHQv/ZmlsZXMvMjAyMy0w/OC9NSVQtbG9nby1k/b3dubG9hZHMucG5n" alt="Partner Logo">
+            </div>
+        </div>
+    </section>
+
+    </div>
+
+    {%include "app/footer.html"%}
+    <script src="index.js"></script>
+
+</body>
+</html>

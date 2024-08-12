@@ -1,0 +1,62 @@
+{% load static %}
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teachers</title>
+    <link rel="stylesheet" href="../static/css/style.css">
+</head>
+<body >
+    
+    {% include "app/header.html" %}
+    <br> <br>
+    
+
+    <div class="akshaya">
+     <h1 style="  background: linear-gradient(to right, #032f3c, #02474d, #046169, #217b7e, #10898d); padding: 3%; color: aliceblue;">Our Teachers</h1>
+
+    <div class="teacher-container" style="  background: linear-gradient(to right, #032f3c, #02474d, #046169, #217b7e, #10898d);">
+       
+        
+        {%for teacher in teachers%}
+        <div class="teacher-card">
+            <img src="../{{teacher.image_link}}" alt="Teacher 1" class="teacher-image">
+            <div class="teacher-details">
+                <h3>{{teacher.teacher_name}}</h3>
+                <p>{{teacher.bio}}</p>
+            </div>
+        </div>
+        {%endfor%}
+        
+      
+        
+        
+    </div>
+
+
+   <h2 style="color: #10898d; font-size: 2rem; text-align: center; margin: 5%;">Join Our Teaching Community</h2>
+    <section id="become-teacher">
+        <!--Steps to show how to become an instructor-->
+        <div class="become-teacher-container">
+            <div class="teacher-info">
+                <img src="{% static 'images/teacher5.jpeg' %}" alt="Become a Teacher" class="teacher-image">
+                <div class="teacher-text">
+                    <h2>Become a Teacher</h2>
+                    <p>Are you passionate about sharing your knowledge and expertise with others? Join our team of instructors and help aspiring learners achieve their goals! Our platform provides you with the opportunity to connect with students from all around the world, making a positive impact on their learning journey.</p>
+                    <p>If you're an expert in your field and would like to contribute to our educational platform, we welcome you to become a teacher. Share your insights, create engaging courses, and inspire the next generation of learners. Together, we can make a difference!</p>
+    
+                    <a href="/loginasteacher"><button class="redirect-button">Login as Teacher</button></a>
+                </div>
+            </div>
+        </div>
+        
+    </section>
+    </div>
+    {% include "app/footer.html" %}
+
+    <script src="../static/js/index.js"></script>
+</body>
+</html>

@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+    {% load static %}
+    <link rel="stylesheet" type="text/css" href="{% static 'css/course.css' %}">
+    <title>Online Courses</title>
+    
+</head>
+<body>
+    <header>
+        <nav>
+            {% load static %}
+          <img src="{% static 'images/photo.jpg' %}" alt="QuikLearn Logo" id="logo" href = "#home"/>
+          <ul id="nav-bar">
+            <li>
+              <a href="/">Home</a>
+            </li>
+            <li>
+              <a href="/about">About</a>
+            </li>
+            <li>
+              <a href="/course">Courses</a>
+            </li>
+            <li>
+              <a href="teachers">Teachers</a>
+            </li>
+            <li>
+              <a href="/contact">Contact</a>
+            </li>
+            
+          </ul>
+        </nav>
+      </header>
+
+      <div id="side-column">
+        <div class="side-item cart-container">
+            <!-- Font Awesome cart icon -->
+           <a href="#">
+            Home
+           </a> 
+       </div>
+        <div class="side-item cart-container" href="/cart">
+             <!-- Font Awesome cart icon -->
+            <a href="/cart">
+                <i class="fa fa-solid fa-cart-plus" style="font-size: 200%;"></i>
+            </a> 
+        </div>
+        <div class="side-item learning-container">
+            <!-- Font Awesome book icon -->
+            <a href="/notes">
+                <i class="fa fa-solid fa-book" style="font-size: 200%;"></i>
+            </a>
+        </div>
+        <div class="side-item notes-container">
+            <!-- Font Awesome sticky note icon -->
+            <a href="{% url 'notes' %}">
+                <i class="fa fa-solid fa-sticky-note" style="font-size: 200%;"></i>
+            </a>
+        </div>
+    </div>
+
+        <div id="search-bar">
+            <input type="text" id="search-input" placeholder="Search courses..." onchange="searchCourses()">
+        <div id="search-icon-container" onclick="searchCourses()">
+            <i class="fa fa-search"></i>
+        </div>
+    </div>
+
+    <div id="courses-container">
+       {%for course in courses%}
+       <div class="course-container">
+       
+       <a href="/course/displaycourse"> <img class="course-image" src="{{course.image}}" alt="Course Image"></a>
+        <p>{{ course.title }}</p>
+        <p>Teacher: {{ course.teacher }}</p>
+        <p>Category: {{ course.category }}</p>
+        <button class="enroll-button" onclick="addToCart('{{ course.title }}', '{{ course.image }}', '{{ course.teacher }}', '{{ course.category }}', '{{ course.enrollmentLink }}')">+</button>
+        <div class="tooltip">{{ course.description }}</div>
+    
+    </div>
+    {%endfor%}
+    </div>
+
+    
+    <footer>
+      <div class="footer-innerdiv1">
+        <div class="col1">
+            <ul class="footer-ul">
+                <li class="footer-li" style="font-weight: 700;">QuikLearn for Business</li>
+                <li class="footer-li" style="font-weight: 700;">Become an Instructor</li>
+                <li class="footer-li">Mobile Apps</li>
+            </ul>
+        </div>
+        <div class="col2">
+            <ul class="footer-ul">
+                <li class="footer-li">About Us</li>
+                <li class="footer-li">Careers</li>
+                <li class="footer-li">Blog</li>
+            </ul>
+        </div>
+        <div class="col3">
+            <ul class="footer-ul">
+                <li class="footer-li">Topics</li>
+                <li class="footer-li">Support</li>
+                <li class="footer-li">Affiliate</li>
+            </ul>
+        </div>
+        <div class="col4">
+            <ul class="footer-ul" style="margin: 0px">
+                <li class="footer-li">
+                    <button class="English-btn">
+                        <span style="margin-left:10px; margin-right: 15px; padding: 5px;">
+                            <i class="fa fa-globe-asia" style="margin-right: 10px;"></i>English</span>
+                        <i class="fas fa-angle-up"></i>
+                    </button>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+
+
+
+
+    <!-- LAST DIV -->
+
+    <div class="footer-innerdiv2">
+        <!-- Div 1  -->
+        <div class="left-contlist">
+            <a href="javascript:void{0}">
+                <img src="{% static 'images/photo.jpg' %}" width="110px">
+            </a>
+            <span class="copyright-span" style="margin-left: 20px; color: #686f7a">Copyright © 2024 QuikLearn, Inc.</span>
+        </div>
+
+
+        <!-- Div 2 -->
+        <div class="right-contlist">
+            <ul class="ullist-right">
+                <li class="r-li-itm">Terms</li>
+                <li class="r-li-itm">Privacy Policy and Cookie Policy</li>
+                <li class="r-li-itm">Intellectual Property</li>
+            </ul>
+        </div>
+
+    </div>
+
+</footer>
+
+  </footer>
+  <script>
+   function searchCourses() {
+        const searchTerm = document.getElementById("search-input").value.toLowerCase();
+        const courseContainers = document.querySelectorAll(".course-container");
+        
+        courseContainers.forEach(container => {
+            const title = container.querySelector("p").textContent.toLowerCase();
+            if (title.includes(searchTerm)) {
+                container.style.display = "block";
+            } else {
+                container.style.display = "none";
+            }
+        });
+    }
+
+
+    function addToCart(title, image, teacher, category, enrollmentLink) {
+         // Create a cartItem object
+        const cartItem = {
+            title: title,
+            image: image,
+            teacher: teacher,
+            category: category,
+            enrollmentLink: enrollmentLink
+            };
+
+            // Check if cartItems array exists in localStorage
+            let cartItems = JSON.parse(localStorage.getItem('cartItems')) || [];
+
+            // Add the cartItem to the cartItems array
+            cartItems.push(cartItem);
+
+            // Save the updated cartItems array to localStorage
+            localStorage.setItem('cartItems', JSON.stringify(cartItems));
+
+            // Debugging: Log the added cartItem to console
+            console.log('Added to cart:', cartItem);
+
+            // Redirect to the cart page
+            window.location.href = "{% url 'cart' %}";
+        }
+
+
+  </script>
+
+</body>
+</html>

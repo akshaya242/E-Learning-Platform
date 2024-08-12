@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="../static/css/style.css">
+    <title>Admin Panel</title>
+</head>
+<section class="admin">
+<Section class="body-admin">
+<body >
+    <div class="side-menu">
+        <div class="brand-name">
+            <img src="../static/img/logo2.svg" alt="SVG Image">
+        </div>
+        <ul>
+            <li onclick="showDashboard()"><span>Dashboard</span> </li>
+            <li onclick="showStudents()"><span>Students</span> </li>
+            <li onclick="showTeachers()"><span>Teachers</span> </li>
+            <li onclick="showSchools()"><span>Schools</span> </li>
+            <li onclick="showIncome()"><span>Income</span> </li>
+            <li onclick="showHelp()"><span>Help</span></li>
+            <li onclick="showSettings()"><span>Settings</span> </li>
+        </ul>
+    </div>
+    <div class="container1">
+        <div class="header2">
+            <div class="nav">
+                <div class="search">
+                    <input type="text" placeholder="Search Anything...">
+                    <button type="submit"><img src="../static/img/search.png" alt=""></button>
+                </div>
+                <div class="user">
+                    <a href="#" class="btn">Add New Admin</a>
+               
+                    <div class="img-case">
+                        <img src="../static/img/user.png" alt="">
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="content2">
+            <div class="cards22">
+                <div class="card10">
+                    <div class="box22">
+                        <h2>2194</h2>
+                        <h3>Students</h3>
+                    </div>
+                    <div class="icon-case">
+                        <img src="https://www.kindpng.com/picc/m/226-2267467_graduation-icon-png-image-student-icon-transparent-png.png" style="max-width: 100px;" alt="">
+                    </div>
+                </div>
+                <div class="card10">
+                    <div class="box22">
+                        <h2>53</h2>
+                        <h3>Teachers</h3>
+                    </div>
+                    <div class="icon-case">
+                        <img src="https://www.pngkey.com/png/detail/243-2438734_teaching-icon-rachel-puslat-transparent-background-teacher-icon.png" style="max-width: 100px;" alt="">
+                    </div>
+                </div>
+                <div class="card10">
+                    <div class="box22">
+                        <h2>5</h2>
+                        <h3>Schools</h3>
+                    </div>
+                    <div class="icon-case">
+                        <img src="https://www.kindpng.com/picc/m/133-1337048_education-download-png-education-png-transparent-png.png" style="max-width: 100px;" alt="">
+                    </div>
+                </div>
+                <div class="card10">
+                    <div class="box22">
+                        <h2>350000</h2>
+                        <h3>Income</h3>
+                    </div>
+                    <div class="icon-case">
+                        <img src="https://www.kindpng.com/picc/m/84-847362_income-and-education-hd-png-download.png" style="max-width: 100px;" alt="">
+                    </div>
+                </div>
+            </div>
+            <div class="content-2">
+                <div class="recent-payments">
+                    <div class="title2">
+                        <h2>Recent Payments</h2>
+                        <a href="#" class="btn">View All</a>
+                    </div>
+                    <table class="table1">
+                        <tr class="tr">
+                            <th class="th1">Name</th>
+                            <th class="th1">School</th>
+                            <th class="th1">Amount</th>
+                            <th class="th1" >Option</th>
+                        </tr>
+                        <tr class="tr">
+                            <td class="td1" >John Doe</td>
+                            <td class="td1">St. James College</td>
+                            <td class="td1">$120</td>
+                            <td class="td1"><a href="#" class="btn">View</a></td>
+                        </tr>
+                        <tr class="tr">
+                            <td class="td1">John Doe</td>
+                            <td class="td1">St. James College</td>
+                            <td class="td1">$120</td>
+                            <td class="td1"><a href="#" class="btn">View</a></td>
+                        </tr>
+                        <tr class="tr">
+                            <td class="td1">John Doe</td>
+                            <td class="td1">St. James College</td>
+                            <td class="td1">$120</td>
+                            <td class="td1"><a href="#" class="btn">View</a></td>
+                        </tr>
+                        <tr class="tr">
+                            <td class="td1">John Doe</td>
+                            <td class="td1">St. James College</td>
+                            <td class="td1">$120</td>
+                            <td class="td1"><a href="#" class="btn">View</a></td>
+                        </tr>
+                        <tr class="tr">
+                            <td class="td1">John Doe</td>
+                            <td class="td1">St. James College</td>
+                            <td class="td1">$120</td>
+                            <td class="td1"><a href="#" class="btn">View</a></td>
+                        </tr>
+                        <tr class="tr">
+                            <td class="td1">John Doe</td>
+                            <td class="td1">St. James College</td>
+                            <td class="td1">$120</td>
+                            <td class="td1"><a href="#" class="btn">View</a></td>
+                        </tr>
+                    </table>
+                </div>
+                <div class="new-students">
+                    <div class="title2">
+                        <h2>New Students</h2>
+                        <a href="#" class="btn">View All</a>
+                    </div>
+                    <table>
+                        <tr>
+                            <th class="th1">Profile</th>
+                            <th class="th1">Name</th>
+                            <th class="th1">option</th>
+                        </tr>
+                        <tr>
+                            <td class="td1"><img src="../static/img/user.png" alt="" style="max-width: 40px;"></td>
+                            <td class="td1">John Steve Doe</td>
+                            <td class="td1"><img src="../static/img/info.png" alt="" style="max-width: 30px;"></td>
+                        </tr>
+                        <tr>
+                            <td class="td1"><img src="../static/img/user.png" alt=""style="max-width: 40px;"></td>
+                            <td class="td1">John Steve Doe</td>
+                            <td class="td1"><img src="../static/img/info.png" alt="" style="max-width: 30px;"></td>
+                        </tr>
+                        <tr>
+                            <td class="td1"><img src="../static/img/user.png" alt=""style="max-width: 40px;"></td>
+                            <td class="td1">John Steve Doe</td>
+                            <td class="td1"><img src="../static/img/info.png" alt="" style="max-width: 30px;"></td>
+                        </tr>
+                        <tr>
+                            <td class="td1"><img src="../static/img/user.png" style="max-width: 40px;"></td>
+                            <td class="td1">John Steve Doe</td>
+                            <td class="td1" ><img src="../static/img/info.png" alt="" style="max-width: 30px;"></td>
+                        </tr>
+                        <tr>
+                            <td class="td1"><img src="../static/img/user.png" alt="" style="max-width: 40px;"></td>
+                            <td class="td1">Tanesh Ashan</td>
+                            <td class="td1"><img src="../static/img/info.png" alt="" style="max-width: 30px;"></td>
+                        </tr>
+
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <script src="adminscript1.js"></script>
+</body>
+</Section>
+</section>
+</html>
