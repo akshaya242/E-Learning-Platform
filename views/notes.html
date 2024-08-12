@@ -5,11 +5,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Notes</title>
-<style>
-    body {
+    <style>
+        body {
     font-family: Arial, sans-serif;
     margin: 0;
-    padding: 0;
+    padding: 0; 
     display: flex;
     justify-content: center;
     align-items: center;
@@ -57,7 +57,7 @@
     padding: 5px;
 }
 
-</style>
+    </style>
 </head>
 <body>
     <div id="note-container">
@@ -71,22 +71,6 @@
         </div>
     </div>
 
-    <script> 
-        const noteContent = document.getElementById('noteContent');
-        const colorPicker = document.getElementById('colorPicker');
-        const fontSizeInput = document.getElementById('fontSize');
-        const bulletTypeSelect = document.getElementById('bulletType');
-
-        colorPicker.addEventListener('input', () => {
-            noteContent.style.color = colorPicker.value;
-        });
-
-        fontSizeInput.addEventListener('input', () => {
-            noteContent.style.fontSize = `${fontSizeInput.value}px`;
-        });
-
-
-    
-    </script>
+    <script src="cousrenotes.js"> </script>
 </body>
 </html>

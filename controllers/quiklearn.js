@@ -13,7 +13,7 @@ exports.home = async (req, res) => {
         const teachers = await Teacher.find().limit(4);
         const courses = await Course.find().limit(3);
         // Assuming you're handling data on the client side
-        res.sendFile(path.join(__dirname, '../views/homepage.html'));
+        res.render('homepage');
     } catch (error) {
         console.error(error);
         res.status(500).send('Server Error');
@@ -22,19 +22,19 @@ exports.home = async (req, res) => {
 
 // About Us Controller
 exports.aboutUs = (req, res) => {
-    res.sendFile(path.join(__dirname, '../views/about.html'));
+    res.render('about');
 };
 
 // Courses Controller
 exports.course = (req, res) => {
-    res.sendFile(path.join(__dirname, '../views/courses.html'));
+    res.render('courses');
 };
 
 // Teachers Controller
 exports.teacher = async (req, res) => {
     try {
         const teachers = await Teacher.find();
-        res.sendFile(path.join(__dirname, '../views/teacher.html'));
+        res.render('teacher')
     } catch (error) {
         console.error(error);
         res.status(500).send('Server Error');
@@ -45,7 +45,7 @@ exports.teacher = async (req, res) => {
 exports.faqs = async (req, res) => {
     try {
         const faqs = await FAQ.find();
-        res.sendFile(path.join(__dirname, '../views/faqs.html'));
+        res.render('faqs');
     } catch (error) {
         console.error(error);
         res.status(500).send('Server Error');
@@ -54,7 +54,7 @@ exports.faqs = async (req, res) => {
 
 // Contact Controller
 exports.contact = (req, res) => {
-    res.sendFile(path.join(__dirname, '../views/contact.html'));
+    res.render('contact')
 };
 
 // Section Controller
@@ -70,12 +70,13 @@ exports.section = async (req, res) => {
 
 // Login View Controller
 exports.loginView = (req, res) => {
-    res.sendFile(path.join(__dirname, '../views/login.html'));
+    const message = req.query.signup ? 'You are now a registered user .PLease Login.' :null;
+    res.render('login',{ isLogin:true,message});
 };
 
 // Signup View Controller
 exports.signupView = (req, res) => {
-    res.sendFile(path.join(__dirname, '../views/signup.html'));
+    res.render('signup');
 };
 
 // Some Redirect View Controller
@@ -83,7 +84,7 @@ exports.someRedirectView = async (req, res) => {
     try {
         const studentName = req.user.username;
         const courses = await Course.find({ "students.username": studentName });
-        res.sendFile(path.join(__dirname, '../views/dashboard.html'));
+        res.render('dashboard');
     } catch (error) {
         console.error(error);
         res.status(500).send('Server Error');
@@ -98,12 +99,12 @@ exports.logoutUser = (req, res) => {
 
 // Teacher Login Controller
 exports.teacherLoginView = (req, res) => {
-    res.sendFile(path.join(__dirname, '../views/loginasteacher.html'));
+    res.render('loginasteacher');
 };
 
 // Teacher Signup View Controller
 exports.teacherSignupView = (req, res) => {
-    res.sendFile(path.join(__dirname, '../views/signupasteacher.html'));
+    res.render('signupasteacher');
 };
 
 // Some Teacher View Controller
