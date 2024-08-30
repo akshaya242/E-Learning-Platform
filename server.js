@@ -2,6 +2,8 @@ const express = require('express');
 const path = require('path');
 const app = express();
 const route = require('./routes/quiklearn'); // Corrected path to the routes file
+const fs = require('fs');
+const User = require('./models/User');
 
 const { connectMongoDB } = require("./connection");
 
@@ -30,9 +32,28 @@ app.use((err, req, res, next) => {
 
 // Start the server
 const PORT = process.env.PORT || 3000;
-connectMongoDB("mongodb+srv://Project:quiklearn1234@cluster0.nqcn9.mongodb.net/");
+connectMongoDB("mongodb+srv://Project:quiklearn1234@cluster0.nqcn9.mongodb.net/quiklearn");
 
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
+
+
+const importData = async () => {
+    try {
+      // Read the JSON file
+      const data = JSON.parse(fs.readFileSync('users.json', 'utf-8'));
+  
+      // Insert data into the User collection
+      await User.insertMany(data);
+  
+      console.log('Data successfully imported!');
+      process.exit();
+    } catch (error) {
+      console.error('Error importing data:', error);
+      process.exit(1);
+    }
+  };
+  
+  importData();

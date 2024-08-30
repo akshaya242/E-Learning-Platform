@@ -23,7 +23,12 @@ const profileSchema = new mongoose.Schema({
   updated_at: { type: Date, default: Date.now }
 });
 
-module.exports = {
-  User: mongoose.model('User', userSchema),
-  Profile: mongoose.model('Profile', profileSchema)
-};
+// module.exports = {
+//   User: mongoose.model('User', userSchema),
+//   Profile: mongoose.model('Profile', profileSchema)
+// };
+
+
+const User = mongoose.model('User', userSchema);
+
+module.exports = User;
