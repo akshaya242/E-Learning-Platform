@@ -30,7 +30,8 @@ app.use((err, req, res, next) => {
 
 // Start the server
 const PORT = process.env.PORT || 3000;
-connectMongoDB("mongodb://localhost:27017/quiklearn");
+connectMongoDB("mongodb+srv://Project:quiklearn1234@cluster0.nqcn9.mongodb.net/");
+
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
