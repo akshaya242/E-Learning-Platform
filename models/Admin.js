@@ -1,21 +1,26 @@
-// models/AdminReport.js
-
 const mongoose = require('mongoose');
+const Schema = mongoose.Schema;
 
-const adminLogSchema = new mongoose.Schema({
-  admin_id: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
+// AdminLog Schema
+const adminLogSchema = new Schema({
+  admin_id: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   action: { type: String, required: true },
   created_at: { type: Date, default: Date.now }
 });
 
-const reportSchema = new mongoose.Schema({
-  teacherId: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  coursesCreated: { type: Number, default: 0 },
-  studentsEnrolled: { type: Number, default: 0 },
-  averageRating: { type: Number, default: 0 }
+// CourseCreationRequest Schema
+const courseCreationRequestSchema = new Schema({
+  teacher_id: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+  course_id: { type: Schema.Types.ObjectId, ref: 'Course' },
+  status: { type: String, enum: ['pending', 'approved', 'rejected'], required: true },
+  request_date: { type: Date, default: Date.now },
+  response_date: { type: Date },
+  admin_id: { type: Schema.Types.ObjectId, ref: 'User' }, // Nullable
+  created_at: { type: Date, default: Date.now },
+  updated_at: { type: Date, default: Date.now }
 });
 
-module.exports = {
-  AdminLog: mongoose.model('AdminLog', adminLogSchema),
-  Report: mongoose.model('Report', reportSchema)
-};
+const AdminLog = mongoose.model('AdminLog', adminLogSchema);
+const CourseCreationRequest = mongoose.model('CourseCreationRequest', courseCreationRequestSchema);
+
+module.exports = { AdminLog, CourseCreationRequest };
