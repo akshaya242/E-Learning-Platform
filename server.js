@@ -11,8 +11,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Serve static files
-// app.use(express.static('public'));
-// Serve static files from the 'public' folder
+
 app.use(express.static(path.join(__dirname, "public")));
 // Set the view engine (if you're using one)
 app.set('view engine', 'ejs');
@@ -40,20 +39,20 @@ app.listen(PORT, () => {
 });
 
 
-const importData = async () => {
-    try {
-      // Read the JSON file
-      const data = JSON.parse(fs.readFileSync('users.json', 'utf-8'));
+// const importData = async () => {
+//     try {
+//       // Read the JSON file
+//       const data = JSON.parse(fs.readFileSync('users.json', 'utf-8'));
   
-      // Insert data into the User collection
-      await User.insertMany(data);
+//       // Insert data into the User collection
+//       await User.insertMany(data);
   
-      console.log('Data successfully imported!');
-      process.exit();
-    } catch (error) {
-      console.error('Error importing data:', error);
-      process.exit(1);
-    }
-  };
+//       console.log('Data successfully imported!');
+//       process.exit();
+//     } catch (error) {
+//       console.error('Error importing data:', error);
+//       process.exit(1);
+//     }
+//   };
   
-  importData();
+//   importData();
