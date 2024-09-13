@@ -1,0 +1,17 @@
+[
+    {
+      "user_id": "60d5f483d438d5c8e9b1f4a5",
+      "bio": "Professor of Data Science",
+      "profile_picture": "path/to/john_profile.jpg",
+      "contact_number": "123-456-7890",
+      "address": "123 University Lane, City, Country"
+    },
+    {
+      "user_id": "60d5f483d438d5c8e9b1f4a6",
+      "bio": "Data Science Enthusiast",
+      "profile_picture": "path/to/jane_profile.jpg",
+      "contact_number": "987-654-3210",
+      "address": "456 Student Road, City, Country"
+    }
+  ]
+  
