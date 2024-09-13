@@ -125,9 +125,9 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
 // Serve static files
-app.use(express.static(path.join(__dirname, 'public')));
 
-// Set the view engine
+app.use(express.static(path.join(__dirname, "public")));
+// Set the view engine (if you're using one)
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
@@ -152,3 +152,22 @@ connectMongoDB(MONGODB_URI).then(() => seedData());
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
+
+
+// const importData = async () => {
+//     try {
+//       // Read the JSON file
+//       const data = JSON.parse(fs.readFileSync('users.json', 'utf-8'));
+  
+//       // Insert data into the User collection
+//       await User.insertMany(data);
+  
+//       console.log('Data successfully imported!');
+//       process.exit();
+//     } catch (error) {
+//       console.error('Error importing data:', error);
+//       process.exit(1);
+//     }
+//   };
+  
+//   importData();
