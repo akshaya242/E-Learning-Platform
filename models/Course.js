@@ -7,7 +7,7 @@ const courseSchema = new Schema({
   description: { type: String },
   category: { type: Schema.Types.ObjectId, ref: 'Category' },
   duration: { type: String },
-  instructorId: { type: Schema.Types.ObjectId, ref: 'User', required: true },
+  role: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   sectionIds: [{ type: Schema.Types.ObjectId, ref: 'Section' }],
   studentsEnrolled: [{ type: Schema.Types.ObjectId, ref: 'User' }],
   rating: { type: Number },
@@ -25,4 +25,5 @@ const categorySchema = new Schema({
 const Course = mongoose.model('Course', courseSchema);
 const Category = mongoose.model('Category', categorySchema);
 
-module.exports = { Course, Category };
+module.exports =  Course ;
+module.exports = Category;

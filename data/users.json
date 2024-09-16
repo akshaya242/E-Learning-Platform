@@ -1,0 +1,18 @@
+[
+    {
+      "email": "john.doe@example.com",
+      "password": "hashedpassword1",
+      "name": "John Doe",
+      "role": "teacher",
+      "isVerified": true,
+      "institution": "ABC University"
+    },
+    {
+      "email": "jane.smith@example.com",
+      "password": "hashedpassword2",
+      "name": "Jane Smith",
+      "role": "student",
+      "isVerified": true
+    }
+  ]
+      

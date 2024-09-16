@@ -2,7 +2,7 @@ const express = require('express');
 const router = express.Router();
 const controllers = require('../controllers/User'); // Adjust the path as necessary
 
-// router.get('/', controllers.home);
+router.get('/', controllers.home);
 // router.get('/about', controllers.aboutUs);
 // router.get('/courses', controllers.course);
 // router.get('/teachers', controllers.teacher);
