@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>QuikLearn</title>
+    <!-- Font Awesome Icons -->
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
+    />
+    <!-- Google Fonts -->
+    <link
+      href="https://fonts.googleapis.com/css2?family=Poppins:wght@600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+
+    <!-- Stylesheet -->
+    <link rel="stylesheet" href="/css/style.css">
+  </head>
+  <body>
+    <%- include("header.ejs") %>
+    <div id="deraj-faq">
+    
+
+
+
+    <div class="blank">
+        <h1 style="color: black;">Frequently Asked Questions</h1>
+
+
+              <div class="faq-container">
+                <div class="faq active">
+                  <h3 class="faq-title">What courses do you offer?</h3>
+                  <p class="faq-text">We offer a wide range of courses covering various subjects, including HTML, CSS, JavaScript, and more. Explore our course catalog to discover all available options.</p>
+                  <button class="faq-toggle">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+
+
+                <div class="faq">
+                  <h3 class="faq-title">How can I enroll in a course?</h3>
+                  <p class="faq-text">To enroll in a course, simply visit the course page and click on the "Enroll Now" button. Follow the prompts to complete the enrollment process.</p>
+                  <button class="faq-toggle">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+
+
+                <div class="faq">
+                  <h3 class="faq-title">Do you offer any discounts for multiple course enrollments?</h3>
+                  <p class="faq-text">Yes, we offer discounts for multiple course enrollments. Please check our pricing page or contact our support team for more information on available discounts and promotions.</p>
+                  <button class="faq-toggle">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+
+
+                <div class="faq">
+                  <h3 class="faq-title">Are courses self-paced? Can I finish my course faster than the stated time?</h3>
+                  <p class="faq-text">You can learn at your own pace when you feel free to learn as per your time schedule. You can finish your course faster than the described time as your schedule allows. To complete a course or a specialization depends on how many hours per day or week you dedicate to the course. Keep in mind your familiarity with the subject matter will also play a role in how long it takes you to complete the course. Some learners are able to finish quicker when they already have familiarity with concepts and terminologies. </p>
+                  <button class="faq-toggle">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+
+
+
+                <div class="faq">
+                  <h3 class="faq-title">I’m having trouble with the course content or resources.</h3>
+                  <p class="faq-text">As instructors own and manage their course content, they are in the best position to assist you. For any questions in paid courses, you can search for answers or ask a question in the Contact. </p>
+                  <button class="faq-toggle">
+                    <i class="fas fa-chevron-down"></i>
+                    <i class="fas fa-times"></i>
+                  </button>
+                </div>
+                
+  
+    </div>
+    <div id = "footer"></div>
+    
+
+    <!-- Script -->
+  </div>
+  <div id="footer"><%- include('footer') %></div>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
+  <script src="index.js"></script>
+  </body>
+</html>
