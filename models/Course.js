@@ -25,5 +25,7 @@ const categorySchema = new Schema({
 const Course = mongoose.model('Course', courseSchema);
 const Category = mongoose.model('Category', categorySchema);
 
-module.exports =  Course ;
-module.exports = Category;
+module.exports = {
+  Course: mongoose.model('Course', courseSchema),
+  Category: mongoose.model('Category', categorySchema),
+};

@@ -29,7 +29,7 @@
             <div class="course-img">
                 <img src="<%= course.imageUrl || 'default-image.jpg' %>" alt="<%= course.title %>">
             </div>
-            <div class="teacher">Instructor: <%= course.name %></div>
+            <div class="teacher">Instructor:</div>
             <div class="rating">Rating: ⭐⭐⭐⭐</div> <!-- You can dynamically add the rating here -->
             <div class="description"><%= course.description %></div>
         </div>
@@ -140,7 +140,14 @@
 
       
 
-<script src="./index.js" charset="UTF-8"></script>
+<!-- <script>
+    // Log the data to the console to see what was rendered
+    console.log('Courses:', <%- JSON.stringify(courses) %>);
+    console.log('Teachers:', <%- JSON.stringify(teachers) %>);
+    console.log('FAQs:', <%- JSON.stringify(faqs) %>);
+</script> -->
+
+
  
 </body>
 </html>

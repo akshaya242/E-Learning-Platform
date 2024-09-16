@@ -5,7 +5,8 @@ const express = require('express');
 
 const FAQ = require('../models/Review');       // Import FAQ model
 const User = require('../models/User');  // Import Teacher model
-const Course = require('../models/Course'); // Import Course model
+const { Course, Category } = require('../models/Course'); // Import both Course and Category models
+
 
 exports.home = async (req, res) => {
     try {
@@ -15,7 +16,7 @@ exports.home = async (req, res) => {
         const courses = await Course.find();      // Get 3 Courses
 
         // Render the homepage view with fetched data
-        res.render('homepage', { faqs, teachers, courses });
+        res.render('homepage', { faqs: faqs, teachers: teachers, courses: courses });
     } catch (error) {
         console.error(error);
         res.status(500).send('Server Error');
