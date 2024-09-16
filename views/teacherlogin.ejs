@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title><%= isLogin ? 'Let\'s start' : 'Sign up' %></title>
+
+  <link rel="stylesheet" href="/style.css">
+</head>
+<body class="login-body">
+  <div class="login-container">
+    <!-- Add the button for redirecting to the homepage -->
+    <a href="/" class="home-button">&#8592; Home</a>
+
+    <h2><%= isLogin ? 'Login as Teacher' : 'SignUp as Teacher' %></h2>
+
+    <!-- Display alert  -->
+    <% if (locals.message) { %>
+      <script>
+        alert('<%= message %>');
+      </script>
+    <% } %>
+
+    <form action="<%= isLogin ? '/loginasteacher' : '/signupasteacher' %>" method="post">
+      <div class="form-group">
+        <label for="username">Username:</label>
+        <input type="text" id="username" placeholder="Enter username" name="username" required>
+        <br>
+      </div>
+      
+      <div class="form-group">
+        <label for="password">Password:</label>
+        <input type="password" id="password" placeholder="Enter password" name="password" required>
+        <br>
+      </div>
+      
+      <div class="form-group">
+        <button type="submit"><%= isLogin ? 'Login' : 'Sign up' %></button>
+      </div>
+    </form>
+    
+    <!-- Display additional information based on login status -->
+    <% if (isLogin) { %>
+      <p>Don't have an account? <a href="/signupasteacher" style="color:aqua;">Sign up</a></p>
+    <% } else { %>
+      <p>Already have an account? <a href="/loginasteacher">Login</a></p>
+    <% } %>
+  </div>
+
+  <!-- Display alert message if available -->
+  <% if (locals.messages) { %>
+    <script>
+      alert('<%= messages %>');
+    </script>
+  <% } %>
+</body>
+</html>
