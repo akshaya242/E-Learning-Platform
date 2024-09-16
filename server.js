@@ -6,6 +6,8 @@ const mongoose = require('mongoose');
 
 const app = express();
 const route = require('./routes/quiklearn'); // Correct path to the routes file
+const route1 = require('./routes/teacherroutes');
+const route2 = require('./routes/studentroutes');
 
 // Connect to MongoDB Atlas
 const connectMongoDB = async (uri) => {

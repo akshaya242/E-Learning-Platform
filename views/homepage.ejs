@@ -23,35 +23,17 @@
 
 <h2 class="h2-homepage">Trending Courses </h2>
 <div class="course-container">
-    <div class="card">
-        <div class="course-name">Introduction to Web Development</div>
-        <div class="course-img"><img src="./images/webdev.png" alt="webdev"></div>
-        <div class="teacher">Instructor: Emily Johnson </div>
-        <div class="rating">Rating: ⭐⭐⭐⭐</div>
-        <div class="description">
-            Get started with web development.
+    <% courses.forEach(course => { %>
+        <div class="card">
+            <div class="course-name"><%= course.title %></div>
+            <div class="course-img">
+                <img src="<%= course.imageUrl || 'default-image.jpg' %>" alt="<%= course.title %>">
+            </div>
+            <div class="teacher">Instructor: <%= course.name %></div>
+            <div class="rating">Rating: ⭐⭐⭐⭐</div> <!-- You can dynamically add the rating here -->
+            <div class="description"><%= course.description %></div>
         </div>
-    </div>
-    
-    <div class="card">
-        <div class="course-name">Introduction to Programming </div>
-        <div class="course-img"><img src="https://www.seekpng.com/png/detail/352-3528194_programming-language-free-png-image-programming-language.png" alt="programming class"></div>
-        <div class="teacher">Instructor: Simran Gupta</div>
-        <div class="rating">Rating: ⭐⭐⭐⭐⭐</div>
-        <div class="description">
-            Learn the basics of programming.
-        </div>
-    </div>
-    
-    <div class="card">
-        <div class="course-name">English Literature</div>
-        <div class="course-img"><img src="https://img.freepik.com/free-vector/watercolor-literature-illustration_52683-81536.jpg" alt="english literature"></div>
-        <div class="teacher">Instructor: John Doe</div>
-        <div class="rating">Rating: ⭐⭐⭐</div>
-        <div class="description">
-            Dive into classic works of English literature.
-        </div>
-    </div>
+    <% }) %>
 </div>
 
 <a href="/courses"><button class="redirect-button" id="course-button" style="position: relative; left: 79.7%;">View More Courses</button></a>
