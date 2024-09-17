@@ -12,7 +12,7 @@ exports.home = async (req, res) => {
     try {
         // Fetch limited data from the database
         const faqs = await FAQ.find().limit(3);              // Get 3 FAQs
-        const teachers = await User.find({ role: 'teacher' }).limit(4);  // Get 4 users with role 'teacher'
+        const teachers = await User.find({ role: 'teacher' }).limit(5);  // Get 4 users with role 'teacher'
         const courses = await Course.find();      // Get 3 Courses
 
         // Render the homepage view with fetched data
@@ -22,3 +22,34 @@ exports.home = async (req, res) => {
         res.status(500).send('Server Error');
     }
 };
+
+exports.aboutUs = (req, res) => {
+    res.render('about', {
+        title: 'About QuikLearn'
+        
+    });
+};
+
+exports.contact = (req, res) => {
+    res.render('contact');
+};
+
+exports.course = async (req, res)=> {
+    const courses = await Course.find();
+    res.render('courses', {courses: courses})
+}
+
+exports.teacher = async (req, res)=> {
+    const teachers = await User.find({role: 'teacher'});
+    res.render('teacher', {teachers: teachers})
+}
+
+exports.faqs = async (req, res)=> {
+    const faqs = await FAQ.find();
+    res.render('faqs', {faqs: faqs})
+}
+
+exports.login = async (req, res)=> {
+    
+    res.render('login', {isLogin: false})
+}

@@ -3,13 +3,13 @@ const router = express.Router();
 const controllers = require('../controllers/User'); // Adjust the path as necessary
 
 router.get('/', controllers.home);
-// router.get('/about', controllers.aboutUs);
-// router.get('/courses', controllers.course);
-// router.get('/teachers', controllers.teacher);
-// router.get('/faqs', controllers.faqs);
-// router.get('/contact', controllers.contact);
+router.get('/about', controllers.aboutUs);
+router.get('/courses', controllers.course);
+router.get('/teachers', controllers.teacher);
+router.get('/faqs', controllers.faqs);
+router.get('/contact', controllers.contact);
 // router.get('/section', controllers.section);
-// router.get('/login', controllers.loginView);
+router.get('/login', controllers.login);
 // router.get('/signup', controllers.signupView);
 // router.get('/dashboard', controllers.someRedirectView);
 // router.get('/logout', controllers.logoutUser);
