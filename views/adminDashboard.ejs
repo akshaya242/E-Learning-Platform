@@ -1,10 +1,173 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f8f9fa;
+        }
+        .container {
+            width: 80%;
+            margin: 20px auto;
+            padding: 20px;
+            background: #ffffff;
+            box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        h2 {
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+            color: #007bff;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            padding: 10px;
+            border-bottom: 1px solid #ddd;
+        }
+        li:last-child {
+            border-bottom: none;
+        }
+        .user-role {
+            font-style: italic;
+            color: #555;
+        }
+        .button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 15px;
+            text-decoration: none;
+            border-radius: 5px;
+        }
+        .button:hover {
+            background-color: #0056b3;
+        }
+        .card {
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            padding: 15px;
+            margin-bottom: 20px;
+            background: #f9f9f9;
+        }
+        .students {
+            margin-left: 20px;
+            background: #e9ecef;
+            padding: 10px;
+            border-radius: 5px;
+        }
+        form {
+            margin-bottom: 20px;
+            padding: 15px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            background: #f9f9f9;
+        }
+        input, select {
+            width: calc(100% - 22px);
+            padding: 10px;
+            margin-bottom: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+    </style>
 </head>
 <body>
-    <h2>Welcome, <%= user.name %> (Admin)</h2>
-    <p>Manage users and view reports here.</p>
+
+<div class="container">
+    <h1>Admin Dashboard</h1>
+
+    <!-- Add User Form -->
+    <h2>Add User</h2>
+    <form action="/admin/addUser" method="POST">
+        <input type="text" name="name" placeholder="User Name" required>
+        <input type="email" name="email" placeholder="User Email" required>
+        <select name="role" required>
+            <option value="">Select Role</option>
+            <option value="admin">Admin</option>
+            <option value="teacher">Teacher</option>
+            <option value="student">Student</option>
+        </select>
+        <input type="password" name="password" placeholder="Password" required>
+        <button type="submit">Add User</button>
+    </form>
+
+    <h2>Users</h2>
+    <ul>
+        <% users.forEach(user => { %>
+            <li>
+                <%= user.name %> <span class="user-role">(<%= user.role %>)</span>
+                <form action="/admin/editUser/<%= user._id %>" method="POST" style="display:inline;">
+                    <input type="text" name="name" value="<%= user.name %>" required>
+                    <input type="email" name="email" value="<%= user.email %>" required>
+                    <select name="role" required>
+                        <option value="admin" <%= user.role === 'admin' ? 'selected' : '' %>>Admin</option>
+                        <option value="teacher" <%= user.role === 'teacher' ? 'selected' : '' %>>Teacher</option>
+                        <option value="student" <%= user.role === 'student' ? 'selected' : '' %>>Student</option>
+                    </select>
+                    <button type="submit">Update</button>
+                </form>
+            </li>
+        <% }) %>
+    </ul>
+
+    <h2>Courses</h2>
+    <ul>
+        <% courses.forEach(course => { %>
+            <li class="card">
+                <strong>Course:</strong> <%= course.title %> <br>
+                
+                <strong>Teacher:</strong> 
+                <% if (course.teacher) { %>
+                    <%= course.teacher.name %> (<%= course.teacher.email %>)
+                <% } else { %>
+                    No teacher assigned
+                <% } %>
+                <br>
+
+                <strong>Enrolled Students:</strong>
+                <% if (course.students && course.students.length > 0) { %>
+                    <div class="students">
+                        <ul>
+                            <% course.students.forEach(student => { %>
+                                <li><%= student.name %> (<%= student.email %>)</li>
+                            <% }) %>
+                        </ul>
+                    </div>
+                <% } else { %>
+                    No students enrolled
+                <% } %>
+
+                <!-- Edit Course Form -->
+                <form action="/admin/editCourse/<%= course._id %>" method="POST">
+                    <input type="text" name="title" value="<%= course.title %>" required>
+                    <textarea name="description" placeholder="Description" required><%= course.description %></textarea>
+                    <button type="submit">Edit Course</button>
+                </form>
+            </li>
+        <% }) %>
+    </ul>
+</div>
+
 </body>
 </html>
