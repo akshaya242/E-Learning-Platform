@@ -29,7 +29,7 @@
             <div class="course-img">
                 <img src="<%= course.imageUrl || 'default-image.jpg' %>" alt="<%= course.title %>">
             </div>
-            <div class="teacher">Instructor: <%= course.name %></div>
+            <div class="teacher">Instructor:</div>
             <div class="rating">Rating: ⭐⭐⭐⭐</div> <!-- You can dynamically add the rating here -->
             <div class="description"><%= course.description %></div>
         </div>
@@ -41,41 +41,15 @@
 <br> <br>
 <h2  style="text-align: center; margin-bottom: 2%;">Our Top Teachers  </h2>
 <div class="teacher-container">
-    <div class="teacher-card">
-        <img src="./images/teacher1.jpeg" alt="Teacher 1" class="teacher-image">
-        <div class="teacher-details">
-            <h3>Kumar Harsh</h3>
-            <p>Harsh Kumar is an expert HTML instructor known for his thorough and practical teaching approach. With extensive practice sessions, he ensures his students gain a deep understanding of HTML concepts. His dedication to perfection and hands-on teaching style make him a favorite among learners seeking to master HTML.</p>
-            
+    <% for(let i = 0; i < teachers.length; i++) { %>
+        <div class="teacher-card">
+          <img src="<%= teachers[i].imgSrc %>" alt="<%= teachers[i].altText %>" class="teacher-image">
+          <div class="teacher-details">
+            <h3><%= teachers[i].name %></h3>
+            <p><%= teachers[i].description %></p>
+          </div>
         </div>
-    </div>
-    
-    <div class="teacher-card">
-        <img src="./images/teacher2.jpeg" alt="Teacher 2" class="teacher-image">
-        <div class="teacher-details">
-            <h3>Simran Gupta</h3>
-            <p>Simran Gupta is a CSS guru with a unique teaching style wit. With her fun-filled approach, learning CSS becomes an enjoyable experience for her students. She believes that laughter is the best tool for retention, and her classes are filled with jokes, puns, and funny anecdotes. Simran's ability to make complex CSS concepts easy to understand sets her apart as a beloved CSS instructor.</p>
-            
-        </div>
-    </div>
-    
-    <div class="teacher-card">
-        <img src="./images/teacher3.jpeg" alt="Teacher 3" class="teacher-image">
-        <div class="teacher-details">
-            <h3>John Doe</h3>
-            <p>John Doe is a seasoned JavaScript instructor renowned for his clear and concise teaching style. With years of experience in web development, he brings a wealth of practical knowledge to his students. John's passion for JavaScript shines through in his dynamic and engaging lessons, where he covers everything from the basics to advanced topics with ease.</p>
-          
-        </div>
-    </div>
-
-    <div class="teacher-card">
-        <img src="./images/teacher4.jpeg" alt="Teacher 4" class="teacher-image">
-        <div class="teacher-details">
-            <h3>Sarah Jones</h3>
-            <p>Sarah Jones is a dynamic UX/UI design instructor celebrated for her creativity and user-centric approach. With a background in graphic design and human-computer interaction, she brings a unique perspective to her teaching. Sarah's commitment to innovative design principles is evident in her hands-on lessons, where she explores prototyping and usability testing with enthusiasm.</p>
-        </div>
-        
-    </div>
+      <% } %>
 </div>
 
 <a href="/teachers"><button class="redirect-button" id="course-button" style="position: relative; left: 81.5%;">See All Teachers</button></a>
@@ -106,20 +80,12 @@
 <h2>FAQs</h2>
 <div id="akshaya">
 <div class="faq-container">
-    <div class="faq">
-        <h3>What courses do you offer?</h3>
-        <p>We offer a wide range of courses covering various subjects, including HTML, CSS, JavaScript, and more. Explore our course catalog to discover all available options.</p>
-    </div>
-    <div class="faq">
-        <h3>How can I enroll in a course?</h3>
-        <p>To enroll in a course, simply visit the course page and click on the "Enroll Now" button. Follow the prompts to complete the enrollment process.</p>
-    </div>
-
-    <div class="faq">
-        <h3>Do you offer any discounts for multiple course enrollments?</h3>
-        <p>Yes, we offer discounts for multiple course enrollments. Please check our pricing page or contact our support team for more information on available discounts and promotions.</p>
-    </div>
-
+    <% faqs.forEach(function(faq) { %>
+        <div class="faq">
+          <h3><%= faq.question %></h3>
+          <p><%= faq.answer %></p>
+        </div>
+      <% }); %>
     <!-- Add more FAQs as needed -->
 </div>
 <div style="text-align: center;">
@@ -131,16 +97,19 @@
 
 
 
-
-
-
-<div id="footer"></div>
-
+<%- include('footer.ejs') %>
 
 
       
 
-<script src="./index.js" charset="UTF-8"></script>
+<!-- <script>
+    // Log the data to the console to see what was rendered
+    console.log('Courses:', <%- JSON.stringify(courses) %>);
+    console.log('Teachers:', <%- JSON.stringify(teachers) %>);
+    console.log('FAQs:', <%- JSON.stringify(faqs) %>);
+</script> -->
+
+
  
 </body>
 </html>

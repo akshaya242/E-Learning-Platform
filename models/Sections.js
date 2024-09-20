@@ -7,7 +7,7 @@ const sectionSchema = new Schema({
   title: { type: String, required: true },
   description: { type: String },
   videoIds: [{ type: Schema.Types.ObjectId, ref: 'Video' }],
-  pdfIds: [{ type: Schema.Types.ObjectId, ref: 'PDF' }],
+  // pdfIds: [{ type: Schema.Types.ObjectId, ref: 'PDF' }],
   quizIds: [{ type: Schema.Types.ObjectId, ref: 'Quiz' }],
   created_at: { type: Date, default: Date.now },
   updated_at: { type: Date, default: Date.now }

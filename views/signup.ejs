@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Signup</title>
+</head>
+<body>
+    <h2>Signup</h2>
+    <form action="/signup" method="POST">
+        <input type="text" name="name" placeholder="Name" required><br>
+        <input type="email" name="email" placeholder="Email" required><br>
+        <input type="password" name="password" placeholder="Password" required><br>
+        <select name="role" required>
+            <option value="student">Student</option>
+            <option value="teacher">Teacher</option>
+            <option value="admin">Admin</option>
+        </select><br>
+        <input type="text" name="institution" placeholder="Institution (if Teacher)"><br>
+        <button type="submit">Signup</button>
+    </form>
+</body>
+</html>

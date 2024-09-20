@@ -1,7 +1,7 @@
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
-
+const session = require('express-session');
 
 
 const app = express();
@@ -34,6 +34,12 @@ app.use(express.static(path.join(__dirname, "public")));
 // Set the view engine (if you're using one)
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
+app.use(session({
+    secret: 'simpleSecretKey',  // Simple, hardcoded secret key
+    resave: false,
+    saveUninitialized: true,
+    cookie: { secure: false }   // Set to true if using HTTPS
+  }));
 
 // Route handling
 app.use('/', route);
@@ -43,10 +49,6 @@ app.use((req, res, next) => {
     res.status(404).send("Sorry, that route doesn't exist.");
 });
 
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send('Bhai achse kaam kar');
-});
 
 // Connect to MongoDB and seed data
 const PORT = process.env.PORT || 3000;
