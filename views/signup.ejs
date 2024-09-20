@@ -1,21 +1,228 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <title>Signup</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="../public/css/style.css">
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300&display=swap");
+
+        .login-handle {
+          * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Quicksand", sans-serif;
+          }
+
+          .login {
+            position: absolute;
+            min-width: 350px;
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 20px;
+          }
+
+          .login h2 {
+            font-size: 2em;
+            color: #fff;
+            text-align: center;
+          }
+
+          .login .inputBx {
+            position: relative;
+            width: 100%;
+          }
+
+          .login .inputBx input,
+          .login .inputBx select {
+            margin-top: 4%;
+            margin-bottom: 4%;
+            position: relative;
+            width: 100%;
+            padding: 12px 20px;
+            background: rgba(255, 255, 255, 0.15); /* Adjust background for better visibility */
+            border: 2px solid #fff;
+            border-radius: 40px;
+            font-size: 1.2em;
+            color: #fff; /* Keep text white */
+            box-shadow: none;
+            outline: none;
+            appearance: none; /* Remove default select arrow styling */
+          }
+
+          .login .inputBx input::placeholder,
+          .login .inputBx select {
+            color: rgba(255, 255, 255, 0.75);
+          }
+
+          .login .inputBx select {
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTAiIHZpZXdCb3g9IjAgMCAxNiAxMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMi4yNSAxbDYuNzUgNi43NSA2Ljc1LTYuNzUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMiIvPjwvc3ZnPg==');
+            background-repeat: no-repeat;
+            background-position: right 15px top 50%;
+            background-size: 12px 8px;
+          }
+
+          .login .inputBx button[type="submit"] {
+            width: 100%;
+            background: #0078ff;
+            background: linear-gradient(45deg, #ff357a, #fff172);
+            border: none;
+            cursor: pointer;
+          }
+
+          .login .links {
+            position: relative;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 20px;
+          }
+
+          .login .links a {
+            color: #fff;
+            text-decoration: none;
+          }
+        }
+
+        .home-button {
+          position: absolute;
+          top: 20px;
+          left: 20px;
+          padding: 10px 20px;
+          background-color: rgba(3, 47, 60, 0.5);
+          color: white;
+          text-decoration: none;
+          border-radius: 10px;
+        }
+
+        .ring {
+          position: relative;
+          width: 600px;
+          height: 500px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .ring i {
+          position: absolute;
+          inset: 0;
+          border: 2px solid #fff;
+          transition: 0.5s;
+        }
+
+        .ring i:nth-child(1) {
+          border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%;
+          animation: animate 6s linear infinite;
+        }
+
+        .ring i:nth-child(2) {
+          border-radius: 41% 44% 56% 59%/38% 62% 63% 37%;
+          animation: animate 4s linear infinite;
+        }
+
+        .ring i:nth-child(3) {
+          border-radius: 41% 44% 56% 59%/38% 62% 63% 37%;
+          animation: animate2 10s linear infinite;
+        }
+
+        @keyframes animate {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
+        }
+
+        @keyframes animate2 {
+          0% {
+            transform: rotate(360deg);
+          }
+          100% {
+            transform: rotate(0deg);
+          }
+        }
+
+        body {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          min-height: 100vh;
+          background-size: cover;
+          background-position: 0px;
+          background-image: url('/images/wallpaper2.png');
+          width: 100%;
+          overflow: hidden;
+        }
+
+        .inputBx label {
+          font-size: 1.2em;
+          color: #fff;
+        }
+
+        .login-links {
+          margin-top: 20px;
+        }
+
+        .login-links a {
+          color: aqua;
+          text-decoration: none;
+        }
+
+        .login-links a:hover {
+          text-decoration: underline;
+        }
+    </style>
 </head>
 <body>
-    <h2>Signup</h2>
-    <form action="/signup" method="POST">
-        <input type="text" name="name" placeholder="Name" required><br>
-        <input type="email" name="email" placeholder="Email" required><br>
-        <input type="password" name="password" placeholder="Password" required><br>
-        <select name="role" required>
-            <option value="student">Student</option>
-            <option value="teacher">Teacher</option>
-            <option value="admin">Admin</option>
-        </select><br>
-        <input type="text" name="institution" placeholder="Institution (if Teacher)"><br>
-        <button type="submit">Signup</button>
-    </form>
+  <section class="login-handle">
+      <a href="/" class="home-button">&#8592; Home</a>
+      <div class="ring">
+          <i style="--clr:#9bffb4;"></i>
+          <i style="--clr:#ff709f;"></i>
+          <i style="--clr:#ff0000;"></i>
+          <div class="login">
+            <h2>Signup</h2>
+            <form action="/signup" method="POST">
+                <div class="inputBx">
+                    <label for="name">Name:</label>
+                    <input type="text" name="name" placeholder="Name" required><br>
+                </div>
+                <div class="inputBx">
+                    <label for="email">Email:</label>
+                    <input type="email" name="email" placeholder="Email" required><br>
+                </div>
+                <div class="inputBx">
+                    <label for="password">Password:</label>
+                    <input type="password" name="password" placeholder="Password" required><br>
+                </div>
+                <div class="inputBx">
+                    <label for="role">Select Role:</label>
+                    <select name="role" required>
+                        <option value="" disabled selected >Select your role</option>
+                        <option value="student" style="color: black; background-color: rgb(19, 217, 224);">Student</option>
+                        <option value="teacher" style="color: black; background-color:  rgb(19, 217, 224)">Teacher</option>
+                        <option value="admin" style="color: black; background-color:  rgb(19, 217, 224)">Admin</option>
+                    </select><br>
+                </div>
+                <div class="inputBx">
+                    <label for="institution">Institution (if Teacher):</label>
+                    <input type="text" name="institution" placeholder="Institution"><br>
+                </div>
+                <div class="inputBx">
+                    <input type="submit" value="Sign Up">
+                </div>
+              </form>
+              <p class="login-links">Already have an account? <a href="/login">Log in</a></p>
+          </div>
+      </div>
+  </section>
 </body>
 </html>
