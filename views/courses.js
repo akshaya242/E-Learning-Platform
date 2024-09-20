@@ -1,16 +1,5 @@
 // Sample courses data
-const courses = [
-    { title: "Web Development Fundamentals", category: "Computer Science", description: "Get started with web development.", link: "./fullstackcourse.html", image: "./images/course5.jpeg" },
-    { title: "Introduction to Programming", category: "Computer Science", description: "Learn the basics of programming.", link: "https://example.com/webdev",image: "./images/course1.jpeg" },
-    { title: "Algebra Basics", category: "Maths", description: "Explore fundamental concepts in algebra.", link: "https://example.com/algebra", image: "./images/course2.jpeg" },
-    { title: "English Literature", category: "English", description: "Dive into classic works of English literature.", link: "https://example.com/literature", image: "./images/course3.jpg" },
-    { title: "Management Principles", category: "Management", description: "Understand key principles of management.", link: "https://example.com/management", image: "./images/course4.jpg" },
-    { title: "Web Development Fundamentals", category: "Computer Science", description: "Get started with web development.", link: "https://example.com/webdev", image: "./images/course5.jpeg" },
-    { title: "Statistics for Beginners", category: "Maths", description: "Learn basic statistical concepts and analysis.", link: "https://example.com/statistics", image: "./images/course6.jpeg"},
-    { title: "Creative Writing", category: "English", description: "Express yourself through creative writing.", link: "https://example.com/creativewriting", image: "./images/course7.jpg" },
-    { title: "Project Management Essentials", category: "Management", description: "Essential skills for effective project management.", link: "https://example.com/projectmanagement", image: "./images/course8.jpeg" },
-    
-];
+const courses = courses;
 
 // Display initial courses
 displayCourses(courses);
