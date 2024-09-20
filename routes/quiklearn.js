@@ -8,8 +8,19 @@ router.get('/courses', controllers.course);
 router.get('/teachers', controllers.teacher);
 router.get('/faqs', controllers.faqs);
 router.get('/contact', controllers.contact);
+router.get('/signup', controllers.showSignupPage);
+router.post('/signup', controllers.handleSignup);
+router.get('/login', controllers.showLoginPage);
+router.post('/login', controllers.handleLogin);
+
+// Dashboard Route (depends on the role)
+router.get('/dashboard', controllers.showDashboard);
+
+// Profile Routes
+router.get('/profile', controllers.showProfilePage);
+router.post('/profile', controllers.updateProfile);
 // router.get('/section', controllers.section);
-router.get('/login', controllers.login);
+// router.get('/login', controllers.login);
 // router.get('/signup', controllers.signupView);
 // router.get('/dashboard', controllers.someRedirectView);
 // router.get('/logout', controllers.logoutUser);

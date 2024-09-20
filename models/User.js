@@ -25,10 +25,12 @@ const profileSchema = new Schema({
 });
 
 // const User = mongoose.model('User', userSchema);
-const Profile = mongoose.model('Profile', profileSchema);
-
-module.exports = Profile ;
+const Profile = mongoose.model('Profile', profileSchema)
 
 
 const User = mongoose.model('User', userSchema);
-module.exports = User;
+
+module.exports = {
+  User: mongoose.model('User', userSchema),
+  Profile: mongoose.model('Category', profileSchema),
+};

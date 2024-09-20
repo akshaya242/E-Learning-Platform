@@ -22,10 +22,11 @@ const categorySchema = new Schema({
   description: { type: String }
 });
 
-const Course = mongoose.model('Course', courseSchema);
-const Category = mongoose.model('Category', categorySchema);
+// Define models if they are not already defined
+const Course = mongoose.models.Course || mongoose.model('Course', courseSchema);
+const Category = mongoose.models.Category || mongoose.model('Category', categorySchema);
 
 module.exports = {
-  Course: mongoose.model('Course', courseSchema),
-  Category: mongoose.model('Category', categorySchema),
+  Course,
+  Category,
 };
