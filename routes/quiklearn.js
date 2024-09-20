@@ -1,6 +1,9 @@
 const express = require('express');
 const router = express.Router();
 const controllers = require('../controllers/User'); // Adjust the path as necessary
+const adminController = require('../controllers/adminControllers');
+const { ensureAdmin } = require('../middlewares/auth');
+
 
 router.get('/', controllers.home);
 router.get('/about', controllers.aboutUs);
@@ -12,7 +15,7 @@ router.get('/signup', controllers.showSignupPage);
 router.post('/signup', controllers.handleSignup);
 router.get('/login', controllers.showLoginPage);
 router.post('/login', controllers.handleLogin);
-
+// router.get('/admin',adminController.getDashboard)
 // Dashboard Route (depends on the role)
 router.get('/dashboard', controllers.showDashboard);
 
