@@ -9,19 +9,36 @@ const { Course, Category } = require('../models/Course'); // Import both Course 
 
 
 exports.home = async (req, res) => {
-    try {
-        // Fetch limited data from the database
-        const faqs = await FAQ.find().limit(3);              // Get 3 FAQs
-        const teachers = await User.find({ role: 'teacher' }).limit(5);  // Get 4 users with role 'teacher'
-        const courses = await Course.find();      // Get 3 Courses
+  try {
+      // Fetch limited data from the database
+      const faqs = await FAQ.find().limit(3);                // Get 3 FAQs
 
-        // Render the homepage view with fetched data
-        res.render('homepage', { faqs: faqs, teachers: teachers, courses: courses });
-    } catch (error) {
-        console.error(error);
-        res.status(500).send('Server Error');
-    }
+      // Fetch 3 courses and populate the instructor (created_by) field from User model
+     const courses = await Course.find().limit(3).populate('role', 'name email').lean();
+
+
+      // Fetch teacher data from User and Profile models
+      const teachers = await User.find({ role: 'teacher' }).limit(5).lean();  // Get 5 teachers
+      
+      // Map teachers with their corresponding profile info
+      const teacherData = await Promise.all(teachers.map(async (teacher) => {
+          const profile = await Profile.findOne({ userId: teacher._id });  // Find the profile based on userId
+          return {
+              name: teacher.name,           // Teacher name from User model
+              email: teacher.email,         // Teacher email from User model
+              imgSrc: profile?.profilePic,  // Profile picture from Profile model
+              bio: profile?.bio             // Bio from Profile model
+          };
+      }));
+
+      // Render the homepage view with fetched data
+      res.render('homepage', { faqs, teachers: teacherData, courses });
+  } catch (error) {
+      console.error(error);
+      res.status(500).send('Server Error');
+  }
 };
+
 
 exports.aboutUs = (req, res) => {
     res.render('about', {

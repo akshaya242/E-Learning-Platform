@@ -18,15 +18,18 @@
     <div class="teacher-container" style="  background: linear-gradient(to right, #032f3c, #02474d, #046169, #217b7e, #10898d);">
        
         
+        <div class="teacher-container">
             <% for(let i = 0; i < teachers.length; i++) { %>
-              <div class="teacher-card">
-                <img src="<%= teachers[i].imgSrc %>" alt="<%= teachers[i].altText %>" class="teacher-image">
-                <div class="teacher-details">
-                  <h3><%= teachers[i].name %></h3>
-                  <p><%= teachers[i].description %></p>
+                <div class="teacher-card">
+                    <img src="<%= teachers[i].imgSrc ? teachers[i].imgSrc: "/images/profile.png" %>" alt="<%= teachers[i].name %>" class="teacher-image">
+                    <div class="teacher-details">
+                        <h3><%= teachers[i].name %></h3>
+                        <p><%= teachers[i].bio ? teachers[i].bio : "I am a professor" %></p>
+                        <p>Email: <%= teachers[i].email %></p>
+                    </div>
                 </div>
-              </div>
             <% } %>
+        </div>
          
              
     </div>
