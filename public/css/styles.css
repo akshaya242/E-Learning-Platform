@@ -93,14 +93,17 @@ header{
     background-color: var(--color-background);
 }
 header.active{box-shadow: var(--box-shadow);}
+
 header .logo{
     display: flex;
     gap: .8rem;
     margin-right: auto;
+    
 }
 header .logo img{
-    width: 2rem;
-    height: 2rem;
+    /* width: 2rem; */
+    height: 5rem;
+    /* max-height: 100%; */
 }
 
 header,
@@ -182,7 +185,7 @@ aside .profile .top{
     padding-bottom: 1rem;
 }
 aside .profile .top:hover .profile-photo{
-    scale: 1.05;
+    scale: 1.15;
 }
 aside .profile .top .profile-photo{
     width: 6rem;
@@ -191,6 +194,7 @@ aside .profile .top .profile-photo{
     overflow: hidden;
     border: 5px solid var(--color-light);
     transition: all 400ms ease;
+    
 }
 aside .profile .about p{
     padding-bottom: 1rem;
