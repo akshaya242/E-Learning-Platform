@@ -43,6 +43,12 @@ app.use(session({
 
 // Route handling
 app.use('/', route);
+const route3 = require('./routes/adminRoutes');
+app.use('/', route3);
+
+
+
+
 
 // Error handling
 app.use((req, res, next) => {

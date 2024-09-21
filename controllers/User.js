@@ -111,30 +111,41 @@ exports.showSignupPage = (req, res) => {
   };
   
   
-  exports.showDashboard = (req, res) => {
+  exports.showDashboard = async (req, res) => {
     const user = req.session.user;
   
     // Check if user is logged in
     if (!user) {
-      return res.redirect('/login'); // Redirect to login if user is not authenticated
+        return res.redirect('/login'); // Redirect to login if user is not authenticated
     }
-  
-    // Check user role and render the corresponding dashboard
-    switch (user.role) {
-      case 'admin':
-        res.render('adminDashboard', { user });
-        break;
-      case 'teacher':
-        res.render('teacherDashboard', { user });
-        break;
-      case 'student':
-        res.render('studentDashboard', { user });
-        break;
-      default:
-        res.status(403).send('Access denied'); // Handle unknown roles
+
+    try {
+        // Check user role and render the corresponding dashboard
+        switch (user.role) {
+          case 'admin':
+            return res.redirect('/admin');
+
+            case 'teacher':
+                // Show teacher dashboard with assigned courses
+                const teacherCourses = await Course.find({ teacher: user._id });
+                res.render('teacherDashboard', { user, courses: teacherCourses });
+                break;
+
+            case 'student':
+                // Show student dashboard with enrolled courses
+                const studentCourses = await Course.find({ students: user._id });
+                res.render('studentDashboard', { user, courses: studentCourses });
+                break;
+
+            default:
+                res.status(403).send('Access denied'); // Handle unknown roles
+        }
+    } catch (error) {
+        console.error('Error rendering dashboard:', error);
+        res.status(500).send('Server Error');
     }
-  };
-  
+};
+
   
   // Show Profile Page
   exports.showProfilePage = async (req, res) => {
