@@ -13,7 +13,8 @@ const courseSchema = new Schema({
   rating: { type: Number },
   created_by: { type: Schema.Types.ObjectId, ref: 'User', required: true },
   created_at: { type: Date, default: Date.now },
-  updated_at: { type: Date, default: Date.now }
+  updated_at: { type: Date, default: Date.now },
+  image: { type: String },
 });
 
 // Category Schema
