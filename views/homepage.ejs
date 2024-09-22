@@ -27,30 +27,37 @@
         <div class="card">
             <div class="course-name"><%= course.title %></div>
             <div class="course-img">
-                <img src="<%= course.imageUrl || 'default-image.jpg' %>" alt="<%= course.title %>">
+                <img src=<%=course.image  %> alt="<%= course.title %>">
             </div>
-            <div class="teacher">Instructor:</div>
-            <div class="rating">Rating: ⭐⭐⭐⭐</div> <!-- You can dynamically add the rating here -->
+           <div class="teacher">
+                Instructor: <%= course.instructorName ? course.instructorName : 'Unknown' %> 
+              </div>
+              
+            <div class="rating">Rating: <%= course.rating || '⭐⭐⭐⭐' %></div> <!-- Display course rating -->
             <div class="description"><%= course.description %></div>
         </div>
     <% }) %>
 </div>
 
+
+
 <a href="/courses"><button class="redirect-button" id="course-button" style="position: relative; left: 79.7%;">View More Courses</button></a>
 
 <br> <br>
-<h2  style="text-align: center; margin-bottom: 2%;">Our Top Teachers  </h2>
+<h2 style="text-align: center; margin-bottom: 2%;">Our Top Teachers</h2>
 <div class="teacher-container">
     <% for(let i = 0; i < teachers.length; i++) { %>
         <div class="teacher-card">
-          <img src="<%= teachers[i].imgSrc %>" alt="<%= teachers[i].altText %>" class="teacher-image">
-          <div class="teacher-details">
-            <h3><%= teachers[i].name %></h3>
-            <p><%= teachers[i].description %></p>
-          </div>
+            <img src="<%= teachers[i].imgSrc ? teachers[i].imgSrc: "/images/profile.png" %>" alt="<%= teachers[i].name %>" class="teacher-image">
+            <div class="teacher-details">
+                <h3><%= teachers[i].name %></h3>
+                <p><%= teachers[i].bio ? teachers[i].bio : "I am a professor" %></p>
+                <p>Email: <%= teachers[i].email %></p>
+            </div>
         </div>
-      <% } %>
+    <% } %>
 </div>
+
 
 <a href="/teachers"><button class="redirect-button" id="course-button" style="position: relative; left: 81.5%;">See All Teachers</button></a>
 
