@@ -6,39 +6,48 @@ const bcrypt = require('bcrypt');
 const FAQ = require('../models/Review');       // Import FAQ model
 const {User, Profile} = require('../models/User');
 const { Course, Category } = require('../models/Course'); // Import both Course and Category models
+const {Enrollment} = require('../models/Enrollment')
 
 
 exports.home = async (req, res) => {
   try {
-      // Fetch limited data from the database
-      const faqs = await FAQ.find().limit(3);                // Get 3 FAQs
+    // Fetch limited data from the database
+    const faqs = await FAQ.find().limit(3);  // Get 3 FAQs
 
-      // Fetch 3 courses and populate the instructor (created_by) field from User model
-     const courses = await Course.find().limit(3).populate('role', 'name email').lean();
+    // Fetch 3 courses and populate instructor details from User model
+    const courses = await Course.find().limit(3).lean();
 
+    // Fetch instructor data for each course based on the instructorId
+    const coursesWithInstructors = await Promise.all(courses.map(async (course) => {
+      const instructor = await User.findById(course.instructorId).lean();  // Find instructor by instructorId
+      return {
+        ...course,
+        instructorName: instructor ? instructor.name : 'Unknown', // Add instructor name
+        instructorEmail: instructor ? instructor.email : 'N/A'    // Add instructor email
+      };
+    }));
 
-      // Fetch teacher data from User and Profile models
-      const teachers = await User.find({ role: 'teacher' }).limit(5).lean();  // Get 5 teachers
-      
-      // Map teachers with their corresponding profile info
-      const teacherData = await Promise.all(teachers.map(async (teacher) => {
-          const profile = await Profile.findOne({ userId: teacher._id });  // Find the profile based on userId
-          return {
-              name: teacher.name,           // Teacher name from User model
-              email: teacher.email,         // Teacher email from User model
-              imgSrc: profile?.profilePic,  // Profile picture from Profile model
-              bio: profile?.bio             // Bio from Profile model
-          };
-      }));
+    // Fetch teacher data from User and Profile models
+    const teachers = await User.find({ role: 'teacher' }).limit(5).lean();
 
-      // Render the homepage view with fetched data
-      res.render('homepage', { faqs, teachers: teacherData, courses });
+    // Map teachers with their corresponding profile info
+    const teacherData = await Promise.all(teachers.map(async (teacher) => {
+      const profile = await Profile.findOne({ userId: teacher._id });  // Find the profile based on userId
+      return {
+        name: teacher.name,           // Teacher name from User model
+        email: teacher.email,         // Teacher email from User model
+        imgSrc: profile?.profilePic,  // Profile picture from Profile model
+        bio: profile?.bio             // Bio from Profile model
+      };
+    }));
+
+    // Render the homepage view with fetched data
+    res.render('homepage', { faqs, teachers: teacherData, courses: coursesWithInstructors });
   } catch (error) {
-      console.error(error);
-      res.status(500).send('Server Error');
+    console.error(error);
+    res.status(500).send('Server Error');
   }
 };
-
 
 exports.aboutUs = (req, res) => {
     res.render('about', {
@@ -127,42 +136,39 @@ exports.showSignupPage = (req, res) => {
     }
   };
   
-  
   exports.showDashboard = async (req, res) => {
-    const user = req.session.user;
-  
+    const user = req.session.user;  // Assuming user session is stored in req.session
+    console.log(user);
     // Check if user is logged in
     if (!user) {
-        return res.redirect('/login'); // Redirect to login if user is not authenticated
+      return res.redirect('/login'); // Redirect to login if not authenticated
     }
-
+  
     try {
-        // Check user role and render the corresponding dashboard
-        switch (user.role) {
-          case 'admin':
-            return res.redirect('/admin');
-
-            case 'teacher':
-                // Show teacher dashboard with assigned courses
-                const teacherCourses = await Course.find({ teacher: user._id });
-                res.render('teacherDashboard', { user, courses: teacherCourses });
-                break;
-
-            case 'student':
-                // Show student dashboard with enrolled courses
-                const studentCourses = await Course.find({ students: user._id });
-                res.render('studentDashboard', { user, courses: studentCourses });
-                break;
-
-            default:
-                res.status(403).send('Access denied'); // Handle unknown roles
-        }
+      // Redirect based on user role
+      switch (user.role) {
+        case 'admin':
+          return res.redirect('/admin'); // Redirect admin to their dashboard
+  
+        case 'teacher':
+          // Fetch courses assigned to the teacher
+          const teacherCourses = await Course.find({ created_by: user._id }); // Assuming created_by field for courses
+          return res.render('teacherDashboard', { user, courses: teacherCourses });
+  
+        case 'student':
+          // Fetch courses the student is enrolled in
+          const studentCourses = await Course.find({ studentsEnrolled: user._id }); // Fetch using studentsEnrolled field
+          return res.render('studentDashboard', { user, courses: studentCourses });
+  
+        default:
+          return res.status(403).send('Access denied'); // Handle unknown roles
+      }
     } catch (error) {
-        console.error('Error rendering dashboard:', error);
-        res.status(500).send('Server Error');
+      console.error('Error rendering dashboard:', error);
+      return res.status(500).send('Server Error');
     }
-};
-
+  };
+  
   
   // Show Profile Page
   exports.showProfilePage = async (req, res) => {
@@ -182,3 +188,65 @@ exports.showSignupPage = (req, res) => {
     await Profile.updateOne({ user_id: user._id }, { bio, contact_number, address });
     res.redirect('/profile');
   };
+  exports.showCourses = async (req, res) => {
+    const courses = await Course.find();
+    res.render('courses', { courses });
+};
+
+exports.enrollInCourse = async (req, res) => {
+  const userId = req.session.user.id;
+  console.log(userId)
+  const courseId = req.params.courseId;
+
+  try {
+      const enrollment = new Enrollment({ courseId, userId });
+      await enrollment.save();
+
+      // Add the student ID to the course's enrolledStudents array
+      await Course.findByIdAndUpdate(courseId, {
+          $addToSet: { enrolledStudents: userId } // Use $addToSet to avoid duplicates
+      });
+
+      res.redirect('/courses'); // Redirect to courses page after enrollment
+  } catch (error) {
+      console.error('Error enrolling in course:', error);
+      res.status(500).send('Enrollment failed');
+  }
+};
+
+exports.enrollInCourse = async (req, res) => {
+  console.log("Enrollment request received for course ID:", req.params.courseId);
+  const userId = req.session.user.id; // Ensure this ID is correct
+  const courseId = req.params.courseId;
+
+  try {
+      // Check if the student is already enrolled in the course
+      const existingEnrollment = await Enrollment.findOne({ courseId, user_id: userId });
+      
+      if (existingEnrollment) {
+          return res.status(400).send('You are already enrolled in this course.');
+      }
+
+      const enrollment = new Enrollment({
+          courseId,
+          user_id: userId,
+          enrollment_date: new Date(),
+          progress: 0,
+          completionStatus: 'in-progress',
+          certificateLink: null 
+      });
+
+      // Save enrollment data
+      await enrollment.save();
+
+      // Update the course document to append the user's ID to the enrolledStudents array
+      await Course.findByIdAndUpdate(courseId, {
+          $addToSet: { enrolledStudents: userId }
+      });
+
+      res.redirect('/courses'); // Redirect to courses page after enrollment
+  } catch (error) {
+      console.error('Error enrolling in course:', error);
+      res.status(500).send('Enrollment failed');
+  }
+};
