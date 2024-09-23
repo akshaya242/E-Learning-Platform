@@ -138,9 +138,11 @@ exports.showSignupPage = (req, res) => {
 
     try {
         // Check user role and render the corresponding dashboard
+        req.session.user = user;
         switch (user.role) {
           case 'admin':
-            return res.redirect('/admin');
+            
+            return res.redirect('/admin/Dashboard');
 
             case 'teacher':
                 // Show teacher dashboard with assigned courses
