@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Approve Course Requests</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+    .container {
+      max-width: 800px;
+      margin: 50px auto;
+      padding: 20px;
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      text-align: center;
+    }
+    .request {
+      padding: 15px;
+      border: 1px solid #ccc;
+      margin-top: 10px;
+      background-color: #fafafa;
+    }
+    button {
+      padding: 10px;
+      border: none;
+      background-color: #007bff;
+      color: white;
+      cursor: pointer;
+      font-size: 14px;
+      margin-top: 10px;
+    }
+    button:hover {
+      background-color: #0056b3;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Pending Course Requests</h1>
+    <div id="requestsContainer"></div>
+  </div>
+
+  <script>
+    async function fetchPendingRequests() {
+      try {
+        const response = await fetch('/admin/course-requests');
+        const requests = await response.json();
+
+        const requestsContainer = document.getElementById('requestsContainer');
+        requests.forEach(request => {
+          const requestDiv = document.createElement('div');
+          requestDiv.className = 'request';
+          requestDiv.innerHTML = `
+            <h3>${request.title}</h3>
+            <p>${request.description}</p>
+            <p>Category: ${request.category}</p>
+            <button onclick="approveRequest('${request._id}')">Approve</button>
+          `;
+          requestsContainer.appendChild(requestDiv);
+        });
+      } catch (error) {
+        console.error('Failed to fetch course requests');
+      }
+    }
+
+    async function approveRequest(requestId) {
+      try {
+        const courseData = {};  // Collect course data here if necessary
+        const response = await fetch('/course/approve', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ requestId, courseData })
+        });
+
+        const result = await response.text();
+        alert(result);
+        location.reload();  // Refresh page after approval
+      } catch (error) {
+        alert('Failed to approve course request');
+      }
+    }
+
+    fetchPendingRequests();
+  </script>
+</body>
+</html>
