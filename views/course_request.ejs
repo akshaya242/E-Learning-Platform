@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Submit Course Request</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f4f4f4;
+    }
+    .container {
+      max-width: 600px;
+      margin: 50px auto;
+      padding: 20px;
+      background-color: #fff;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      text-align: center;
+    }
+    form {
+      display: flex;
+      flex-direction: column;
+    }
+    label {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+    input, textarea {
+      margin-top: 5px;
+      padding: 10px;
+      border-radius: 5px;
+      border: 1px solid #ccc;
+    }
+    button {
+      margin-top: 20px;
+      padding: 10px;
+      border: none;
+      background-color: #28a745;
+      color: white;
+      cursor: pointer;
+      font-size: 16px;
+    }
+    button:hover {
+      background-color: #218838;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Submit Course Request</h1>
+    <form id="courseForm" method="post" action="/create-course">
+      <label for="title">Course Title:</label>
+      <input type="text" id="title" name="title" required>
+
+      <label for="description">Course Description:</label>
+      <textarea id="description" name="description" rows="4" required></textarea>
+
+      <label for="category">Category:</label>
+      <input type="text" id="category" name="category" required>
+
+      <button type="submit">Submit</button>
+    </form>
+    <p id="responseMessage"></p>
+  </div>
+
+  <script>
+    document.getElementById('courseForm').addEventListener('submit', async function(event) {
+      event.preventDefault();
+
+      const title = document.getElementById('title').value;
+      const description = document.getElementById('description').value;
+      const category = document.getElementById('category').value;
+
+      const formData = { title, description, category };
+
+      try {
+        const response = await fetch('/create-course', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(formData)
+        });
+
+        const result = await response.text();
+        document.getElementById('responseMessage').innerText = result;
+      } catch (error) {
+        document.getElementById('responseMessage').innerText = 'Failed to submit course request';
+      }
+    });
+  </script>
+</body>
+</html>
