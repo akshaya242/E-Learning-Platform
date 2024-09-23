@@ -18,6 +18,15 @@ router.post('/login', controllers.handleLogin);
 // router.get('/admin',adminController.getDashboard)
 // Dashboard Route (depends on the role)
 router.get('/dashboard', controllers.showDashboard);
+function isAuthenticated(req, res, next) {
+    if (req.session && req.session.user) {
+        return next();
+    }
+    res.redirect('/login'); // Redirect to login if not authenticated
+}
+
+router.get('/courses', isAuthenticated, controllers.showCourses);
+router.post('/enroll/:courseId', isAuthenticated, controllers.enrollInCourse);
 
 // Profile Routes
 router.get('/profile', controllers.showProfilePage);
