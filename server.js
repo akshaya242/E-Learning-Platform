@@ -59,7 +59,7 @@ app.use((req, res, next) => {
 // Connect to MongoDB and seed data
 const PORT = process.env.PORT || 3000;
 const MONGODB_URI = "mongodb+srv://Project:quiklearn1234@cluster0.nqcn9.mongodb.net/quiklearn";
-connectMongoDB(MONGODB_URI);
+connectMongoDB(MONGODB_URI, {connectTimeoutMS: 20000,});
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

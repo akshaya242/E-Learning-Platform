@@ -1,9 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const controllers = require('../controllers/User'); // Adjust the path as necessary
-const adminController = require('../controllers/adminControllers');
+const controllers = require('../controllers/User');
+const adminController = require('../controllers/adminControllers'); // Ensure you import your admin controllers
 const { ensureAdmin } = require('../middlewares/auth');
-
 
 router.get('/', controllers.home);
 router.get('/about', controllers.aboutUs);
@@ -15,33 +14,25 @@ router.get('/signup', controllers.showSignupPage);
 router.post('/signup', controllers.handleSignup);
 router.get('/login', controllers.showLoginPage);
 router.post('/login', controllers.handleLogin);
-// router.get('/admin',adminController.getDashboard)
-// Dashboard Route (depends on the role)
 router.get('/dashboard', controllers.showDashboard);
+
 function isAuthenticated(req, res, next) {
     if (req.session && req.session.user) {
         return next();
     }
-    res.redirect('/login'); // Redirect to login if not authenticated
+    res.redirect('/login');
 }
 
 router.get('/courses', isAuthenticated, controllers.showCourses);
 router.post('/enroll/:courseId', isAuthenticated, controllers.enrollInCourse);
 
 // Profile Routes
-router.get('/profile', controllers.showProfilePage);
-router.post('/profile', controllers.updateProfile);
-// router.get('/section', controllers.section);
-// router.get('/login', controllers.login);
-// router.get('/signup', controllers.signupView);
-// router.get('/dashboard', controllers.someRedirectView);
-// router.get('/logout', controllers.logoutUser);
-// router.get('/loginasteacher', controllers.teacherLoginView);
-// router.get('/signupasteacher', controllers.teacherSignupView);
-// router.get('/teacherdashboard', controllers.someTeacherView);
-// router.get('/displaycourse', controllers.displayCourse);
-// router.post('/create-course', controllers.createCourse);
-// router.post('/contact', controllers.contactSubmit);
-// router.post('/  ', controllers.sendMail);
+router.get('/profile', isAuthenticated, controllers.showProfilePage);
+router.post('/profile', isAuthenticated, controllers.updateProfile);
+// Use the middleware
+router.get('/create-course', isAuthenticated, controllers.showCreatePage);
+router.post('/create-course', isAuthenticated, controllers.createCourseRequest);
+router.post('/approve-course', isAuthenticated, controllers.approveCourseRequest);
+
 
 module.exports = router;
