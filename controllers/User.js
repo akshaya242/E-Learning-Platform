@@ -113,17 +113,29 @@ exports.showDashboard = async (req, res) => {
     }
 
     try {
+
+        // Check user role and render the corresponding dashboard
+        req.session.user = user;
         switch (user.role) {
-            case 'admin':
-                return res.redirect('/admin');
+          case 'admin':
+            
+            return res.redirect('/admin/Dashboard');
+
             case 'teacher':
-                const teacherCourses = await Course.find({ created_by: user._id });
-                return res.render('teacherDashboard', { user, courses: teacherCourses });
+                // Show teacher dashboard with assigned courses
+                const teacherCourses = await Course.find({ teacher: user._id });
+                res.render('teacherDashboard', { user, courses: teacherCourses });
+                break;
+
             case 'student':
-                const studentCourses = await Course.find({ studentsEnrolled: user._id });
-                return res.render('studentDashboard', { user, courses: studentCourses });
+                // Show student dashboard with enrolled courses
+                const studentCourses = await Course.find({ students: user._id });
+                res.render('studentDashboard', { user, courses: studentCourses });
+                break;
+
             default:
-                return res.status(403).send('Access denied');
+                res.status(403).send('Access denied'); // Handle unknown roles
+
         }
     } catch (error) {
         console.error('Error rendering dashboard:', error);
