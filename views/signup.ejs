@@ -102,8 +102,8 @@
 
         .ring {
           position: relative;
-          width: 500px; /* Reduced size */
-          height: 400px; /* Reduced size */
+          width: 650px; /* Reduced size */
+          height: 550px; /* Reduced size */
           display: flex;
           justify-content: center;
           align-items: center;
@@ -130,7 +130,10 @@
           border-radius: 41% 44% 56% 59%/38% 62% 63% 37%;
           animation: animate2 10s linear infinite;
         }
-
+        .ring:hover i {
+  border: 6px solid var(--clr);
+  filter: drop-shadow(0 0 20px var(--clr));
+}
         @keyframes animate {
           0% {
             transform: rotate(0deg);
