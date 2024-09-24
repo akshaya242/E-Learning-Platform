@@ -4,6 +4,7 @@ const { User, Profile } = require('../models/User');
 const { Enrollment } = require('../models/Enrollment');
 const { CourseCreationRequest } = require('../models/Admin');
 const {Course} = require('../models/Course')
+const Section = require('../models/Sections')
 
 // Enrollment and Course Requests
 exports.showCourses = async (req, res) => {
@@ -13,54 +14,114 @@ exports.showCourses = async (req, res) => {
 
 exports.createCourseInfo = async (req, res) => {
     try {
-      const { title, description, category, duration } = req.body;
-      const image = req.body.image; // Typically image would be from req.file if multer is used
-      
-      // Create the new course object
-      const newCourse = new Course({
-        title,
-        description,
-        category,
-        duration,
-        role: req.user._id, // Assuming the instructor's role (logged-in user)
-        sectionIds: [], // Initially empty array
-        studentsEnrolled: [], // Initially empty array
-        rating: 0, // Default rating
-        created_by: req.user._id, // Instructor is the logged-in user
-        created_at: Date.now(),
-        updated_at: Date.now(),
-        image // Assuming this is the image URL or filename
-      });
-  
-      // Save the course to the database
-      await newCourse.save();
-  
-      // Render the course sections page, or redirect as needed
-      res.render('course-section', { title, description, category, duration });
+        const { title, description, category, duration, sections } = req.body;
+        console.log(req.body);
+        const instructorId = req.session.user ? req.session.user.id : null;
+        const created_by = req.session.user ? req.session.user.id : null;
+
+        if (!title || !instructorId || !created_by || !sections || sections.length === 0) {
+            return res.status(400).json({ message: "All fields are required." });
+        }
+
+        // Create the new course object
+        const newCourse = new Course({
+            title,
+            description,
+            category,
+            duration,
+            instructorId,
+            sectionIds: [],
+            studentsEnrolled: [],
+            rating: 0,
+            created_by,
+            created_at: Date.now(),
+            updated_at: Date.now(),
+        });
+
+        // Save the course to the database
+        const savedCourse = await newCourse.save();
+
+        // Create sections for the course
+        const sectionIds = [];
+        for (const section of sections) {
+            const newSection = new Section({
+                courseId: savedCourse._id,
+                title: section.title,
+                video: {
+                    title: section.title || '',
+                    videoUrl: section.videoUrl || '',
+                    duration: section.duration || '',
+                },
+                quiz: {
+                    title: section.title || '',
+                    questions: section.quizQuestions ? section.quizQuestions.split(',').map(q => q.trim()) : [],
+                },
+                created_at: Date.now(),
+                updated_at: Date.now(),
+            });
+
+            const savedSection = await newSection.save();
+            sectionIds.push(savedSection._id); // Collect section IDs
+        }
+
+        // Update the course with the created section IDs
+        await Course.findByIdAndUpdate(savedCourse._id, { $push: { sectionIds: { $each: sectionIds } } });
+
+        // Respond with success
+        res.status(201).json({ message: "Course created successfully", courseId: savedCourse._id });
     } catch (err) {
-      console.error(err);
-      res.status(500).send('Error creating course');
+        console.error(err);
+        res.status(500).send('Error creating course');
     }
-  };
-
-exports.createCourseSections = async (req, res) => {
-  const { title, description, category, sections } = req.body;
-  
-  try {
-      const course = new Course({
-          title,
-          description,
-          category,
-          sections
-      });
-      await course.save();
-
-      res.status(201).send('Course created successfully!');
-  } catch (error) {
-      res.status(500).send('Error saving course');
-  }
 };
 
+
+
+exports.createCourseSections = async (req, res) => {
+    const { title, description, category, sections } = req.body;
+  
+    // Check if sections is defined and is an array
+    if (!Array.isArray(sections)) {
+      return res.status(400).send('Sections should be an array.');
+    }
+  
+    try {
+      // Create a new Course document using courseId from params
+      const courseId = req.params.courseId; // Get courseId from the route
+      const course = await Course.findById(courseId);
+      
+      if (!course) {
+        return res.status(404).send('Course not found.');
+      }
+  
+      // Process each section and create a Section document
+      for (const section of sections) {
+        const quizQuestions = section.quizQuestions.split(',').map(q => q.trim()); // Convert to an array
+  
+        const newSection = new Section({
+          courseId: course._id,
+          title: section.title,
+          video: {
+            title: section.title, // Assuming section title can also be the video title
+            videoUrl: section.videoUrl,
+          },
+          quiz: {
+            title: section.title, // Assuming section title can also be the quiz title
+            questions: quizQuestions,
+            answers: [] // Assuming answers are not provided here
+          }
+        });
+  
+        await newSection.save();
+      }
+  
+      res.status(201).send('Course created successfully with sections!');
+    } catch (error) {
+      console.error(error); // Log the error for debugging
+      res.status(500).send('Error saving course or sections');
+    }
+  };
+    
 
 exports.enrollInCourse = async (req, res) => {
     const userId = req.session.user.id;
