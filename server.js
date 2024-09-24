@@ -25,8 +25,9 @@ const connectMongoDB = async (uri) => {
 // Seed data function
 
 // Express middleware setup
-app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
 
 // Serve static files
 
@@ -34,12 +35,18 @@ app.use(express.static(path.join(__dirname, "public")));
 // Set the view engine (if you're using one)
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
+// Order matters! Make sure session is used before routes
 app.use(session({
-    secret: 'simpleSecretKey',  // Simple, hardcoded secret key
+    secret: 'simpleSecretKey',
     resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false }   // Set to true if using HTTPS
-  }));
+    saveUninitialized: false,
+    cookie: { 
+        secure: false,
+        maxAge: 24 * 60 * 60 * 1000
+    }
+}));
+
+
 
 // Route handling
 app.use('/', route);

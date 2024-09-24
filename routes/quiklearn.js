@@ -31,7 +31,9 @@ router.post('/enroll/:courseId', isAuthenticated, courseControllers.enrollInCour
 router.get('/profile', isAuthenticated, controllers.showProfilePage);
 router.post('/profile', isAuthenticated, controllers.updateProfile);
 
-router.get('/create-course',courseControllers.showCourseCreationPage);
-router.post('/create-course', courseControllers.createCourseInfo)
+router.get('/create-course',isAuthenticated,courseControllers.showCourseCreationPage);
+router.post('/create-course', courseControllers.createCourseInfo);
+// router.get('/course/:courseId', courseControllers.createSectionsForCourse);
+
 
 module.exports = router;
