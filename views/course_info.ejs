@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Course - Basic Info</title>
+    <link rel="stylesheet" href="/css/create.css"> <!-- Link to common styles -->
+</head>
+<body>
+    <h1>Create Course - Basic Info</h1>
+    
+    <form action="/create-course" method="POST" enctype="multipart/form-data"> <!-- Add enctype attribute -->
+        <div>
+            <label for="title">Course Title:</label>
+            <input type="text" id="title" name="title" required>
+        </div>
+
+        <div>
+            <label for="description">Course Description:</label>
+            <textarea id="description" name="description" required></textarea>
+        </div>
+
+        <div>
+            <label for="category">Category:</label>
+            <input type="text" id="category" name="category" required>
+        </div>
+
+        <div>
+            <label for="duration">Duration:</label>
+            <input type="text" id="duration" name="duration" required> <!-- Changed to text input for duration -->
+        </div>
+
+        <div>
+            <label for="image">Course Image:</label>
+            <input type="file" id="image" name="image" accept="image/*" required> <!-- Image upload input -->
+        </div>
+
+        <div>
+            <button type="submit">Next: Add Sections</button>
+        </div>
+    </form>
+</body>
+</html>
