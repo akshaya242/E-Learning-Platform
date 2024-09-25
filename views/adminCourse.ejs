@@ -292,32 +292,176 @@
 </head>
 <body>
 
-<!-- Navbar Section -->
-<div class="navbar">
-    <h1>Admin Dashboard</h1>
-    <div class="nav-right">
-        <i class="fa-solid fa-hat-cowboy fa-beat-fade fa-lg" style="color: #191a1a;"></i>
-        <h2><%= login.name %></h2>
-        <form action="/logout" method="POST" style="margin: 0;">
-            <button class="logout-btn">
-                <i class="fas fa-sign-out-alt"></i> Logout
-            </button>
-        </form>
+    <!-- Navbar Section -->
+    <div class="navbar">
+        <h1>Admin Dashboard</h1>
+        <div class="nav-right">
+            <h2 ><strong> Admin : </strong></h2>
+            <h2><%= login.name %></h2>
+            <form action="/logout" method="POST" style="margin: 0;">
+                <button class="logout-btn">
+                    <i class="fas fa-sign-out-alt"></i> Logout
+                </button>
+            </form>
+        </div>
     </div>
-</div>
+    
+    
+    <!-- Sidebar Section -->
+    <div class="sidebar">
+        <h2>Menu</h2>
+        <a href="/admin/Dashboard"><i class="fas fa-users"></i> Users</a>
+        <a href="/admin/Course" class="active"><i class="fas fa-book"></i> Courses</a>
+        <a href="/admin/Overview"><i class="fas fa-chart-pie"></i> Overview</a>
+    </div>
+    
+    <div class="main-content">
+        <div class="container">
+            <!-- Courses Section -->
+            <div class="section" id="courses">
+                <h2>Courses <button style="margin-left:80%; background-color: #2ee10a;;" class="btn add-course-btn" onclick="toggleAddCourseForm()"><i class="fas fa-chalkboard-teacher"></i>  Add Course</button></h2>
+    
+                <!-- Add Course Form (Initially hidden) -->
+                <div class="add-form" id="add-course-form" style="display: none;">
+                    <!-- Add Course Form -->
+                    <form action="/admin/Course/add" method="POST" enctype="multipart/form-data">
+                        <input type="text" name="title" placeholder="Course Title" required>
+                        <textarea name="description" placeholder="Course Description"></textarea>
+                        <input type="text" name="duration" placeholder="Course Duration">
+                    
+                        <select name="category" id="category-select" required>
+                            <option value="">Select a category</option>
+                            <% uniqueCategories.forEach(category => { %>
+                                <option value="<%= category %>"><%= category %></option>
+                            <% }) %>
+                            <option value="other">Other (please specify)</option>
+                        </select>
+                        
+                        <!-- Custom category text box -->
+                        <input type="text" name="custom_category" id="custom-category" placeholder="Enter custom category" style="display: none;">
+                    
+                        <select name="created_by" required>
+                            <% teachers.forEach(teacher => { %>
+                                <option value="<%= teacher._id %>"><%= teacher.name %></option>
+                            <% }) %>
+                        </select>
+                    
+                        <input type="hidden" name="role" value="teacher">
+                        <input type="file" name="image" accept="image/*" required>
+                        <button type="submit">Add Course</button>
+                    </form>
+                    
+                
+                                    
+                                    
+                </div>
+    
+                <!-- Courses List -->
+                <ul>
+                    <% courses.forEach(course => { %>
+                        <li>
+                            <span>
+                                <%= course.title %> 
+                                <% if (course.created_by) { %> 
+                                    by <%= course.created_by.name %> 
+                                <% } else { %> 
+                                    (No teacher assigned) 
+                                <% } %> 
+                                <% if (course.category) { %> 
+                                    (Category: <%= course.category %>)
+                                <% } else { %> 
+                                    (No category)
+                                <% } %>
+                            </span>
+                            <div style="display: flex; align-items: center; gap: 8px;">
+                            <button class="edit-btn" onclick="toggleEditCourseForm('<%= course._id %>')">
+                                <i class="fas fa-edit"></i>Edit</button>
+                            <form action="/admin/Course/delete/<%= course._id %>" method="POST" style="margin: 0;">
+                                <button type="submit" class="delete-btn">
+                                    <i class="fas fa-trash-alt"></i>Delete</button>
+                            </form>
+                             </div>
+    
+                            <!-- Edit Course Form (Initially hidden) -->
+                            <div class="edit-form" id="edit-form-<%= course._id %>" style="display: none;">
+                                <form action="/admin/Course/edit/<%= course._id %>" method="POST" enctype="multipart/form-data">
+                                    <input type="text" name="title" value="<%= course.title %>" required>
+                                    <textarea name="description"><%= course.description %></textarea>
+                                    <input type="text" name="duration" value="<%= course.duration %>">
+                                    
+                                    <select name="category" required>
+                                        <option value="">Select a category</option>
+                                        <% uniqueCategories.forEach(category => { %>
+                                            <option value="<%= category %>" <%= course.category === category ? 'selected' : '' %>><%= category %></option>
+                                        <% }) %>
+                                        <option value="other">Other (please specify)</option>
+                                    </select>
+                
+                                    <input type="text" name="custom_category" placeholder="Enter custom category" style="display: none;" id="customCategoryInput-<%= course._id %>">
+                
+                                    <select name="created_by" required>
+                                        <% teachers.forEach(teacher => { %>
+                                            <option value="<%= teacher._id %>" <%= course.created_by._id.toString() === teacher._id.toString() ? 'selected' : '' %>><%= teacher.name %></option>
+                                        <% }) %>
+                                    </select>
+                
+                                    <input type="file" name="image" accept="image/*">
+                                    <button type="submit">Save Changes</button>
+                                </form>
+                            </div>
+                        </li>
+                    <% }) %>
+                </ul>
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function toggleAddCourseForm() {
+            document.getElementById('add-course-form').style.display = document.getElementById('add-course-form').style.display === 'none' ? 'block' : 'none';
+        }
+    
+        function toggleEditCourseForm(courseId) {
+            const editForm = document.getElementById(`edit-form-${courseId}`);
+            editForm.style.display = editForm.style.display === 'none' ? 'block' : 'none';
+        }
+    
+        function deleteCourse(courseId) {
+            if (confirm('Are you sure you want to delete this course?')) {
+                window.location.href = `/admin/Course/delete/${courseId}`;
+            }
+        }
+    </script>
+    <script>
+        document.querySelectorAll('select[name="category"]').forEach(select => {
+        select.addEventListener('change', function () {
+            const courseId = this.closest('.edit-form').id.split('-')[2]; // Extract course ID
+            const customInput = document.getElementById('customCategoryInput-' + courseId);
 
+            // Check if the custom input exists before modifying its style
+            if (customInput) {
+                customInput.style.display = this.value === 'other' ? 'block' : 'none';
+                if (this.value !== 'other') {
+                    customInput.value = ''; // Clear custom input when changing selection
+                }
+            }
+        });
+    });
 
-<!-- Sidebar Section -->
-<div class="sidebar">
-    <h2>Menu</h2>
-    <a href="/admin/Dashboard" ><i class="fas fa-users"></i> Users</a>
-    <a href="/admin/Course" class="active"><i class="fas fa-book"></i> Courses</a>
-</div>
-
-
-
-
-
-
+    </script>
+    <script>
+        document.getElementById('category-select').addEventListener('change', function() {
+            const customCategoryInput = document.getElementById('custom-category');
+            if (this.value === 'other') {
+                customCategoryInput.style.display = 'block';
+                customCategoryInput.required = true; // Make the custom input required when visible
+            } else {
+                customCategoryInput.style.display = 'none';
+                customCategoryInput.required = false; // Remove the required attribute when hidden
+            }
+        });
+    </script>
+    
 </body>
+    
 </html>
