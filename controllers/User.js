@@ -55,6 +55,7 @@ exports.contact = (req, res) => {
 exports.getAllFAQs = async (req, res) => {
     try {
         const faqs = await FAQ.find().lean(); // Fetch all FAQs from the database
+        console.log(faqs);
         res.status(200).json(faqs); // Send FAQs as a JSON response
     } catch (error) {
         console.error(error);
@@ -116,7 +117,7 @@ exports.handleLogin = async (req, res) => {
             return res.status(400).send('Invalid email or password');
         }
 
-        req.session.user = { id: user._id, name: user.name, role: user.role };
+        req.session.user = { id: user._id, name: user.name, role: user.role ,isVerified:user.isVerified, institution:user.institution ,email:user.email };
         res.redirect('/dashboard');
     } catch (error) {
         console.error(error);
@@ -139,6 +140,8 @@ exports.showDashboard = async (req, res) => {
         name: user.name,
         role: user.role,
         email: user.email,
+        isVerified: user.isVerified,
+        institution:user.institution,
         // Add any other relevant user data
     };
   
@@ -150,8 +153,7 @@ exports.showDashboard = async (req, res) => {
   
         case 'teacher':
           // Fetch courses assigned to the teacher
-          const teacherCourses = await Course.find({ created_by: user._id }); // Assuming created_by field for courses
-          return res.render('teacherDashboard', { user, courses: teacherCourses });
+          return res.redirect('/teacher/dashboard');
   
         case 'student':
           // Fetch courses the student is enrolled in
