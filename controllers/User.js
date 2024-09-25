@@ -55,6 +55,7 @@ exports.contact = (req, res) => {
 exports.getAllFAQs = async (req, res) => {
     try {
         const faqs = await FAQ.find().lean(); // Fetch all FAQs from the database
+        console.log(faqs);
         res.status(200).json(faqs); // Send FAQs as a JSON response
     } catch (error) {
         console.error(error);
