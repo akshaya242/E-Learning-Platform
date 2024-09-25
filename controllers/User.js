@@ -146,6 +146,17 @@ exports.showSignupPage = (req, res) => {
   
     try {
       // Redirect based on user role
+      
+      req.session.user = {
+        id: user._id,  // MongoDB's user ID
+        name: user.name,
+        role: user.role,
+        email: user.email,
+        // Add any other relevant user data
+    };
+  
+    req.session.user = user;
+
       switch (user.role) {
         case 'admin':
           return res.redirect('/admin'); // Redirect admin to their dashboard
@@ -157,8 +168,8 @@ exports.showSignupPage = (req, res) => {
   
         case 'student':
           // Fetch courses the student is enrolled in
-          const studentCourses = await Course.find({ studentsEnrolled: user._id }); // Fetch using studentsEnrolled field
-          return res.render('studentDashboard', { user, courses: studentCourses });
+          return res.redirect('/student/Dashboard');
+          
   
         default:
           return res.status(403).send('Access denied'); // Handle unknown roles
@@ -250,3 +261,5 @@ exports.enrollInCourse = async (req, res) => {
       res.status(500).send('Enrollment failed');
   }
 };
+
+

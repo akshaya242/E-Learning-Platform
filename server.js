@@ -47,6 +47,7 @@ const route3 = require('./routes/adminRoutes');
 app.use('/', route3);
 
 
+app.use('/', route2);
 
 
 
