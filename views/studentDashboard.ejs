@@ -67,16 +67,16 @@
 
             <!-- Dynamic course progress section -->
             <div class="subjects">
-                <% if (courses && courses.length > 0) { %>
-                    <% courses.forEach(course => { %>
+                <% if (enrollments && enrollments.length > 0) { %>
+                    <% enrollments.forEach(enrollment => { %>
                         <div class="course-progress">
                             <span class="material-icons-sharp">school</span>
-                            <h3><%= course.title %></h3>
-                            <h2><%= course.progress %> %</h2>
+                            <h3><%= enrollment.courseId.title %></h3>
+                           
                             <div class="progress">
                                 <svg><circle cx="38" cy="38" r="36"></circle></svg>
                                 <div class="number">
-                                    <p><%= course.progress %>%</p>
+                                    <p><%= enrollment.progress %>%</p>
                                 </div>
                             </div>
                             <small class="text-muted">Last 24 Hours</small>
@@ -134,22 +134,6 @@
                     </div>
                 </div>
         
-                <% if (user) { %>
-                    <% user.filter(user => user.role === 'teacher').forEach(teacher => { %>
-                        <div class="teacher">
-                            <div class="profile-photo">
-                                <img src="<%= teacher.photo || '/images/default-teacher.png' %>" alt="Teacher Image">
-                            </div>
-                            <div class="info">
-                                <h3><%= teacher.name %></h3>
-                                <small class="text-muted"><%= teacher.institution || 'No institution provided' %></small>
-                            </div>
-                        </div>
-                    <% }); %>
-                <% } else { %>
-                    <p>No teachers available.</p>
-                <% } %>
-            </div>
         </div>
         
 

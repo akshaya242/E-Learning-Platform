@@ -8,19 +8,28 @@ exports.getDashboard = async (req, res) => {
   try {
     // Fetch the logged-in user from session
     const login = req.session.user;
-    req.session.user;
-    const user = await User.find();
 
     // Ensure the user is logged in
     if (!login) {
       return res.status(401).send('Unauthorized: No user logged in');
     }
 
-    // Find the profile of the logged-in user using the user id
-    const profile = await Profile.findOne({ user_id: login._id }).exec();
+    // Get the current logged-in user's ID
+    const userId = login.id;
 
-    // Fetch enrolled courses for the logged-in user
-    const courses = await Course.find({ enrolledStudents: login._id }).exec();
+    // Find the profile of the logged-in user using the user ID
+    const profile = await Profile.findOne({ user_id: userId }).exec();
+
+    const enrollments = await Enrollment.find({ user_id: userId })
+    .populate({
+      path: 'courseId',      // Populate courseId
+      select:'title',        // Select only the 'name' field from the Course model
+    })
+    .exec();
+    console.log(enrollments);
+    // Fetch courses based on the enrollments (if needed)
+    const courseIds = enrollments.map(enrollment => enrollment.courseId);
+    const courses = await Course.find({ _id: { $in: courseIds } }).exec();
 
     // Fetch announcements related to the logged-in user (could be general or user-specific)
     const announcements = [
@@ -29,11 +38,8 @@ exports.getDashboard = async (req, res) => {
       { title: 'Examination', message: 'Instructions for Mid Term Examination.', time: 'Yesterday' },
     ];
 
-    // Fetch enrollments for the logged-in user and populate course data
-    const enrollments = await Enrollment.find({ student: login._id }).exec();
-
-    // Pass both login info, profile, enrolled courses, announcements, and enrollments to the template
-    res.render('studentDashboard', { login, profile, courses, announcements, enrollments , user });
+    // Pass login info, profile, enrolled courses, announcements, and enrollments to the template
+    res.render('studentDashboard', { login, profile, courses, announcements, enrollments });
 
   } catch (error) {
     console.error('Error fetching dashboard:', error);  // Log the actual error for debugging
