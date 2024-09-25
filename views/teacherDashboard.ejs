@@ -22,15 +22,15 @@
                 <span class="material-icons-sharp">password</span>
                 <h3>Change Password</h3>
             </a>
+            <a href="/teacher/create-course">
+                <span class="material-icons-sharp">add_circle</span>
+                <h3>Add Course</h3>
+            </a>
             <a href="/logout">
                 <span class="material-icons-sharp" onclick="">logout</span>
                 <h3>Logout</h3>
             </a>
-            <a href="password.html">
-                <span class="material-icons-sharp">
-                </span>
-                <h3>Add Course</h3>
-            </a>
+           
         </div>
         <div id="profile-btn">
             <span class="material-icons-sharp">person</span>
@@ -54,20 +54,36 @@
                     </div>
                 </div>
                 <div class="about">
-                    <h5>DOB</h5>
-                    <p>29-Feb-2020</p>
+                    <h5>Personal Information</h5>
+                    <p><%=profile.bio%></p>
                     <h5>Contact</h5>
-                    <p>1234567890</p>
+                    <p><%= profile.contact_number %></p>
                     <h5>Email</h5>
                     <p><%= login.email%></p>
                     <h5>Address</h5>
-                    <p>Ghost town Road, New York, America</p>
+                    <p><%= profile.address%></p>
+                    <h5>institution</h5>
+                    <p><%=login.institution%></p>
+             
                 </div>
+                <div class="profile-section">
+                    <div class="profile-info">
+                        <!-- Other profile-related content here -->
+                         <a href="/teacher/editprofile">
+                        <button class="edit-profile-btn">
+                            <span class="material-icons-sharp">edit</span> <!-- Edit Icon -->
+                            Edit Profile
+                        </button>
+                        <a>
+                    </div>
+                </div>
+                
             </div>
+            
         </aside>
 
         <main>
-            <h1>Progress</h1>
+            <h1>My Courses</h1>
             <div class="subjects">
                 <% courses.forEach(course => { %>
                     <div class="subject">
@@ -101,44 +117,23 @@
             </div>
             
 
-            <div class="timetable" id="timetable">
-                <div>
-                    <span id="prevDay">&lt;</span>
-                    <h2>Courses Enrolled</h2>
-                    <span id="nextDay">&gt;</span>
-                </div>
-                <span class="closeBtn" onclick="timeTableAll()">X</span>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Domain</th>
-                            <th>Course</th>
-                            <th>Teacher</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </div>
+            
         </main>
 
         <div class="right">
             <div class="announcements">
-                <h2>Announcements</h2>
+                <h2>FAQ'S</h2>
                 <div class="updates">
-                    <div class="message">
-                        <p> <b>Academic</b> Summer training internship with Live Projects.</p>
-                        <small class="text-muted">2 Minutes Ago</small>
-                    </div>
-                    <div class="message">
-                        <p> <b>Co-curricular</b> Global internship oportunity by Student organization.</p>
-                        <small class="text-muted">10 Minutes Ago</small>
-                    </div>
-                    <div class="message">
-                        <p> <b>Examination</b> Instructions for Mid Term Examination.</p>
-                        <small class="text-muted">Yesterday</small>
-                    </div>
-                </div>
+                    <!-- Dynamic FAQ Rendering -->
+                    <% faqs.forEach(faq => { %>
+                      <div class="message">
+                        <p><b><%= faq.category %></b><br> <%= faq.question %></p>
+                        <small class="text-muted"><%= faq.answer %></small>
+                        <small class="text-muted"><%= faq.createdAt.toLocaleDateString() %></small>
+                      </div>
+                    <% }) %>
+                  </div>
+                  
             </div>
 
             <div class="leaves">
