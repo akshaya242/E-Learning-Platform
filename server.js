@@ -44,6 +44,12 @@ app.use(session({
 
 // Route handling
 app.use('/', route);
+app.use('/', route3);
+
+
+app.use('/', route2);
+
+
 
 // Error handling for undefined routes
 app.use((req, res) => {
