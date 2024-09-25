@@ -1,38 +1,39 @@
 const express = require('express');
 const router = express.Router();
-const controllers = require('../controllers/User'); // Adjust the path as necessary
-const adminController = require('../controllers/adminControllers');
-const { ensureAdmin } = require('../middlewares/auth');
+const controllers = require('../controllers/User');
+const courseControllers = require('../controllers/courseControllers');
 
+// Middleware for authentication
+function isAuthenticated(req, res, next) {
+    if (req.session && req.session.user) {
+        return next();
+    }
+    res.redirect('/login');
+}
 
+// Public Routes
 router.get('/', controllers.home);
 router.get('/about', controllers.aboutUs);
-router.get('/courses', controllers.course);
-router.get('/teachers', controllers.teacher);
-router.get('/faqs', controllers.faqs);
 router.get('/contact', controllers.contact);
+router.get('/faqs', controllers.faqs);
 router.get('/signup', controllers.showSignupPage);
 router.post('/signup', controllers.handleSignup);
 router.get('/login', controllers.showLoginPage);
 router.post('/login', controllers.handleLogin);
-// router.get('/admin',adminController.getDashboard)
-// Dashboard Route (depends on the role)
-router.get('/dashboard', controllers.showDashboard);
+router.get('/teachers', controllers.teacher)
 
-// Profile Routes
-router.get('/profile', controllers.showProfilePage);
-router.post('/profile', controllers.updateProfile);
-// router.get('/section', controllers.section);
-// router.get('/login', controllers.login);
-// router.get('/signup', controllers.signupView);
-// router.get('/dashboard', controllers.someRedirectView);
-// router.get('/logout', controllers.logoutUser);
-// router.get('/loginasteacher', controllers.teacherLoginView);
-// router.get('/signupasteacher', controllers.teacherSignupView);
-// router.get('/teacherdashboard', controllers.someTeacherView);
-// router.get('/displaycourse', controllers.displayCourse);
-// router.post('/create-course', controllers.createCourse);
-// router.post('/contact', controllers.contactSubmit);
-// router.post('/  ', controllers.sendMail);
+// Dashboard and Courses
+router.get('/dashboard', isAuthenticated, controllers.showDashboard);
+router.get('/courses', isAuthenticated, courseControllers.showCourses);
+router.post('/enroll/:courseId', isAuthenticated, courseControllers.enrollInCourse);
+
+// Profile
+router.get('/profile', isAuthenticated, controllers.showProfilePage);
+router.post('/profile', isAuthenticated, controllers.updateProfile);
+
+router.get('/create-course',isAuthenticated,courseControllers.showCourseCreationPage);
+router.post('/create-course', courseControllers.createCourseInfo);
+// router.get('/course/:courseId', courseControllers.createSectionsForCourse);
+
 
 module.exports = router;

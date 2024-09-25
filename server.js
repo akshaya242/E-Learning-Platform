@@ -25,8 +25,9 @@ const connectMongoDB = async (uri) => {
 // Seed data function
 
 // Express middleware setup
-app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+
 
 // Serve static files
 
@@ -34,17 +35,24 @@ app.use(express.static(path.join(__dirname, "public")));
 // Set the view engine (if you're using one)
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
+// Order matters! Make sure session is used before routes
 app.use(session({
-    secret: 'simpleSecretKey',  // Simple, hardcoded secret key
+    secret: 'simpleSecretKey',
     resave: false,
-    saveUninitialized: true,
-    cookie: { secure: false }   // Set to true if using HTTPS
-  }));
+    saveUninitialized: false,
+    cookie: { 
+        secure: false,
+        maxAge: 24 * 60 * 60 * 1000
+    }
+}));
+
+
 
 // Route handling
 app.use('/', route);
 const route3 = require('./routes/adminRoutes');
 app.use('/', route3);
+app.use('/',route1);
 
 
 
@@ -59,7 +67,7 @@ app.use((req, res, next) => {
 // Connect to MongoDB and seed data
 const PORT = process.env.PORT || 3000;
 const MONGODB_URI = "mongodb+srv://Project:quiklearn1234@cluster0.nqcn9.mongodb.net/quiklearn";
-connectMongoDB(MONGODB_URI);
+connectMongoDB(MONGODB_URI, {connectTimeoutMS: 20000,});
 
 app.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);

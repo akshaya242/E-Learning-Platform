@@ -27,11 +27,12 @@
         <div class="card">
             <div class="course-name"><%= course.title %></div>
             <div class="course-img">
-                <img src="<%= course.imageUrl || 'default-image.jpg' %>" alt="<%= course.title %>">
+                <img src=<%=course.image  %> alt="<%= course.title %>">
             </div>
-            <div class="teacher">
-                Instructor: <%= course.created_by ? course.created_by.name : 'Unknown' %>  <!-- Safely check for created_by -->
-            </div>
+           <div class="teacher">
+                Instructor: <%= course.instructorName ? course.instructorName : 'Unknown' %> 
+              </div>
+              
             <div class="rating">Rating: <%= course.rating || '⭐⭐⭐⭐' %></div> <!-- Display course rating -->
             <div class="description"><%= course.description %></div>
         </div>
