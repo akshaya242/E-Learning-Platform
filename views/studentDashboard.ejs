@@ -7,6 +7,26 @@
     <link rel="shortcut icon" href="./images/logo.png">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
     <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        .progress {
+            display: flex;
+            align-items: center;
+        }
+    
+        .progress-bar {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background: 
+            radial-gradient(closest-side, white 79%, transparent 80% 100%),
+            conic-gradient(var(--dynamic-color, darkcyan) var(--progress, 50%), white var(--progress, 0%));
+    }
+    
+        .number {
+            margin-left: 10px; /* Space between progress bar and number */
+            font-size: 1.2em;
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -14,7 +34,7 @@
             <img src="/images/logo2.svg" alt="QuikLearn Logo">
         </div>
         <div class="navbar">
-            <a href="/dashboard" class="active">
+            <a href="/" class="active">
                 <span class="material-icons-sharp">home</span>
                 <h3>Home</h3>
             </a>
@@ -55,7 +75,7 @@
                     <h5>Contact</h5>
                     <p><%= profile.contact_number || 'No contact number available' %></p>
                     <h5>Email</h5>
-                    <p><%= login.email %></p>
+                    <p><%= loginUser.email %></p>
                     <h5>Address</h5>
                     <p><%= profile.address || 'No address provided' %></p>
                 </div>
@@ -66,26 +86,33 @@
             <h1>Progress</h1>
 
             <!-- Dynamic course progress section -->
-            <div class="subjects">
-                <% if (enrollments && enrollments.length > 0) { %>
-                    <% enrollments.forEach(enrollment => { %>
-                        <div class="course-progress">
-                            <span class="material-icons-sharp">school</span>
-                            <h3><%= enrollment.courseId.title %></h3>
-                           
-                            <div class="progress">
-                                <svg><circle cx="38" cy="38" r="36"></circle></svg>
-                                <div class="number">
-                                    <p><%= enrollment.progress %>%</p>
-                                </div>
-                            </div>
-                            <small class="text-muted">Last 24 Hours</small>
-                        </div>
-                    <% }); %>
-                <% } else { %>
-                    <p>No courses enrolled yet.</p>
-                <% } %>
+<!-- Dynamic course progress section -->
+<div class="subjects">
+    <% if (enrollments && enrollments.length > 0) { %>
+        <% enrollments.forEach(enrollment => { %>
+            <div class="course-progress">
+                <span class="material-icons-sharp">school</span>
+                <h3><%= enrollment.courseId.title %></h3>
+
+                <div class="progress">
+                    <div class="progress-bar" style="--progress: <%= enrollment.progress %>%; --dynamic-color: darkcyan;">
+                    </div>
+                    <div class="number">
+                        <p><%= enrollment.progress %>%</p>
+                    </div>
+                </div>
+                <small class="text-muted">Last 24 Hours</small>
+                
+                <!-- View Course Button -->
+                <button class="my-button">
+                    <a href="/display-course/<%= enrollment.courseId._id %>">View Course</a>
+                </button>
             </div>
+        <% }); %>
+    <% } else { %>
+        <p>No courses enrolled yet.</p>
+    <% } %>
+</div>
 
 
             

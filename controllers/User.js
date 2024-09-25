@@ -190,26 +190,7 @@ exports.updateProfile = async (req, res) => {
     res.render('courses', { courses });
 };
 
-exports.enrollInCourse = async (req, res) => {
-  const userId = req.session.user.id;
-  console.log(userId)
-  const courseId = req.params.courseId;
 
-  try {
-      const enrollment = new Enrollment({ courseId, userId });
-      await enrollment.save();
-
-      // Add the student ID to the course's enrolledStudents array
-      await Course.findByIdAndUpdate(courseId, {
-          $addToSet: { enrolledStudents: userId } // Use $addToSet to avoid duplicates
-      });
-
-      res.redirect('/courses'); // Redirect to courses page after enrollment
-  } catch (error) {
-      console.error('Error enrolling in course:', error);
-      res.status(500).send('Enrollment failed');
-  }
-};
 
 exports.enrollInCourse = async (req, res) => {
   console.log("Enrollment request received for course ID:", req.params.courseId);
