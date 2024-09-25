@@ -32,5 +32,5 @@ const User = mongoose.model('User', userSchema);
 
 module.exports = {
   User: mongoose.model('User', userSchema),
-  Profile: mongoose.model('Category', profileSchema),
+  Profile: mongoose.model('Profile', profileSchema),
 };
