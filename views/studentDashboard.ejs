@@ -87,7 +87,10 @@
                 <% } %>
             </div>
 
+
+            
             <!-- Announcements Section -->
+            <div class = "right">
             <div class="announcements">
                 <h2>Announcements</h2>
                 <div class="updates">
@@ -99,32 +102,56 @@
                     <% }); %>
                 </div>
             </div>
+        </div>
         </main>
 
         <div class="right">
             <!-- Teachers Spotlight -->
             <div class="leaves">
                 <h2>Teachers on Spotlight</h2>
+        
                 <div class="teacher">
-                    <% if (user) { %>
-                        <% user.filter(user => user.role === 'teacher').forEach(teacher => { %>
-                            <div class="teacher">
-                                <div class="profile-photo">
-                                    <img src="<%= teacher.photo || '/images/default-teacher.png' %>" alt="Teacher Image">
-                                </div>
-                                <div class="info">
-                                    <h3><%= teacher.name %></h3>
-                                    <small class="text-muted"><%= teacher.institution || 'No institution provided' %></small>
-                                </div>
-                            </div>
-                        <% }); %>
-                    <% } else { %>
-                        <p>No teachers available.</p>
-                    <% } %>
+                    <div class="profile-photo"><img src="./images/profile-2.jpeg" alt=""></div>
+                    <div class="info">
+                        <h3>The Professor</h3>
+                        <small class="text-muted">Course Name</small>
+                    </div>
                 </div>
+        
+                <div class="teacher">
+                    <div class="profile-photo"><img src="./images/profile-3.jpg" alt=""></div>
+                    <div class="info">
+                        <h3>Lisa Manobal</h3>
+                        <small class="text-muted">Course Name</small>
+                    </div>
+                </div>
+        
+                <div class="teacher">
+                    <div class="profile-photo"><img src="./images/profile-4.jpg" alt=""></div>
+                    <div class="info">
+                        <h3>Himanshu Jindal</h3>
+                        <small class="text-muted">Course Name</small>
+                    </div>
+                </div>
+        
+                <% if (user) { %>
+                    <% user.filter(user => user.role === 'teacher').forEach(teacher => { %>
+                        <div class="teacher">
+                            <div class="profile-photo">
+                                <img src="<%= teacher.photo || '/images/default-teacher.png' %>" alt="Teacher Image">
+                            </div>
+                            <div class="info">
+                                <h3><%= teacher.name %></h3>
+                                <small class="text-muted"><%= teacher.institution || 'No institution provided' %></small>
+                            </div>
+                        </div>
+                    <% }); %>
+                <% } else { %>
+                    <p>No teachers available.</p>
+                <% } %>
             </div>
         </div>
-    </div>
+        
 
     <!-- JavaScript Section -->
     <script>
