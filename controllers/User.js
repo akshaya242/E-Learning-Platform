@@ -1,14 +1,18 @@
-const path = require('path');
 const bcrypt = require('bcrypt');
-const FAQ = require('../models/Review');
 const { User, Profile } = require('../models/User');
 const { Course } = require('../models/Course');
-const { Enrollment } = require('../models/Enrollment');
-const { AdminLog, CourseCreationRequest } = require('../models/Admin');
 
+
+const FAQ = require('../models/FAQ'); // Make sure to import your FAQ model
+
+
+// Home Page Controller
 exports.home = async (req, res) => {
     try {
-        const faqs = await FAQ.find().limit(3);
+        // Retrieve 3 FAQs from the database
+        const faqs = await FAQ.find().limit(3).lean(); // Use .lean() for better performance
+
+        // Retrieve 3 courses from the database
         const courses = await Course.find().limit(3).lean();
 
         const coursesWithInstructors = await Promise.all(courses.map(async (course) => {
@@ -20,6 +24,7 @@ exports.home = async (req, res) => {
             };
         }));
 
+        // Retrieve 5 teachers from the database
         const teachers = await User.find({ role: 'teacher' }).limit(5).lean();
         const teacherData = await Promise.all(teachers.map(async (teacher) => {
             const profile = await Profile.findOne({ userId: teacher._id });
@@ -31,6 +36,7 @@ exports.home = async (req, res) => {
             };
         }));
 
+        // Render the homepage with FAQs, teachers, and courses
         res.render('homepage', { faqs, teachers: teacherData, courses: coursesWithInstructors });
     } catch (error) {
         console.error(error);
@@ -38,14 +44,25 @@ exports.home = async (req, res) => {
     }
 };
 
+// Static Pages
 exports.aboutUs = (req, res) => {
-    res.render('about', { title: 'About QuikLearn' });
+    res.render('about', { title: 'About Us' });
 };
 
 exports.contact = (req, res) => {
     res.render('contact');
 };
+exports.getAllFAQs = async (req, res) => {
+    try {
+        const faqs = await FAQ.find().lean(); // Fetch all FAQs from the database
+        res.status(200).json(faqs); // Send FAQs as a JSON response
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server Error' });
+    }
+};
 
+// Courses and Teachers
 exports.course = async (req, res) => {
     const courses = await Course.find();
     res.render('courses', { courses });
@@ -61,6 +78,7 @@ exports.faqs = async (req, res) => {
     res.render('faqs', { faqs });
 };
 
+// User Authentication
 exports.showSignupPage = (req, res) => {
     res.render('signup');
 };
@@ -106,6 +124,7 @@ exports.handleLogin = async (req, res) => {
     }
 };
 
+// User Dashboard
 exports.showDashboard = async (req, res) => {
     const user = req.session.user;
     if (!user) {
@@ -113,36 +132,42 @@ exports.showDashboard = async (req, res) => {
     }
 
     try {
+      // Redirect based on user role
+      
+      req.session.user = {
+        id: user._id,  // MongoDB's user ID
+        name: user.name,
+        role: user.role,
+        email: user.email,
+        // Add any other relevant user data
+    };
+  
+    req.session.user = user;
 
-        // Check user role and render the corresponding dashboard
-        req.session.user = user;
-        switch (user.role) {
-          case 'admin':
-            
-            return res.redirect('/admin/Dashboard');
-
-            case 'teacher':
-                // Show teacher dashboard with assigned courses
-                const teacherCourses = await Course.find({ teacher: user._id });
-                res.render('teacherDashboard', { user, courses: teacherCourses });
-               
-
-            case 'student':
-                // Show student dashboard with enrolled courses
-                const studentCourses = await Course.find({ students: user._id });
-                res.render('studentDashboard', { user, courses: studentCourses });
-                break;
-
-            default:
-                res.status(403).send('Access denied'); // Handle unknown roles
-
-        }
+      switch (user.role) {
+        case 'admin':
+          return res.redirect('/admin'); // Redirect admin to their dashboard
+  
+        case 'teacher':
+          // Fetch courses assigned to the teacher
+          const teacherCourses = await Course.find({ created_by: user._id }); // Assuming created_by field for courses
+          return res.render('teacherDashboard', { user, courses: teacherCourses });
+  
+        case 'student':
+          // Fetch courses the student is enrolled in
+          return res.redirect('/student/Dashboard');
+          
+  
+        default:
+          return res.status(403).send('Access denied'); // Handle unknown roles
+      }
     } catch (error) {
         console.error('Error rendering dashboard:', error);
         return res.status(500).send('Server Error');
     }
 };
 
+// Profile
 exports.showProfilePage = async (req, res) => {
     const { user } = req.session;
     if (!user) return res.redirect('/login');
@@ -158,93 +183,68 @@ exports.updateProfile = async (req, res) => {
     const { bio, contact_number, address } = req.body;
     await Profile.updateOne({ user_id: user._id }, { bio, contact_number, address });
     res.redirect('/profile');
-};
-
-exports.showCourses = async (req, res) => {
+  };
+  exports.showCourses = async (req, res) => {
     const courses = await Course.find();
     res.render('courses', { courses });
 };
 
 exports.enrollInCourse = async (req, res) => {
-    const userId = req.session.user.id;
-    const courseId = req.params.courseId;
-
-    try {
-        const existingEnrollment = await Enrollment.findOne({ courseId, user_id: userId });
-        if (existingEnrollment) {
-            return res.status(400).send('You are already enrolled in this course.');
-        }
-
-        const enrollment = new Enrollment({
-            courseId,
-            user_id: userId,
-            enrollment_date: new Date(),
-            progress: 0,
-            completionStatus: 'in-progress',
-            certificateLink: null 
-        });
-
-        await enrollment.save();
-        await Course.findByIdAndUpdate(courseId, {
-            $addToSet: { enrolledStudents: userId }
-        });
-
-        res.redirect('/courses');
-    } catch (error) {
-        console.error('Error enrolling in course:', error);
-        res.status(500).send('Enrollment failed');
-    }
-};
-
-exports.createCourseRequest = async (req, res) => {
-  const { title, description, category, sections } = req.body;
-  const teacherId = req.session.user.id;
+  const userId = req.session.user.id;
+  console.log(userId)
+  const courseId = req.params.courseId;
 
   try {
-      const newRequest = new CourseCreationRequest({
-          teacher_id: teacherId,
-          status: 'pending',
+      const enrollment = new Enrollment({ courseId, userId });
+      await enrollment.save();
+
+      // Add the student ID to the course's enrolledStudents array
+      await Course.findByIdAndUpdate(courseId, {
+          $addToSet: { enrolledStudents: userId } // Use $addToSet to avoid duplicates
       });
 
-      await newRequest.save();
-      res.status(200).send('Course creation request submitted successfully.');
-  } catch (err) {
-      res.status(500).send('Failed to submit the course creation request.');
+      res.redirect('/courses'); // Redirect to courses page after enrollment
+  } catch (error) {
+      console.error('Error enrolling in course:', error);
+      res.status(500).send('Enrollment failed');
   }
 };
 
-exports.approveCourseRequest = async (req, res) => {
-  const { requestId, courseData } = req.body;
-  const adminId = req.session.user.id;
+exports.enrollInCourse = async (req, res) => {
+  console.log("Enrollment request received for course ID:", req.params.courseId);
+  const userId = req.session.user.id; // Ensure this ID is correct
+  const courseId = req.params.courseId;
 
   try {
-      const courseRequest = await CourseCreationRequest.findById(requestId);
-      if (!courseRequest || courseRequest.status !== 'pending') {
-          return res.status(400).send('Invalid or already processed request.');
+      // Check if the student is already enrolled in the course
+      const existingEnrollment = await Enrollment.findOne({ courseId, user_id: userId });
+      
+      if (existingEnrollment) {
+          return res.status(400).send('You are already enrolled in this course.');
       }
 
-      const newCourse = new Course({
-          title: courseData.title,
-          description: courseData.description,
-          category: courseData.category,
-          created_by: courseRequest.teacher_id,
+      const enrollment = new Enrollment({
+          courseId,
+          user_id: userId,
+          enrollment_date: new Date(),
+          progress: 0,
+          completionStatus: 'in-progress',
+          certificateLink: null 
       });
 
-      await newCourse.save();
+      // Save enrollment data
+      await enrollment.save();
 
-      courseRequest.status = 'approved';
-      courseRequest.course_id = newCourse._id;
-      courseRequest.response_date = new Date();
-      courseRequest.admin_id = adminId;
-      await courseRequest.save();
+      // Update the course document to append the user's ID to the enrolledStudents array
+      await Course.findByIdAndUpdate(courseId, {
+          $addToSet: { enrolledStudents: userId }
+      });
 
-      res.status(200).send('Course created and request approved.');
-  } catch (err) {
-      res.status(500).send('Failed to approve course request.');
+      res.redirect('/courses'); // Redirect to courses page after enrollment
+  } catch (error) {
+      console.error('Error enrolling in course:', error);
+      res.status(500).send('Enrollment failed');
   }
 };
 
-exports.showCreatePage = async(req, res) => {
-  res.render('course_request')
-}
 
