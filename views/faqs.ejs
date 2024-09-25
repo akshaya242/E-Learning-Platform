@@ -30,55 +30,32 @@
 
 
               <div class="faq-container">
-                <div class="faq active">
-                  <h3 class="faq-title">What courses do you offer?</h3>
-                  <p class="faq-text">We offer a wide range of courses covering various subjects, including HTML, CSS, JavaScript, and more. Explore our course catalog to discover all available options.</p>
-                  <button class="faq-toggle">
-                    <i class="fas fa-chevron-down"></i>
-                    <i class="fas fa-times"></i>
-                  </button>
-                </div>
+                
 
-
-                <div class="faq">
-                  <h3 class="faq-title">How can I enroll in a course?</h3>
-                  <p class="faq-text">To enroll in a course, simply visit the course page and click on the "Enroll Now" button. Follow the prompts to complete the enrollment process.</p>
-                  <button class="faq-toggle">
-                    <i class="fas fa-chevron-down"></i>
-                    <i class="fas fa-times"></i>
-                  </button>
-                </div>
-
-
-                <div class="faq">
-                  <h3 class="faq-title">Do you offer any discounts for multiple course enrollments?</h3>
-                  <p class="faq-text">Yes, we offer discounts for multiple course enrollments. Please check our pricing page or contact our support team for more information on available discounts and promotions.</p>
-                  <button class="faq-toggle">
-                    <i class="fas fa-chevron-down"></i>
-                    <i class="fas fa-times"></i>
-                  </button>
-                </div>
-
-
-                <div class="faq">
-                  <h3 class="faq-title">Are courses self-paced? Can I finish my course faster than the stated time?</h3>
-                  <p class="faq-text">You can learn at your own pace when you feel free to learn as per your time schedule. You can finish your course faster than the described time as your schedule allows. To complete a course or a specialization depends on how many hours per day or week you dedicate to the course. Keep in mind your familiarity with the subject matter will also play a role in how long it takes you to complete the course. Some learners are able to finish quicker when they already have familiarity with concepts and terminologies. </p>
-                  <button class="faq-toggle">
-                    <i class="fas fa-chevron-down"></i>
-                    <i class="fas fa-times"></i>
-                  </button>
-                </div>
-
-
-
-                <div class="faq">
-                  <h3 class="faq-title">I’m having trouble with the course content or resources.</h3>
-                  <p class="faq-text">As instructors own and manage their course content, they are in the best position to assist you. For any questions in paid courses, you can search for answers or ask a question in the Contact. </p>
-                  <button class="faq-toggle">
-                    <i class="fas fa-chevron-down"></i>
-                    <i class="fas fa-times"></i>
-                  </button>
-                </div>
+                <div class="faqs">
+                  <% faqs.forEach(faq => { %>
+                      <div class="faq">
+                          <h3 class="faq-title"><%= faq.question %></h3>
+                          <p class="faq-text" style="display: none;"><%= faq.answer %></p>
+                          <button class="faq-toggle">
+                              <i class="fas fa-chevron-down"></i>
+                              <i class="fas fa-times" style="display: none;"></i>
+                          </button>
+                      </div>
+                  <% }); %>
+              </div>
+              
+              <script>
+                  document.querySelectorAll('.faq-toggle').forEach(button => {
+                      button.addEventListener('click', () => {
+                          const faqText = button.parentElement.querySelector('.faq-text');
+                          faqText.style.display = faqText.style.display === 'none' ? 'block' : 'none';
+                          button.querySelector('.fas').forEach(icon => {
+                              icon.style.display = icon.style.display === 'none' ? 'inline' : 'none';
+                          });
+                      });
+                  });
+              </script>
                 
   
     </div>

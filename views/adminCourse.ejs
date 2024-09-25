@@ -69,8 +69,6 @@
             margin-right: 8px; /* Adds space between icon and text */
         }
 
-
-
         /* Sidebar styles */
         .sidebar {
             position: fixed;
@@ -312,90 +310,14 @@
 <!-- Sidebar Section -->
 <div class="sidebar">
     <h2>Menu</h2>
-    <a href="/admin/Dashboard" class="active"><i class="fas fa-users"></i> Users</a>
-    <a href="/admin/Course"><i class="fas fa-book"></i> Courses</a>
+    <a href="/admin/Dashboard" ><i class="fas fa-users"></i> Users</a>
+    <a href="/admin/Course" class="active"><i class="fas fa-book"></i> Courses</a>
 </div>
 
-<!-- Main Content Section -->
-<div class="main-content">
-    <div class="container">
-        <!-- Users Section -->
-        <div class="section" id="users">
-            <!-- Heading and Button Container -->
-            <div class="header">
-                <h2 style="display: inline-block;">Users</h2>
-                <button style="background-color: #0056b3;" onclick="toggleAddForm()"><i class="fas fa-user-plus"></i>  Add User</button>
-            </div>
 
-            <!-- Add New User form (Initially hidden) -->
-            <div class="add-form" id="add-form" style="display: none;">
-                <form action="/admin/addUser" method="POST">
-                    <input type="text" name="name" placeholder="Name" required>
-                    <input type="email" name="email" placeholder="Email" required>
-                    <input type="password" name="password" placeholder="Password" required>
-                    <select name="role" required>
-                        <option value="" disabled selected>Select Role</option>
-                        <option value="admin">Admin</option>
-                        <option value="teacher">Teacher</option>
-                        <option value="student">Student</option>
-                    </select>
-                    <button type="submit">Add User</button>
-                </form>
-            </div>
 
-            <!-- List of Users -->
-            <ul>
-                <% users.forEach(user => { %>
-                    <li>
-                        <span><%= user.name %> &nbsp; &nbsp;[<%= user.role %>]</span>
-                        
-                        <!-- Button container for Edit and Delete -->
-                        <div style="display: flex; align-items: center; gap: 8px;">
-                            <button class="edit-btn" onclick="toggleEditForm('<%= user._id %>')">
-                                <i class="fas fa-edit"></i> Edit
-                            </button>
-                            <form action="/admin/deleteUser/<%= user._id %>" method="POST" style="margin: 0;">
-                                <button type="submit" class="delete-btn">
-                                    <i class="fas fa-trash-alt"></i> Delete
-                                </button>
-                            </form>
-                        </div>
-                    
-                        <!-- Hidden edit form for each user -->
-                        <div class="edit-form" id="edit-form-<%= user._id %>" style="display: none;">
-                            <form action="/admin/editUser/<%= user._id %>" method="POST">
-                                <input type="text" name="name" value="<%= user.name %>" required>
-                                <input type="email" name="email" value="<%= user.email %>" required>
-                                <select name="role" required>
-                                    <option value="admin" <%= user.role === 'admin' ? 'selected' : '' %>>Admin</option>
-                                    <option value="teacher" <%= user.role === 'teacher' ? 'selected' : '' %>>Teacher</option>
-                                    <option value="student" <%= user.role === 'student' ? 'selected' : '' %>>Student</option>
-                                </select>
-                                <button type="submit">Update</button>
-                            </form>
-                        </div>
-                    </li>
-                    
-                <% }) %>
-            </ul>
-        </div>
-    </div>
-    
-</div>
 
-<script>
-    // Toggle the Add User Form
-    function toggleAddForm() {
-        const addForm = document.getElementById('add-form');
-        addForm.style.display = addForm.style.display === 'none' ? 'block' : 'none';
-    }
 
-    // Toggle Edit Form for each user
-    function toggleEditForm(userId) {
-        const editForm = document.getElementById('edit-form-' + userId);
-        editForm.style.display = editForm.style.display === 'none' ? 'block' : 'none';
-    }
-</script>
 
 </body>
 </html>
