@@ -448,7 +448,6 @@ main .timetable.active .closeBtn{
     }
 }
 
-
 @media screen and (max-width: 768px){
     html{font-size: 10px;}
     header{padding: 0 .8rem;}
@@ -486,4 +485,17 @@ main .timetable.active .closeBtn{
         width: 100%;
         padding: 2rem;
     }
+}
+
+.my-button {
+    background-color: var(--color-primary); /* Change to your desired color */
+    color: var(--color-white); /* Change text color if needed */
+    border: none; /* Adjust border if necessary */
+    padding: 0.5rem 1rem; /* Add padding */
+    border-radius: var(--border-radius-1); /* Use your predefined border radius */
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.my-button a {
+    color: white;
 }

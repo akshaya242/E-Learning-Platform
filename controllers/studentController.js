@@ -19,6 +19,8 @@ exports.getDashboard = async (req, res) => {
 
     // Find the profile of the logged-in user using the user ID
     const profile = await Profile.findOne({ user_id: userId }).exec();
+    const loginUser = await User.findById(login.id);
+    console.log(loginUser)
 
     const enrollments = await Enrollment.find({ user_id: userId })
     .populate({
@@ -26,7 +28,7 @@ exports.getDashboard = async (req, res) => {
       select:'title',        // Select only the 'name' field from the Course model
     })
     .exec();
-    console.log(enrollments);
+    console.log(login);
     // Fetch courses based on the enrollments (if needed)
     const courseIds = enrollments.map(enrollment => enrollment.courseId);
     const courses = await Course.find({ _id: { $in: courseIds } }).exec();
@@ -39,7 +41,7 @@ exports.getDashboard = async (req, res) => {
     ];
 
     // Pass login info, profile, enrolled courses, announcements, and enrollments to the template
-    res.render('studentDashboard', { login, profile, courses, announcements, enrollments });
+    res.render('studentDashboard', { login, profile, courses, announcements, enrollments, loginUser });
 
   } catch (error) {
     console.error('Error fetching dashboard:', error);  // Log the actual error for debugging
