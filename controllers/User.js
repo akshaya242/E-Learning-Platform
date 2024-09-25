@@ -125,7 +125,7 @@ exports.showDashboard = async (req, res) => {
                 // Show teacher dashboard with assigned courses
                 const teacherCourses = await Course.find({ teacher: user._id });
                 res.render('teacherDashboard', { user, courses: teacherCourses });
-                break;
+               
 
             case 'student':
                 // Show student dashboard with enrolled courses
