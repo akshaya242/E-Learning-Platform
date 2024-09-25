@@ -45,6 +45,7 @@ app.use(session({
 // Route handling
 app.use('/', route);
 app.use('/', route3);
+app.use('/',route1);
 
 
 app.use('/', route2);
