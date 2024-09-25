@@ -116,7 +116,7 @@ exports.handleLogin = async (req, res) => {
             return res.status(400).send('Invalid email or password');
         }
 
-        req.session.user = { id: user._id, name: user.name, role: user.role,email:user.email, };
+        req.session.user = { id: user._id, name: user.name, role: user.role };
         res.redirect('/dashboard');
     } catch (error) {
         console.error(error);
@@ -132,20 +132,35 @@ exports.showDashboard = async (req, res) => {
     }
 
     try {
-        req.session.user = user;
-        switch (user.role) {
-            case 'admin':
-                return res.redirect('/admin/dashboard');
-            case 'teacher':
-                return res.redirect('/teacher/dashboard');
-                break;
-            case 'student':
-                const studentCourses = await Course.find({ students: user._id });
-                res.render('studentDashboard', { user, courses: studentCourses });
-                break;
-            default:
-                res.status(403).send('Access denied');
-        }
+      // Redirect based on user role
+      
+      req.session.user = {
+        id: user._id,  // MongoDB's user ID
+        name: user.name,
+        role: user.role,
+        email: user.email,
+        // Add any other relevant user data
+    };
+  
+    req.session.user = user;
+
+      switch (user.role) {
+        case 'admin':
+          return res.redirect('/admin'); // Redirect admin to their dashboard
+  
+        case 'teacher':
+          // Fetch courses assigned to the teacher
+          const teacherCourses = await Course.find({ created_by: user._id }); // Assuming created_by field for courses
+          return res.render('teacherDashboard', { user, courses: teacherCourses });
+  
+        case 'student':
+          // Fetch courses the student is enrolled in
+          return res.redirect('/student/Dashboard');
+          
+  
+        default:
+          return res.status(403).send('Access denied'); // Handle unknown roles
+      }
     } catch (error) {
         console.error('Error rendering dashboard:', error);
         return res.status(500).send('Server Error');
@@ -168,5 +183,68 @@ exports.updateProfile = async (req, res) => {
     const { bio, contact_number, address } = req.body;
     await Profile.updateOne({ user_id: user._id }, { bio, contact_number, address });
     res.redirect('/profile');
+  };
+  exports.showCourses = async (req, res) => {
+    const courses = await Course.find();
+    res.render('courses', { courses });
 };
+
+exports.enrollInCourse = async (req, res) => {
+  const userId = req.session.user.id;
+  console.log(userId)
+  const courseId = req.params.courseId;
+
+  try {
+      const enrollment = new Enrollment({ courseId, userId });
+      await enrollment.save();
+
+      // Add the student ID to the course's enrolledStudents array
+      await Course.findByIdAndUpdate(courseId, {
+          $addToSet: { enrolledStudents: userId } // Use $addToSet to avoid duplicates
+      });
+
+      res.redirect('/courses'); // Redirect to courses page after enrollment
+  } catch (error) {
+      console.error('Error enrolling in course:', error);
+      res.status(500).send('Enrollment failed');
+  }
+};
+
+exports.enrollInCourse = async (req, res) => {
+  console.log("Enrollment request received for course ID:", req.params.courseId);
+  const userId = req.session.user.id; // Ensure this ID is correct
+  const courseId = req.params.courseId;
+
+  try {
+      // Check if the student is already enrolled in the course
+      const existingEnrollment = await Enrollment.findOne({ courseId, user_id: userId });
+      
+      if (existingEnrollment) {
+          return res.status(400).send('You are already enrolled in this course.');
+      }
+
+      const enrollment = new Enrollment({
+          courseId,
+          user_id: userId,
+          enrollment_date: new Date(),
+          progress: 0,
+          completionStatus: 'in-progress',
+          certificateLink: null 
+      });
+
+      // Save enrollment data
+      await enrollment.save();
+
+      // Update the course document to append the user's ID to the enrolledStudents array
+      await Course.findByIdAndUpdate(courseId, {
+          $addToSet: { enrolledStudents: userId }
+      });
+
+      res.redirect('/courses'); // Redirect to courses page after enrollment
+  } catch (error) {
+      console.error('Error enrolling in course:', error);
+      res.status(500).send('Enrollment failed');
+  }
+};
+
 
