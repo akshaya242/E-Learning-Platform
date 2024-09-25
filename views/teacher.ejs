@@ -17,69 +17,21 @@
 
     <div class="teacher-container" style="  background: linear-gradient(to right, #032f3c, #02474d, #046169, #217b7e, #10898d);">
        
-        <div class="teacher-card">
-            <img src="./images/teacher1.jpeg" alt="Teacher 1" class="teacher-image">
-            <div class="teacher-details">
-                <h3>Kumar Harsh</h3>
-                <p>Kumar Harsh is a Full Stack Development instructor with expertise in HTML, CSS, JavaScript, and more. Known for his thorough and practical teaching approach, he ensures his students gain a deep understanding of both front-end and back-end development concepts. With extensive practice sessions.</p>
-            </div>
-        </div>
         
-        
-      
-        
-        <div class="teacher-card">
-            <img src="./images/teacher3.jpeg" alt="Teacher 3" class="teacher-image">
-            <div class="teacher-details">
-                <h3>John Doe</h3>
-                <p>John Doe is a seasoned JavaScript instructor concise teaching style. With years of experience in web development, he brings a wealth of practical knowledge to his students. John's passion for JavaScript shines through in his dynamic and engaging lessons, where he covers everything from the basics to advanced topics with ease.</p>
-              
-            </div>
+        <div class="teacher-container">
+            <% for(let i = 0; i < teachers.length; i++) { %>
+                <div class="teacher-card">
+                    <img src="<%= teachers[i].imgSrc ? teachers[i].imgSrc: "/images/profile.png" %>" alt="<%= teachers[i].name %>" class="teacher-image">
+                    <div class="teacher-details">
+                        <h3><%= teachers[i].name %></h3>
+                        <p><%= teachers[i].bio ? teachers[i].bio : "I am a professor" %></p>
+                        <p>Email: <%= teachers[i].email %></p>
+                    </div>
+                </div>
+            <% } %>
         </div>
-
-        <div class="teacher-card">
-            <img src="./images/teacher4.jpeg" alt="Teacher 4" class="teacher-image">
-            <div class="teacher-details">
-                <h3>Sarah Jones</h3>
-                <p>Sarah Jones is a dynamic UX/UI design instructor with creativity and user-centric approach. With a background in graphic design and human-computer interaction, she brings a unique perspective to her teaching. Sarah's commitment to innovative design principles is evident in her hands-on lessons, where she explores prototyping .</p>
-            </div>
-            
-        </div>
-
-        <div class="teacher-card">
-            <img src="./images/teacher5.jpeg" alt="Teacher 5 " class="teacher-image">
-            <div class="teacher-details">
-                <h3>Michael Wilson</h3>
-                <p>Michael Wilson is a seasoned C++ instructor admired for his depth of knowledge and approachable teaching style. With extensive experience in software development, he provides practical guidance to his students. Michael's passion for C++ programming .</p>
-            </div>
-            
-        </div>
-
-        <div class="teacher-card">
-            <img src="./images/teacher6.jpeg" alt="Teacher 6" class="teacher-image">
-            <div class="teacher-details">
-                <h3>Emily Brown</h3>
-                <p>Emily Brown is an experienced data science instructor known for her analytical prowess and attention to detail. With a background in statistics and machine learning, she offers valuable insights to her students. Emily's enthusiasm for data science is evident in her interactive lessons.</p>
-            </div>
-            
-        </div>
-        <div class="teacher-card">
-            <img src="./images/teacher7.jpeg" alt="Teacher 7" class="teacher-image">
-            <div class="teacher-details">
-                <h3>David Johnson</h3>
-                <p>David Johnson is a skilled Java instructor with a passion for mentoring aspiring developers. Having worked in the software industry for over a decade, he brings real-world experience to his teaching. David's commitment to excellence reflects in his engaging lessons, where he navigates through Java fundamentals and complex concepts with expertise.</p>
-            </div>
-            
-        </div>
-
-        <div class="teacher-card">
-            <img src="./images/teacher8.jpeg" alt="Teacher 8" class="teacher-image">
-            <div class="teacher-details">
-                <h3>Mary Smith</h3>
-                <p>Mary Smith is an accomplished Python instructor known for her systematic approach to teaching. With a background in computer science, she imparts comprehensive knowledge to her students. Mary's dedication to Python programming is evident in her interactive and insightful lessons, where she covers fundamental concepts and advanced techniques with clarity.</p>
-            </div>
-            
-        </div>
+         
+             
     </div>
 
 

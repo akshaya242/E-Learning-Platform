@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login</title>
+    <link rel="stylesheet" href="../public/css/style.css">
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300&display=swap");
+        
+        .login-handle {
+          * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: "Quicksand", sans-serif;
+          }
+
+          .login {
+            position: absolute;
+            min-width: 300px; /* Reduced width */
+            height: 100%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            gap: 15px; /* Reduced gap */
+          }
+
+          .login h2 {
+            font-size: 1.5em; /* Reduced font size */
+            color: #fff;
+            text-align: center;
+          }
+
+          .login .inputBx {
+            position: relative;
+            width: 100%;
+          }
+
+          .login .inputBx input,
+          .login .inputBx select {
+            margin-top: 3%;
+            margin-bottom: 3%;
+            width: 100%;
+            padding: 8px 15px; /* Reduced padding */
+            background: rgba(255, 255, 255, 0.15);
+            border: 2px solid #fff;
+            border-radius: 30px; /* Reduced border-radius */
+            font-size: 0.9em; /* Reduced font size */
+            color: #fff;
+          }
+
+          .login .inputBx input::placeholder,
+          .login .inputBx select {
+            color: rgba(255, 255, 255, 0.75);
+          }
+
+          .login .inputBx select {
+            background-image: url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTAiIHZpZXdCb3g9IjAgMCAxNiAxMCIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48cGF0aCBkPSJNMi4yNSAxbDYuNzUgNi43NSA2Ljc1LTYuNzUiIHN0cm9rZT0id2hpdGUiIHN0cm9rZS13aWR0aD0iMiIvPjwvc3ZnPg==');
+            background-repeat: no-repeat;
+            background-position: right 10px top 50%;
+            background-size: 10px 6px; /* Adjusted size */
+          }
+
+          .login .inputBx button[type="submit"] {
+            width: 100%;
+            padding: 10px 15px; /* Reduced padding */
+            background: #0078ff;
+            background: linear-gradient(45deg, #ff357a, #fff172);
+            border: none;
+            cursor: pointer;
+            font-size: 0.9em; /* Reduced font size */
+          }
+
+          .login .links {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 10px; /* Reduced padding */
+          }
+
+          .login .links a {
+            color: #fff;
+            text-decoration: none;
+            font-size: 0.8em; /* Reduced font size */
+          }
+        }
+
+        .home-button {
+          position: absolute;
+          top: 20px;
+          left: 20px;
+          padding: 8px 15px; /* Reduced padding */
+          background-color: rgba(3, 47, 60, 0.5);
+          color: white;
+          text-decoration: none;
+          border-radius: 10px;
+          font-size: 0.9em; /* Reduced font size */
+        }
+
+        .ring {
+          position: relative;
+          width: 650px; /* Reduced size */
+          height: 550px; /* Reduced size */
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+
+        .ring i {
+          position: absolute;
+          inset: 0;
+          border: 2px solid #fff;
+          transition: 0.5s;
+        }
+
+        .ring i:nth-child(1) {
+          border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%;
+          animation: animate 6s linear infinite;
+        }
+
+        .ring i:nth-child(2) {
+          border-radius: 41% 44% 56% 59%/38% 62% 63% 37%;
+          animation: animate 4s linear infinite;
+        }
+
+        .ring i:nth-child(3) {
+          border-radius: 41% 44% 56% 59%/38% 62% 63% 37%;
+          animation: animate2 10s linear infinite;
+        }
+        .ring:hover i {
+  border: 6px solid var(--clr);
+  filter: drop-shadow(0 0 20px var(--clr));
+}
+        @keyframes animate {
+          0% {
+            transform: rotate(0deg);
+          }
+          100% {
+            transform: rotate(360deg);
+          }
+        }
+
+        @keyframes animate2 {
+          0% {
+            transform: rotate(360deg);
+          }
+          100% {
+            transform: rotate(0deg);
+          }
+        }
+
+        body {
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          min-height: 100vh;
+          background-size: cover;
+          background-position: 0px;
+          background-image: url('/images/wallpaper2.png');
+          width: 100%;
+          overflow: hidden;
+        }
+
+        .inputBx label {
+          font-size: 0.9em; /* Reduced font size */
+          color: #fff;
+        }
+
+        .login-links {
+          margin-top: 80px; /* Adjusted margin */
+          text-align: center;
+        }
+
+        .login-links a {
+          color: aqua;
+          text-decoration: none;
+        }
+
+        .login-links a:hover {
+          text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+  <section class="login-handle">
+      <a href="/" class="home-button">&#8592; Home</a>
+      <div class="ring">
+          <i style="--clr:#9bffb4;"></i>
+          <i style="--clr:#ff709f;"></i>
+          <i style="--clr:#ff0000;"></i>
+          <div class="login">
+            <h2>Signup</h2>
+            <form action="/signup" method="POST">
+                <div class="inputBx">
+                    <label for="name">Name:</label>
+                    <input type="text" name="name" placeholder="Name" required><br>
+                </div>
+                <div class="inputBx">
+                    <label for="email">Email:</label>
+                    <input type="email" name="email" placeholder="Email" required><br>
+                </div>
+                <div class="inputBx">
+                    <label for="password">Password:</label>
+                    <input type="password" name="password" placeholder="Password" required><br>
+                </div>
+                <div class="inputBx">
+                    <label for="role">Select Role:</label>
+                    <select name="role" required>
+                        <option value="" disabled selected>Select your role</option>
+                        <option value="student" style="color: black; background-color: rgb(19, 217, 224);">Student</option>
+                        <option value="teacher" style="color: black; background-color:  rgb(19, 217, 224)">Teacher</option>
+                        <option value="admin" style="color: black; background-color:  rgb(19, 217, 224)">Admin</option>
+                    </select><br>
+                </div>
+                <div class="inputBx">
+                    <label for="institution">Institution (if Teacher):</label>
+                    <input type="text" name="institution" placeholder="Institution"><br>
+                </div>
+                <div class="inputBx">
+                    <input type="submit" value="Sign Up">
+                </div>
+              </form>
+          </div>
+      </div>
+      <div class="login-links">
+        <p>Already have an account? <a href="/login">Log In</a></p>
+      </div>
+  </section>
+</body>
+</html>

@@ -1,0 +1,401 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f6f9;
+            color: #333;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            width: 100%;
+            background-color: #a7d1fe;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 15px;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between; /* Elements on both ends */
+            align-items: center;
+            color: white;
+        }
+
+        .navbar h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 500;
+        }
+
+        .navbar .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 20px; /* Space between admin name and logout button */
+            margin-right: 20px; /* Adjusts right alignment */
+        }
+
+        .navbar .nav-right h2 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 400;
+        }
+
+        .navbar .logout-btn {
+            background-color: #f44336;
+            color: white;
+            padding: 8px 16px;
+            font-size: 14px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .navbar .logout-btn:hover {
+            background-color: #d32f2f;
+        }
+
+        .logout-btn i {
+            margin-right: 8px; /* Adds space between icon and text */
+        }
+
+
+
+        /* Sidebar styles */
+        .sidebar {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            width: 250px;
+            height: calc(100% - 60px);
+            background-color: #343a40;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar h2 {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 22px;
+        }
+
+        .sidebar a {
+            color: #adb5bd;
+            display: block;
+            padding: 15px;
+            text-decoration: none;
+            font-size: 18px;
+            margin-bottom: 10px;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .sidebar a:hover, .sidebar .active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        /* Main content layout */
+        .main-content {
+            margin-left: 270px; /* Sidebar width + some margin */
+            margin-top: 80px; /* To accommodate navbar */
+            padding: 20px;
+        }
+
+        .container {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section {
+            flex: 1;
+            min-width: 300px;
+            background: #ffffff;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            padding: 30px;
+        }
+
+        h1, h2 {
+            color: #495057;
+        }
+
+        h2 {
+            font-size: 24px;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+
+        li {
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        li:last-child {
+            border-bottom: none;
+        }
+
+        .user-role {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+
+        .edit-btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 4px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .edit-btn:hover {
+            background-color: #0056b3;
+        }
+
+        .edit-form {
+            display: none;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            margin-top: 15px;
+            border-radius: 8px;
+        }
+
+        input, select {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 10px;
+            border-radius: 5px;
+            border: 1px solid #ced4da;
+        }
+
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #218838;
+        }
+
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .add-btn {
+            background-color: #4CAF50;
+            color: white;
+            padding: 10px 15px;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+        }
+
+        .add-btn:hover {
+            background-color: #45a049;
+        }
+        .delete-btn {
+            background-color: #f44336; /* Red */
+            color: white;
+            padding: 7px 10px;
+            border: none;
+            cursor:pointer;
+            font-size: 12px;
+            margin-left: 10px;
+        }
+
+        .delete-btn:hover {
+            background-color: #1a0302;
+        }
+        /* Button container for flex alignment */
+        li div {
+            display: flex;
+            align-items: center;
+            gap: 8px; /* Small gap between buttons */
+        }
+
+        /* Button styles for a professional look */
+        .edit-btn, .delete-btn {
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            padding: 8px 16px;
+            font-size: 14px;
+            font-weight: 500;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* Edit Button Styling */
+        .edit-btn {
+            background-color: #007bff;
+            color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .edit-btn:hover {
+            background-color: #0056b3;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Delete Button Styling */
+        .delete-btn {
+            background-color: #f44336;
+            color: #ffffff;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+
+        .delete-btn:hover {
+            background-color: #d32f2f;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        /* Icon styling inside buttons */
+        .edit-btn i, .delete-btn i {
+            margin-right: 6px; /* Space between icon and text */
+        }
+
+
+    </style>
+</head>
+<body>
+
+<!-- Navbar Section -->
+<div class="navbar">
+    <h1>Admin Dashboard</h1>
+    <div class="nav-right">
+        <i class="fa-solid fa-hat-cowboy fa-beat-fade fa-lg" style="color: #191a1a;"></i>
+        <h2><%= login.name %></h2>
+        <form action="/logout" method="POST" style="margin: 0;">
+            <button class="logout-btn">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </form>
+    </div>
+</div>
+
+
+<!-- Sidebar Section -->
+<div class="sidebar">
+    <h2>Menu</h2>
+    <a href="/admin/Dashboard" class="active"><i class="fas fa-users"></i> Users</a>
+    <a href="/admin/Course"><i class="fas fa-book"></i> Courses</a>
+</div>
+
+<!-- Main Content Section -->
+<div class="main-content">
+    <div class="container">
+        <!-- Users Section -->
+        <div class="section" id="users">
+            <!-- Heading and Button Container -->
+            <div class="header">
+                <h2 style="display: inline-block;">Users</h2>
+                <button style="background-color: #0056b3;" onclick="toggleAddForm()"><i class="fas fa-user-plus"></i>  Add User</button>
+            </div>
+
+            <!-- Add New User form (Initially hidden) -->
+            <div class="add-form" id="add-form" style="display: none;">
+                <form action="/admin/addUser" method="POST">
+                    <input type="text" name="name" placeholder="Name" required>
+                    <input type="email" name="email" placeholder="Email" required>
+                    <input type="password" name="password" placeholder="Password" required>
+                    <select name="role" required>
+                        <option value="" disabled selected>Select Role</option>
+                        <option value="admin">Admin</option>
+                        <option value="teacher">Teacher</option>
+                        <option value="student">Student</option>
+                    </select>
+                    <button type="submit">Add User</button>
+                </form>
+            </div>
+
+            <!-- List of Users -->
+            <ul>
+                <% users.forEach(user => { %>
+                    <li>
+                        <span><%= user.name %> &nbsp; &nbsp;[<%= user.role %>]</span>
+                        
+                        <!-- Button container for Edit and Delete -->
+                        <div style="display: flex; align-items: center; gap: 8px;">
+                            <button class="edit-btn" onclick="toggleEditForm('<%= user._id %>')">
+                                <i class="fas fa-edit"></i> Edit
+                            </button>
+                            <form action="/admin/deleteUser/<%= user._id %>" method="POST" style="margin: 0;">
+                                <button type="submit" class="delete-btn">
+                                    <i class="fas fa-trash-alt"></i> Delete
+                                </button>
+                            </form>
+                        </div>
+                    
+                        <!-- Hidden edit form for each user -->
+                        <div class="edit-form" id="edit-form-<%= user._id %>" style="display: none;">
+                            <form action="/admin/editUser/<%= user._id %>" method="POST">
+                                <input type="text" name="name" value="<%= user.name %>" required>
+                                <input type="email" name="email" value="<%= user.email %>" required>
+                                <select name="role" required>
+                                    <option value="admin" <%= user.role === 'admin' ? 'selected' : '' %>>Admin</option>
+                                    <option value="teacher" <%= user.role === 'teacher' ? 'selected' : '' %>>Teacher</option>
+                                    <option value="student" <%= user.role === 'student' ? 'selected' : '' %>>Student</option>
+                                </select>
+                                <button type="submit">Update</button>
+                            </form>
+                        </div>
+                    </li>
+                    
+                <% }) %>
+            </ul>
+        </div>
+    </div>
+    
+</div>
+
+<script>
+    // Toggle the Add User Form
+    function toggleAddForm() {
+        const addForm = document.getElementById('add-form');
+        addForm.style.display = addForm.style.display === 'none' ? 'block' : 'none';
+    }
+
+    // Toggle Edit Form for each user
+    function toggleEditForm(userId) {
+        const editForm = document.getElementById('edit-form-' + userId);
+        editForm.style.display = editForm.style.display === 'none' ? 'block' : 'none';
+    }
+</script>
+
+</body>
+</html>

@@ -1,13 +1,13 @@
 const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
-
-
+const session = require('express-session');
 
 const app = express();
-const route = require('./routes/quiklearn'); // Correct path to the routes file
-const route1 = require('./routes/teacherroutes');
-const route2 = require('./routes/studentroutes');
+const route = require('./routes/quiklearn'); // Route for main application
+const route1 = require('./routes/teacherroutes'); // Route for teacher-related endpoints
+const route2 = require('./routes/studentroutes'); // Route for student-related endpoints
+const route3 = require('./routes/adminRoutes'); // Route for admin-related endpoints
 
 // Connect to MongoDB Atlas
 const connectMongoDB = async (uri) => {
@@ -22,39 +22,45 @@ const connectMongoDB = async (uri) => {
     }
 };
 
-// Seed data function
-
 // Express middleware setup
-app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
+app.use(express.json());
+app.use(express.static(path.join(__dirname, "public"))); // Serve static files
 
-// Serve static files
-
-app.use(express.static(path.join(__dirname, "public")));
-// Set the view engine (if you're using one)
+// Set the view engine
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
+// Session middleware
+app.use(session({
+    secret: 'simpleSecretKey', // Hardcoded secret key
+    resave: false,
+    saveUninitialized: false,
+    cookie: { 
+        secure: false, // Set to true if using HTTPS
+        maxAge: 24 * 60 * 60 * 1000 // 24 hours
+    }
+}));
+
 // Route handling
 app.use('/', route);
+app.use('/', route3);
 
-// Error handling
-app.use((req, res, next) => {
+
+app.use('/', route2);
+
+
+
+// Error handling for undefined routes
+app.use((req, res) => {
     res.status(404).send("Sorry, that route doesn't exist.");
 });
 
-app.use((err, req, res, next) => {
-    console.error(err.stack);
-    res.status(500).send('Bhai achse kaam kar');
-});
-
-// Connect to MongoDB and seed data
+// Connect to MongoDB and start the server
 const PORT = process.env.PORT || 3000;
 const MONGODB_URI = "mongodb+srv://Project:quiklearn1234@cluster0.nqcn9.mongodb.net/quiklearn";
-connectMongoDB(MONGODB_URI);
-
-app.listen(PORT, () => {
-    console.log(`Server is running on port ${PORT}`);
+connectMongoDB(MONGODB_URI).then(() => {
+    app.listen(PORT, () => {
+        console.log(`Server is running on port ${PORT}`);
+    });
 });
-
-

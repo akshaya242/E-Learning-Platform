@@ -375,6 +375,26 @@ footer {
     </div>
     <div id="courses-container">
     </div>
+    <div class="course-container">
+      <% courses.forEach(course => { %>
+          <div class="card">
+              <div class="course-name"><%= course.title %></div>
+              <div class="course-img">
+                  <img src=<%=course.image  %> alt="<%= course.title %>">
+              </div>
+              <div class="teacher">
+                  Instructor: <%= course.created_by ? course.created_by.name : 'Unknown' %>  <!-- Safely check for created_by -->
+              </div>
+              <div class="rating">Rating: <%= course.rating || '⭐⭐⭐⭐' %></div> <!-- Display course rating -->
+              <div class="description"><%= course.description %></div>
+              <div>
+                <form action="/enroll/<%= course.id %>" method="POST">
+                  <button type="submit" style="background-color:#217b7e; height: 50px; width: 150px; margin-top: 4%;">Enroll</button>
+                </form>
+              </div>
+          </div>
+      <% }) %>
+  </div>
     <footer>
       <div class="footer-innerdiv1">
         <div class="col1">
@@ -441,7 +461,7 @@ footer {
 </footer>
 
   </footer>
-    <script src="courses.js"></script>
-    
+    <script src="/courses.js"></script>
+      
 </body>
 </html>

@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create Course</title>
+    <link rel="stylesheet" href="/css/create.css"> <!-- Link to common styles -->
+</head>
+<body>
+    <h1>Create Course</h1>
+    
+    <form action="/create-course" method="POST">
+        <div>
+            <label for="title">Course Title:</label>
+            <input type="text" id="title" name="title" required>
+        </div>
+
+        <div>
+            <label for="description">Course Description:</label>
+            <textarea id="description" name="description" required></textarea>
+        </div>
+
+        <div>
+            <label for="category">Category:</label>
+            <input type="text" id="category" name="category" required>
+        </div>
+
+        <div>
+            <label for="duration">Duration:</label>
+            <input type="text" id="duration" name="duration" required>
+        </div>
+
+        <div id="sections-container">
+            <h3>Course Sections</h3>
+            <div class="section">
+                <label>Section Title:</label>
+                <input type="text" name="sections[0][title]" required>
+
+                <label>Video URL:</label>
+                <input type="url" name="sections[0][videoUrl]" required>
+
+                <label>Quiz Questions (comma separated):</label>
+                <input type="text" name="sections[0][quizQuestions]" placeholder="Question1, Question2">
+            </div>
+        </div>
+
+        <button type="button" onclick="addSection()">Add Another Section</button>
+
+        <div>
+            <button type="submit">Submit Course</button>
+        </div>
+    </form>
+
+    <script>
+        let sectionIndex = 1;
+
+        function addSection() {
+            const sectionsContainer = document.getElementById('sections-container');
+            const newSection = document.createElement('div');
+            newSection.classList.add('section');
+            newSection.innerHTML = `
+                <label>Section Title:</label>
+                <input type="text" name="sections[${sectionIndex}][title]" required>
+
+                <label>Video URL:</label>
+                <input type="url" name="sections[${sectionIndex}][videoUrl]" required>
+
+                <label>Quiz Questions (comma separated):</label>
+                <input type="text" name="sections[${sectionIndex}][quizQuestions]" placeholder="Question1, Question2">
+            `;
+            sectionsContainer.appendChild(newSection);
+            sectionIndex++;
+        }
+    </script>
+</body>
+</html>
