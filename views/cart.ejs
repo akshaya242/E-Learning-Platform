@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <%- include('header.ejs') %>
+
+    <h1>Your Enrolled Courses</h1>
+
+    <% if (enrolledCourses.length > 0) { %>
+        <ul>
+            <% enrolledCourses.forEach(function(course) { %>
+                <li>
+                    <h2><%= course.name %></h2>
+                    <p><%= course.description %></p>
+                    <p>Instructor: <%= course.instructorName %></p>
+                    <p>Cost: $<%= course.cost %></p>
+                    <form action="/cart/remove/<%= course._id %>" method="POST">
+                        <button type="submit">Remove from Cart</button>
+                    </form>
+                </li>
+            <% }) %>
+        </ul>
+
+        <!-- Display Total Cost Here -->
+        <h2>Total Cost: $<%= totalCost %></h2>
+    <% } else { %>
+        <p>Your cart is empty.</p>
+        <a href="/courses">Continue Shopping</a>
+    <% } %>
+
+    <%- include('footer.ejs') %>
+</body>
+</html>

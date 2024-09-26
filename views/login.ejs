@@ -9,166 +9,217 @@
         @import url("https://fonts.googleapis.com/css2?family=Quicksand:wght@300&display=swap");
 
         .login-handle {
-          * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: "Quicksand", sans-serif;
-          }
+  * {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Quicksand", sans-serif;
+  }
 
-          .login {
-            position: absolute;
-            min-width: 350px;
-            height: 100%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            flex-direction: column;
-            gap: 20px;
-          }
+  .login {
+    position: absolute;
+    min-width: 350px;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 20px;
+  }
 
-          .login h2 {
-            font-size: 2em;
-            color: #fff;
-            text-align: center;
-          }
+  .login h2 {
+    font-size: 2em;
+    color: #fff;
+    text-align: center;
+  }
 
-          .login .inputBx {
-            position: relative;
-            width: 100%;
-          }
+  .login .inputBx {
+    position: relative;
+    width: 100%;
+  }
 
-          .login .inputBx input {
-            margin-top: 4%;
-            margin-bottom: 4%;
-            position: relative;
-            width: 100%;
-            padding: 12px 20px;
-            background: rgba(255, 255, 255, 0.15); /* Adjust background for better visibility */
-            border: 2px solid #fff;
-            border-radius: 40px;
-            font-size: 1.2em;
-            color: #fff; /* Keep text white */
-            box-shadow: none;
-            outline: none;
-          }
+  .login .inputBx button {
+    position: relative;
+    width: 100%;
+    padding: 12px 20px;
+    background: transparent;
+    border: 2px solid #fff;
+    border-radius: 40px;
+    font-size: 1.2em;
+    color: #fff;
+    box-shadow: none;
+    outline: none;
+  }
 
-          .login .inputBx input::placeholder {
-            color: rgba(255, 255, 255, 0.75);
-          }
+  .login .inputBx input {
+    margin-top: 4%;
+    margin-bottom: 4%;
+    position: relative;
+    width: 100%;
+    padding: 12px 20px;
+    background: transparent;
+    border: 2px solid #fff;
+    border-radius: 40px;
+    font-size: 1.2em;
+    color: #fff;
+    box-shadow: none;
+    outline: none;
+  }
 
-          .login .inputBx button[type="submit"] {
-            width: 100%;
-            background: #0078ff;
-            background: linear-gradient(45deg, #ff357a, #fff172);
-            border: none;
-            cursor: pointer;
-          }
+  .login .inputBx button[type="submit"] {
+    width: 100%;
+    background: #0078ff;
+    background: linear-gradient(45deg, #ff357a, #fff172);
+    border: none;
+    cursor: pointer;
+  }
 
-          .login .links {
-            position: relative;
-            width: 100%;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-            padding: 0 20px;
-          }
+  .login .inputBx input::placeholder {
+    color: rgba(255, 255, 255, 0.75);
+  }
 
-          .login .links a {
-            color: #fff;
-            text-decoration: none;
-          }
-        }
+  .login .links {
+    position: relative;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 20px;
+  }
 
-        .home-button {
-          position: absolute;
-          top: 20px;
-          left: 20px;
-          padding: 10px 20px;
-          background-color: rgba(3, 47, 60, 0.5);
-          color: white;
-          text-decoration: none;
-          border-radius: 10px;
-        }
+  .login .links a {
+    color: #fff;
+    text-decoration: none;
+  }
 
-        .ring {
-          position: relative;
-          width: 600px;
-          height: 500px;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-        }
+}
 
-        .ring i {
-          position: absolute;
-          inset: 0;
-          border: 2px solid #fff;
-          transition: 0.5s;
-        }
+.home-button {
+  position: absolute;
+  top: 20px;
+  left: 20px;
+  padding: 10px 20px;
+  background-color: rgba(3, 47, 60, 0.5);
+  color: white;
+  text-decoration: none;
+  border-radius: 10px;
+}
 
-        .ring i:nth-child(1) {
-          border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%;
-          animation: animate 6s linear infinite;
-        }
+.ring {
+  position: relative;
+  width: 600px;
+  height: 500px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-        .ring i:nth-child(2) {
-          border-radius: 41% 44% 56% 59%/38% 62% 63% 37%;
-          animation: animate 4s linear infinite;
-        }
+.ring i {
+  position: absolute;
+  inset: 0;
+  border: 2px solid #fff;
+  transition: 0.5s;
+}
 
-        .ring i:nth-child(3) {
-          border-radius: 41% 44% 56% 59%/38% 62% 63% 37%;
-          animation: animate2 10s linear infinite;
-        }
+.ring i:nth-child(1) {
+  border-radius: 38% 62% 63% 37% / 41% 44% 56% 59%;
+  animation: animate 6s linear infinite;
+}
 
-        @keyframes animate {
-          0% {
-            transform: rotate(0deg);
-          }
-          100% {
-            transform: rotate(360deg);
-          }
-        }
+.ring i:nth-child(2) {
+  border-radius: 41% 44% 56% 59%/38% 62% 63% 37%;
+  animation: animate 4s linear infinite;
+}
 
-        @keyframes animate2 {
-          0% {
-            transform: rotate(360deg);
-          }
-          100% {
-            transform: rotate(0deg);
-          }
-        }
+.ring i:nth-child(3) {
+  border-radius: 41% 44% 56% 59%/38% 62% 63% 37%;
+  animation: animate2 10s linear infinite;
+}
 
-        body {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          min-height: 100vh;
-          background-size: cover;
-          background-position: 0px;
-          background-image: url('/images/wallpaper2.png');
-          width: 100%;
-          overflow: hidden;
-        }
+.ring:hover i {
+  border: 6px solid var(--clr);
+  filter: drop-shadow(0 0 20px var(--clr));
+}
 
-        .inputBx label {
-          font-size: 1.2em;
-          color: #fff;
-        }
+@keyframes animate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
 
-        .login-links {
-          margin-top: 20px;
-        }
+@keyframes animate2 {
+  0% {
+    transform: rotate(360deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
 
-        .login-links a {
-          color: aqua;
-          text-decoration: none;
-        }
+/* Additional CSS for the body */
+body {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: 100vh;
+  background-size: cover;
+  background-position: 0px;
+  background-image: url('/images/wallpaper2.png');
+  width: 100%;
+  overflow: hidden;
+}
 
-        .login-links a:hover {
-          text-decoration: underline;
-        }
+/* Additional CSS for the form */
+.inputBx label {
+  font-size: 1.2em;
+  color: #fff;
+}
+
+.inputBx input[type="text"],
+.inputBx input[type="email"],
+.inputBx input[type="password"] {
+  margin-top: 4%;
+  margin-bottom: 4%;
+  position: relative;
+  width: 100%;
+  padding: 12px 20px;
+  background: transparent;
+  border: 2px solid #fff;
+  border-radius: 40px;
+  font-size: 1.2em;
+  color: #fff;
+  box-shadow: none;
+  outline: none;
+}
+
+.inputBx input::placeholder {
+  color: rgba(255, 255, 255, 0.75);
+}
+
+.inputBx input[type="submit"] {
+  width: 100%;
+  padding: 12px 20px;
+  background: #0078ff;
+  background: linear-gradient(45deg, #ff357a, #fff172);
+  border: none;
+  cursor: pointer;
+}
+
+.login-links {
+  margin-top: 20px;
+}
+
+.login-links a {
+  color: aqua;
+  text-decoration: none;
+}
+
+.login-links a:hover {
+  text-decoration: underline;
+}
     </style>
 </head>
 <body>

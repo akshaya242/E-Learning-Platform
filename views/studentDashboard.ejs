@@ -7,23 +7,43 @@
     <link rel="shortcut icon" href="./images/logo.png">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
     <link rel="stylesheet" href="/css/styles.css">
+    <style>
+        .progress {
+            display: flex;
+            align-items: center;
+        }
+    
+        .progress-bar {
+        width: 100px;
+        height: 100px;
+        border-radius: 50%;
+        background: 
+            radial-gradient(closest-side, white 79%, transparent 80% 100%),
+            conic-gradient(var(--dynamic-color, darkcyan) var(--progress, 50%), white var(--progress, 0%));
+    }
+    
+        .number {
+            margin-left: 10px; /* Space between progress bar and number */
+            font-size: 1.2em;
+        }
+    </style>
 </head>
 <body>
     <header>
         <div class="logo" title="QuikLearn">
-            <img src="./images/logo2.svg" alt="">
+            <img src="/images/logo2.svg" alt="QuikLearn Logo">
         </div>
         <div class="navbar">
-            <a href="/dashboard" class="active">
+            <a href="/" class="active">
                 <span class="material-icons-sharp">home</span>
                 <h3>Home</h3>
             </a>
-            <a href="password.html">
+            <a href="/change-password">
                 <span class="material-icons-sharp">password</span>
                 <h3>Change Password</h3>
             </a>
             <a href="/logout">
-                <span class="material-icons-sharp" onclick="">logout</span>
+                <span class="material-icons-sharp">logout</span>
                 <h3>Logout</h3>
             </a>
         </div>
@@ -34,132 +54,89 @@
             <span class="material-icons-sharp active">light_mode</span>
             <span class="material-icons-sharp">dark_mode</span>
         </div>
-        
     </header>
+
     <div class="container">
         <aside>
             <div class="profile">
                 <div class="top">
                     <div class="profile-photo">
-                        <img src="/images/Kamal.png" alt="">
+                        <img src="/images/Kamal.png" alt="Profile Picture">
                     </div>
                     <div class="info">
-                        <p>Hey, <b>Alex</b> </p>
-                        <small class="text-muted">12102030</small>
+                        <p>Hey, <b><%= login.name %></b></p>
+                        <small class="text-muted"><%= login._id %></small>
                     </div>
                 </div>
+
                 <div class="about">
-                    <!-- <h5>Course</h5>
-                    <p>BTech. Computer Science & Engineering</p> -->
-                    <h5>DOB</h5>
-                    <p>29-Feb-2020</p>
+                    <h5>Bio</h5>
+                    <p><%= profile.bio || 'No bio available' %></p>
                     <h5>Contact</h5>
-                    <p>1234567890</p>
+                    <p><%= profile.contact_number || 'No contact number available' %></p>
                     <h5>Email</h5>
-                    <p>unknown@gmail.com</p>
+                    <p><%= loginUser.email %></p>
                     <h5>Address</h5>
-                    <p>Ghost town Road, New York, America</p>
+                    <p><%= profile.address || 'No address provided' %></p>
                 </div>
             </div>
         </aside>
 
         <main>
             <h1>Progress</h1>
-            <div class="subjects">
-                <div class="eg">
-                    <span class="material-icons-sharp">architecture</span>
-                    <h3>Engineering Graphics</h3>
-                    <h2>12/14</h2>
-                    <div class="progress">
-                        <svg><circle cx="38" cy="38" r="36"></circle></svg>
-                        <div class="number"><p>86%</p></div>
-                    </div>
-                    <small class="text-muted">Last 24 Hours</small>
-                </div>
-                <div class="mth">
-                    <span class="material-icons-sharp">functions</span>
-                    <h3>Mathematical Engineering</h3>
-                    <h2>27/29</h2>
-                    <div class="progress">
-                        <svg><circle cx="38" cy="38" r="36"></circle></svg>
-                        <div class="number"><p>93%</p></div>
-                    </div>
-                    <small class="text-muted">Last 24 Hours</small>
-                </div>
-                <div class="cs">
-                    <span class="material-icons-sharp">computer</span>
-                    <h3>Computer Architecture</h3>
-                    <h2>27/30</h2>
-                    <div class="progress">
-                        <svg><circle cx="38" cy="38" r="36"></circle></svg>
-                        <div class="number"><p>81%</p></div>
-                    </div>
-                    <small class="text-muted">Last 24 Hours</small>
-                </div>
-                <div class="cg">
-                    <span class="material-icons-sharp">dns</span>
-                    <h3>Database Management</h3>
-                    <h2>24/25</h2>
-                    <div class="progress">
-                        <svg><circle cx="38" cy="38" r="36"></circle></svg>
-                        <div class="number"><p>96%</p></div>
-                    </div>
-                    <small class="text-muted">Last 24 Hours</small>
-                </div>
-                <div class="net">
-                    <span class="material-icons-sharp">router</span>
-                    <h3>Network Security</h3>
-                    <h2>25/27</h2>
-                    <div class="progress">
-                        <svg><circle cx="38" cy="38" r="36"></circle></svg>
-                        <div class="number"><p>92%</p></div>
-                    </div>
-                    <small class="text-muted">Last 24 Hours</small>
-                </div>
-            </div>
 
-            <div class="timetable" id="timetable">
-                <div>
-                    <span id="prevDay">&lt;</span>
-                    <h2>Courses Enrolled</h2>
-                    <span id="nextDay">&gt;</span>
-                </div>
-                <span class="closeBtn" onclick="timeTableAll()">X</span>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Domain</th>
-                            <th>Course</th>
-                            <th>Teacher</th>
-                            <th></th>
-                        </tr>
-                    </thead>
-                    <tbody></tbody>
-                </table>
-            </div>
-        </main>
+            <!-- Dynamic course progress section -->
+<!-- Dynamic course progress section -->
+<div class="subjects">
+    <% if (enrollments && enrollments.length > 0) { %>
+        <% enrollments.forEach(enrollment => { %>
+            <div class="course-progress">
+                <span class="material-icons-sharp">school</span>
+                <h3><%= enrollment.courseId.title %></h3>
 
-        <div class="right">
+                <div class="progress">
+                    <div class="progress-bar" style="--progress: <%= enrollment.progress %>%; --dynamic-color: darkcyan;">
+                    </div>
+                    <div class="number">
+                        <p><%= enrollment.progress %>%</p>
+                    </div>
+                </div>
+                <small class="text-muted">Last 24 Hours</small>
+                
+                <!-- View Course Button -->
+                <button class="my-button">
+                    <a href="/display-course/<%= enrollment.courseId._id %>">View Course</a>
+                </button>
+            </div>
+        <% }); %>
+    <% } else { %>
+        <p>No courses enrolled yet.</p>
+    <% } %>
+</div>
+
+
+            
+            <!-- Announcements Section -->
+            <div class = "right">
             <div class="announcements">
                 <h2>Announcements</h2>
                 <div class="updates">
-                    <div class="message">
-                        <p> <b>Academic</b> Summer training internship with Live Projects.</p>
-                        <small class="text-muted">2 Minutes Ago</small>
-                    </div>
-                    <div class="message">
-                        <p> <b>Co-curricular</b> Global internship oportunity by Student organization.</p>
-                        <small class="text-muted">10 Minutes Ago</small>
-                    </div>
-                    <div class="message">
-                        <p> <b>Examination</b> Instructions for Mid Term Examination.</p>
-                        <small class="text-muted">Yesterday</small>
-                    </div>
+                    <% announcements.forEach(announcement => { %>
+                        <div class="message">
+                            <p><b><%= announcement.title %></b> <%= announcement.message %></p>
+                            <small class="text-muted"><%= announcement.time %></small>
+                        </div>
+                    <% }); %>
                 </div>
             </div>
+        </div>
+        </main>
 
+        <div class="right">
+            <!-- Teachers Spotlight -->
             <div class="leaves">
                 <h2>Teachers on Spotlight</h2>
+        
                 <div class="teacher">
                     <div class="profile-photo"><img src="./images/profile-2.jpeg" alt=""></div>
                     <div class="info">
@@ -167,6 +144,7 @@
                         <small class="text-muted">Course Name</small>
                     </div>
                 </div>
+        
                 <div class="teacher">
                     <div class="profile-photo"><img src="./images/profile-3.jpg" alt=""></div>
                     <div class="info">
@@ -174,6 +152,7 @@
                         <small class="text-muted">Course Name</small>
                     </div>
                 </div>
+        
                 <div class="teacher">
                     <div class="profile-photo"><img src="./images/profile-4.jpg" alt=""></div>
                     <div class="info">
@@ -181,11 +160,69 @@
                         <small class="text-muted">Course Name</small>
                     </div>
                 </div>
-            </div>
-
+        
         </div>
-    </div>
+        
 
-    <script src="studentDashboard.js"></script>
+    <!-- JavaScript Section -->
+    <script>
+        const sideMenu = document.querySelector("aside");
+        const profileBtn = document.querySelector("#profile-btn");
+        const themeToggler = document.querySelector(".theme-toggler");
+
+        profileBtn.onclick = function() {
+            sideMenu.classList.toggle('active');
+        }
+
+        window.onscroll = () => {
+            sideMenu.classList.remove('active');
+            if(window.scrollY > 0) {
+                document.querySelector('header').classList.add('active');
+            } else {
+                document.querySelector('header').classList.remove('active');
+            }
+        }
+
+        themeToggler.onclick = function() {
+            // Toggle dark theme on the body
+            document.body.classList.toggle('dark-theme');
+
+            // Toggle the active class on both spans for the theme icons
+            themeToggler.querySelector('span:nth-child(1)').classList.toggle('active');
+            themeToggler.querySelector('span:nth-child(2)').classList.toggle('active');
+        };
+
+        let setData = (day) => {
+            document.querySelector('table tbody').innerHTML = ''; // Clear out previous table data
+            let daylist = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            document.querySelector('.timetable div h2').innerHTML = daylist[day];
+
+            switch(day) {
+                case 0: day = Sunday; break;
+                case 1: day = Monday; break;
+                case 2: day = Tuesday; break;
+                case 3: day = Wednesday; break;
+                case 4: day = Thursday; break;
+                case 5: day = Friday; break;
+                case 6: day = Saturday; break;
+            }
+
+            day.forEach(sub => {
+                const tr = document.createElement('tr');
+                const trContent = `
+                    <td>${sub.time}</td>
+                    <td>${sub.roomNumber}</td>
+                    <td>${sub.subject}</td>
+                    <td>${sub.type}</td>
+                `;
+                tr.innerHTML = trContent;
+                document.querySelector('table tbody').appendChild(tr);
+            });
+        }
+
+        let now = new Date();
+        let today = now.getDay(); // Get the current day (0-6)
+        let day = today; // Initialize with today's value
+    </script>
 </body>
 </html>

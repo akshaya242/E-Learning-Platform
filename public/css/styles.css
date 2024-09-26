@@ -1,7 +1,7 @@
 @import url('https://fonts.googleapis.com/css2?family=Cairo:wght@200;300;400;500;600;700;800;900&family=Poppins:wght@300;400;500;600;700;800&display=swap');
 
 :root{
-    --color-primary: #7380ec;
+    --color-primary: #02474d;
     --color-danger: #ff7782;
     --color-success: #41f1b6;
     --color-warning: #ffbb55;
@@ -85,6 +85,38 @@ b{color: var(--color-dark);}
     grid-template-columns: 14rem auto 23rem;
     padding-top: 4rem;
 }
+.edit-profile-btn {
+    display: flex;
+    align-items: center;
+    background: linear-gradient(45deg, #42a5f5, #478ed1); /* Gradient background */
+    color: white;
+    text-decoration: none; /* Remove underline for links */
+    padding: 12px 24px;
+    cursor: pointer;
+    border-radius: 30px; /* Rounded button */
+    font-size: 18px;
+    font-weight: 500;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Button shadow */
+    transition: background 0.3s, box-shadow 0.3s;
+    text-transform: uppercase;
+    letter-spacing: 1px;
+}
+
+.edit-profile-btn .material-icons-sharp {
+    margin-right: 12px; /* Space between icon and text */
+    font-size: 24px;
+}
+
+.edit-profile-btn:hover {
+    background: linear-gradient(45deg, #478ed1, #42a5f5); /* Hover gradient reversal */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4); /* Darker shadow on hover */
+}
+
+.edit-profile-btn:active {
+    transform: translateY(2px); /* Slight downward movement on click */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Reduce shadow on click */
+}
+
 header h3{font-weight: 500;} 
 header{
     position: fixed;
@@ -416,7 +448,6 @@ main .timetable.active .closeBtn{
     }
 }
 
-
 @media screen and (max-width: 768px){
     html{font-size: 10px;}
     header{padding: 0 .8rem;}
@@ -454,4 +485,17 @@ main .timetable.active .closeBtn{
         width: 100%;
         padding: 2rem;
     }
+}
+
+.my-button {
+    background-color: var(--color-primary); /* Change to your desired color */
+    color: var(--color-white); /* Change text color if needed */
+    border: none; /* Adjust border if necessary */
+    padding: 0.5rem 1rem; /* Add padding */
+    border-radius: var(--border-radius-1); /* Use your predefined border radius */
+    transition: background-color 0.3s ease; /* Smooth transition for hover effect */
+}
+
+.my-button a {
+    color: white;
 }

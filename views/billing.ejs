@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Billing Information</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <%- include('header.ejs') %>
+
+    <h1>Billing Information</h1>
+
+    <% if (enrolledCourses.length > 0) { %>
+        <h2>Your Enrolled Courses</h2>
+        <ul>
+            <% enrolledCourses.forEach(function(course) { %>
+                <li>
+                    <h3><%= course.name %></h3>
+                    <p>Instructor: <%= course.instructorName %></p>
+                    <p>Cost: $<%= course.cost %></p>
+                </li>
+            <% }) %>
+        </ul>
+        <h3>Total Cost: $<%= totalCost %></h3>
+
+        <h2>Enter Your Details</h2>
+        <form action="/billing/checkout" method="POST">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+
+            <label for="phone">Phone Number:</label>
+            <input type="tel" id="phone" name="phone" required>
+
+            <label for="email">Email:</label>
+            <input type="email" id="email" name="email" required>
+
+            <!-- Hidden field for total cost -->
+            <input type="hidden" name="totalCost" value="<%= totalCost %>">
+
+            <button type="submit">Proceed to Checkout</button>
+        </form>
+    <% } else { %>
+        <p>Your cart is empty. Please enroll in courses first.</p>
+        <a href="/courses">Continue Shopping</a>
+    <% } %>
+
+    <%- include('footer.ejs') %>
+</body>
+</html>

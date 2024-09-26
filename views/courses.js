@@ -1,14 +1,15 @@
+
 // Sample courses data
 const courses = courses;
 
 // Display initial courses
 displayCourses(courses);
 
-function displayCourses(coursesToShow) {
+function displayCourses(coursesData) {
     const coursesContainer = document.getElementById("courses-container");
     coursesContainer.innerHTML = '';
 
-    coursesToShow.forEach(course => {
+    coursesData.forEach(course => {
         const courseContainer = document.createElement("div");
         courseContainer.classList.add("course-container");
 
@@ -59,7 +60,9 @@ function filterCourses() {
                 (csCheckbox.checked && course.category === "Computer Science") ||
                 (mathCheckbox.checked && course.category === "Maths") ||
                 (engCheckbox.checked && course.category === "English") ||
-                (mgmtCheckbox.checked && course.category === "Management")
+                (mgmtCheckbox.checked && course.category === "Management") ||
+                (artsCheckbox.checked && course.category === "Arts")
+
             );
         });
     }

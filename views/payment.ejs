@@ -1,0 +1,29 @@
+<!-- views/transaction.ejs -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction Page</title>
+    <link rel="stylesheet" href="/css/styles.css">
+</head>
+<body>
+    <%- include('header.ejs') %>
+
+    <h1>Hey <%= name %></h1>
+    <h2>You need to pay $<%= totalCost %></h2>
+    <img src="/path/to/your/qr-code.png" alt="QR Code" /> <!-- Replace with your QR code image path -->
+
+    <form action="/payment/submit" method="POST">
+        <label for="transactionId">Transaction ID:</label>
+        <input type="text" id="transactionId" name="transactionId" required maxlength="10" pattern="\d{10}" title="Transaction ID must be 10 digits.">
+
+        <input type="hidden" name="name" value="<%= name %>">
+        <input type="hidden" name="amount" value="<%= totalCost %>">
+        
+        <button type="submit">Submit Payment</button>
+    </form>
+
+    <%- include('footer.ejs') %>
+</body>
+</html>

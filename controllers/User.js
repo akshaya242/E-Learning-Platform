@@ -1,4 +1,3 @@
-const path = require('path');
 const bcrypt = require('bcrypt');
 const FAQ = require('../models/Review');
 const { User, Profile } = require('../models/User');
@@ -8,7 +7,10 @@ const { AdminLog, CourseCreationRequest } = require('../models/Admin');
 
 exports.home = async (req, res) => {
     try {
-        const faqs = await FAQ.find().limit(3);
+        // Retrieve 3 FAQs from the database
+        const faqs = await FAQ.find().limit(3).lean(); // Use .lean() for better performance
+
+        // Retrieve 3 courses from the database
         const courses = await Course.find().limit(3).lean();
 
         const coursesWithInstructors = await Promise.all(courses.map(async (course) => {
@@ -20,6 +22,7 @@ exports.home = async (req, res) => {
             };
         }));
 
+        // Retrieve 5 teachers from the database
         const teachers = await User.find({ role: 'teacher' }).limit(5).lean();
         const teacherData = await Promise.all(teachers.map(async (teacher) => {
             const profile = await Profile.findOne({ userId: teacher._id });
@@ -31,6 +34,7 @@ exports.home = async (req, res) => {
             };
         }));
 
+        // Render the homepage with FAQs, teachers, and courses
         res.render('homepage', { faqs, teachers: teacherData, courses: coursesWithInstructors });
     } catch (error) {
         console.error(error);
@@ -38,6 +42,7 @@ exports.home = async (req, res) => {
     }
 };
 
+// Static Pages
 exports.aboutUs = (req, res) => {
     res.render('about', { title: 'About QuikLearn' });
 };
@@ -45,7 +50,18 @@ exports.aboutUs = (req, res) => {
 exports.contact = (req, res) => {
     res.render('contact');
 };
+exports.getAllFAQs = async (req, res) => {
+    try {
+        const faqs = await FAQ.find().lean(); // Fetch all FAQs from the database
+        console.log(faqs);
+        res.status(200).json(faqs); // Send FAQs as a JSON response
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ message: 'Server Error' });
+    }
+};
 
+// Courses and Teachers
 exports.course = async (req, res) => {
     const courses = await Course.find();
     res.render('courses', { courses });
@@ -61,6 +77,7 @@ exports.faqs = async (req, res) => {
     res.render('faqs', { faqs });
 };
 
+// User Authentication
 exports.showSignupPage = (req, res) => {
     res.render('signup');
 };
@@ -98,7 +115,7 @@ exports.handleLogin = async (req, res) => {
             return res.status(400).send('Invalid email or password');
         }
 
-        req.session.user = { id: user._id, name: user.name, role: user.role };
+        req.session.user = { id: user._id, name: user.name, role: user.role ,isVerified:user.isVerified, institution:user.institution ,email:user.email };
         res.redirect('/dashboard');
     } catch (error) {
         console.error(error);
@@ -106,6 +123,7 @@ exports.handleLogin = async (req, res) => {
     }
 };
 
+// User Dashboard
 exports.showDashboard = async (req, res) => {
     const user = req.session.user;
     if (!user) {
@@ -113,24 +131,43 @@ exports.showDashboard = async (req, res) => {
     }
 
     try {
-        switch (user.role) {
-            case 'admin':
-                return res.redirect('/admin');
-            case 'teacher':
-                const teacherCourses = await Course.find({ created_by: user._id });
-                return res.render('teacherDashboard', { user, courses: teacherCourses });
-            case 'student':
-                const studentCourses = await Course.find({ studentsEnrolled: user._id });
-                return res.render('studentDashboard', { user, courses: studentCourses });
-            default:
-                return res.status(403).send('Access denied');
-        }
+      // Redirect based on user role
+      
+      req.session.user = {
+        id: user._id,  // MongoDB's user ID
+        name: user.name,
+        role: user.role,
+        email: user.email,
+        isVerified: user.isVerified,
+        institution:user.institution,
+        // Add any other relevant user data
+    };
+  
+    req.session.user = user;
+
+      switch (user.role) {
+        case 'admin':
+          return res.redirect('/admin'); // Redirect admin to their dashboard
+  
+        case 'teacher':
+          // Fetch courses assigned to the teacher
+          return res.redirect('/teacher/dashboard');
+  
+        case 'student':
+          // Fetch courses the student is enrolled in
+          return res.redirect('/student/Dashboard');
+          
+  
+        default:
+          return res.status(403).send('Access denied'); // Handle unknown roles
+      }
     } catch (error) {
         console.error('Error rendering dashboard:', error);
         return res.status(500).send('Server Error');
     }
 };
 
+// Profile
 exports.showProfilePage = async (req, res) => {
     const { user } = req.session;
     if (!user) return res.redirect('/login');
@@ -146,43 +183,142 @@ exports.updateProfile = async (req, res) => {
     const { bio, contact_number, address } = req.body;
     await Profile.updateOne({ user_id: user._id }, { bio, contact_number, address });
     res.redirect('/profile');
-};
-
-exports.showCourses = async (req, res) => {
+  };
+  exports.showCourses = async (req, res) => {
     const courses = await Course.find();
     res.render('courses', { courses });
 };
 
+exports.getFilteredCourses = async (req, res) => {
+    const { search, category } = req.query;
+    let query = {};
+
+    // If search is provided, use case-insensitive regex to search in the title
+    if (search) {
+        query.title = { $regex: search, $options: 'i' }; // Case-insensitive search
+    }
+
+    // If category is provided, filter by category
+    if (category) {
+        if (Array.isArray(category)) {
+            query.category = { $in: category }; // Allow multiple categories
+        } else {
+            query.category = category; // Single category
+        }
+    }
+
+    try {
+        // Fetch the courses based on the query
+        const courses = await Course.find(query);
+        res.json(courses);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Server error' });
+    }
+};
+
+
+
+
 exports.enrollInCourse = async (req, res) => {
-    const userId = req.session.user.id;
-    const courseId = req.params.courseId;
+  console.log("Enrollment request received for course ID:", req.params.courseId);
+  const userId = req.session.user.id; // Ensure this ID is correct
+  const courseId = req.params.courseId;
 
     try {
         const existingEnrollment = await Enrollment.findOne({ courseId, user_id: userId });
         if (existingEnrollment) {
-            return res.status(400).send('You are already enrolled in this course.');
+            return res.status(400).send('This course is already enrolled');
         }
+  try {
+      // Check if the student is already enrolled in the course
+      const existingEnrollment = await Enrollment.findOne({ courseId, user_id: userId });
+      
+      if (existingEnrollment) {
+          return res.status(400).send('You are already enrolled in this course.');
+      }
 
-        const enrollment = new Enrollment({
-            courseId,
-            user_id: userId,
-            enrollment_date: new Date(),
-            progress: 0,
-            completionStatus: 'in-progress',
-            certificateLink: null 
-        });
+      const enrollment = new Enrollment({
+          courseId,
+          user_id: userId,
+          enrollment_date: new Date(),
+          progress: 0,
+          completionStatus: 'in-progress',
+          certificateLink: null 
+      });
 
-        await enrollment.save();
-        await Course.findByIdAndUpdate(courseId, {
-            $addToSet: { enrolledStudents: userId }
-        });
+      // Save enrollment data
+      await enrollment.save();
 
-        res.redirect('/courses');
+      // Update the course document to append the user's ID to the enrolledStudents array
+      await Course.findByIdAndUpdate(courseId, {
+          $addToSet: { enrolledStudents: userId }
+      });
+
+      res.redirect('/courses'); // Redirect to courses page after enrollment
+  } catch (error) {
+      console.error('Error enrolling in course:', error);
+      res.status(500).send('Enrollment failed');
+  }
+}catch(err){
+    
+};
+
+// Controller to fetch enrolled courses and display in cart
+exports.showCart = async (req, res) => {
+    const userId = req.session.user ? req.session.user.id : null;
+    if (!userId) {
+        return res.status(400).send('User not logged in');
+    }
+
+    try {
+        // Fetch all the enrollments for the logged-in user
+        const enrollments = await Enrollment.find({ user_id: userId }).populate('courseId').lean();
+
+        // Filter out any enrollments where the courseId is null
+        const enrolledCourses = enrollments
+            .filter(enrollment => enrollment.courseId !== null)
+            .map(enrollment => ({
+                name: enrollment.courseId.name,
+                description: enrollment.courseId.description,
+                instructorName: enrollment.courseId.instructorName,
+                cost: enrollment.courseId.cost,  // Ensure the course cost is included
+                _id: enrollment.courseId._id
+            }));
+
+        // Calculate the total cost of all courses in the cart
+        const totalCost = enrolledCourses.reduce((total, course) => total + course.cost, 0);
+
+        // Render the cart.ejs and pass the enrolled courses and total cost to it
+        res.render('cart', { enrolledCourses, totalCost });
     } catch (error) {
-        console.error('Error enrolling in course:', error);
-        res.status(500).send('Enrollment failed');
+        console.error('Error fetching enrolled courses:', error.message, error.stack);
+        res.status(500).send('Server error');
     }
 };
+
+
+// Controller to remove an enrolled course from the cart
+exports.removeFromCart = async (req, res) => {
+    const userId = req.session.user.id;
+    const courseId = req.params.courseId;
+
+    try {
+        // Find and delete the enrollment by courseId and user_id
+        const deletedEnrollment = await Enrollment.findOneAndDelete({ user_id: userId, courseId });
+
+        if (!deletedEnrollment) {
+            return res.status(404).send('Enrollment not found');
+        }
+
+        // Redirect back to the cart after successful deletion
+        res.redirect('/cart');
+    } catch (error) {
+        console.error('Error removing course from cart:', error);
+        res.status(500).send('Server error');
+    }
+};
+
 
 exports.createCourseRequest = async (req, res) => {
   const { title, description, category, sections } = req.body;
@@ -232,7 +368,99 @@ exports.approveCourseRequest = async (req, res) => {
   }
 };
 
+// Controller to show billing page
+exports.showBillingPage = async (req, res) => {
+    const userId = req.session.user.id;
+    if (!userId) {
+        return res.status(400).send('User not logged in');
+    }
+
+    try {
+        // Fetch all the enrollments for the logged-in user
+        const enrollments = await Enrollment.find({ user_id: userId }).populate('courseId').lean();
+
+        // Calculate total cost and prepare course details
+        let totalCost = 0;
+        const enrolledCourses = enrollments
+            .filter(enrollment => enrollment.courseId !== null)
+            .map(enrollment => {
+                const courseCost = enrollment.courseId.cost; // Assuming cost is a field in your Course model
+                totalCost += courseCost;
+                return {
+                    name: enrollment.courseId.name,
+                    description: enrollment.courseId.description,
+                    instructorName: enrollment.courseId.instructorName,
+                    cost: courseCost,
+                };
+            });
+
+        // Render billing page with total cost and enrolled courses
+        res.render('billing', { enrolledCourses, totalCost });
+    } catch (error) {
+        console.error('Error fetching enrolled courses:', error.message, error.stack);
+        res.status(500).send('Server error');
+    }
+};
+
+// Controller to handle checkout form submission
+exports.handleCheckout = async (req, res) => {
+    try {
+        const { name, phone, email, totalCost } = req.body;
+
+        // Validate input fields
+        if (!name || !phone || !email || !totalCost) {
+            return res.status(400).json({ message: 'All fields are required.' });
+        }
+
+        // Create a new billing record
+        const billingRecord = new Billing({
+            name,
+            phone,
+            email,
+            totalCost,
+            // Add userId if needed, e.g. from the session or request
+        });
+
+        // Save the billing record to the database
+        await billingRecord.save();
+
+        // Redirect to transaction page with the user's name and total cost
+        res.redirect(`/payment?name=${encodeURIComponent(name)}&totalCost=${totalCost}`);
+    } catch (error) {
+        console.error('Error during checkout:', error);
+        res.status(500).json({ message: 'Error during checkout', error: error.message });
+    }
+};
+// Render the transaction page
+exports.renderTransactionPage = (req, res) => {
+    const { name, totalCost } = req.query;
+    res.render('payment', { name, totalCost });
+};
+
+// Handle payment submission
+exports.handlePaymentSubmission = async (req, res) => {
+    const { transactionId, amount } = req.body;
+    const name = req.body.name || ""; // Get name from request body or fallback to empty string
+
+    // Validate input fields
+    if (!name || !transactionId || transactionId.length !== 10 || !amount) {
+        return res.status(400).json({ message: 'All fields are required and Transaction ID must be 10 digits.' });
+    }
+
+    try {
+        // Update the billing record with the transaction ID
+        await Billing.findOneAndUpdate({ name }, { transactionId });
+
+        // Send a success response
+        res.status(201).json({ message: 'Payment successful' });
+    } catch (error) {
+        console.error('Error during transaction:', error);
+        res.status(500).json({ message: 'Error during transaction', error: error.message });
+    }
+};
+
+
 exports.showCreatePage = async(req, res) => {
   res.render('course_request')
 }
-
+};
