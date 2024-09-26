@@ -54,7 +54,12 @@ exports.aboutUs = async(req, res) => {
 };
 
 exports.contact = (req, res) => {
-    res.render('contact');
+    const userId = req.session.user ? req.session.user.id : null;
+    let user = null;
+    if (userId) {
+        user = User.findById(userId);
+    }
+    res.render('contact', { user });
 };
 exports.getAllFAQs = async (req, res) => {
     try {

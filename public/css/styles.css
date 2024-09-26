@@ -545,8 +545,6 @@ main .timetable.active .closeBtn{
     transition: background-color 0.3s ease-in-out;
 }
 
-
-
 .my-button {
     background-color: var(--color-primary); /* Change to your desired color */
     color: var(--color-white); /* Change text color if needed */

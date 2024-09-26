@@ -137,30 +137,22 @@
             <div class="leaves">
                 <h2>Teachers on Spotlight</h2>
         
-                <div class="teacher">
-                    <div class="profile-photo"><img src="./images/profile-2.jpeg" alt=""></div>
-                    <div class="info">
-                        <h3>The Professor</h3>
-                        <small class="text-muted">Course Name</small>
-                    </div>
-                </div>
-        
-                <div class="teacher">
-                    <div class="profile-photo"><img src="./images/profile-3.jpg" alt=""></div>
-                    <div class="info">
-                        <h3>Lisa Manobal</h3>
-                        <small class="text-muted">Course Name</small>
-                    </div>
-                </div>
-        
-                <div class="teacher">
-                    <div class="profile-photo"><img src="./images/profile-4.jpg" alt=""></div>
-                    <div class="info">
-                        <h3>Himanshu Jindal</h3>
-                        <small class="text-muted">Course Name</small>
-                    </div>
-                </div>
-        
+
+                <% if (user) { %>
+                    <% user.filter(user => user.role === 'teacher').forEach(teacher => { %>
+                        <div class="teacher">
+                            <div class="profile-photo">
+                                <img src="/uploads/images/Teacher.jpg" alt="Teacher Image" style="width: 100%; height: auto; object-fit: cover;">
+                            </div>
+                            <div class="info">
+                                <h3><%= teacher.name %></h3>
+                                <small class="text-muted"><%= teacher.institution || 'No institution provided' %></small>
+                            </div>
+                        </div>
+                    <% }); %>
+                <% } else { %>
+                    <p>No teachers available.</p>
+            <% } %>
         </div>
         
 
