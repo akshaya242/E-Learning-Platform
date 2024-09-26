@@ -126,6 +126,8 @@ exports.createCourseSections = async (req, res) => {
 exports.enrollInCourse = async (req, res) => {
     const userId = req.session.user.id;
     const courseId = req.params.courseId;
+    console.log(courseId);
+    console.log(userId)
 
     try {
         const existingEnrollment = await Enrollment.findOne({ courseId, user_id: userId });
@@ -144,10 +146,10 @@ exports.enrollInCourse = async (req, res) => {
 
         await enrollment.save();
         await Course.findByIdAndUpdate(courseId, {
-            $addToSet: { enrolledStudents: userId }
+            $addToSet: { studentsEnrolled: userId }
         });
 
-        res.redirect('/courses');
+        res.redirect('/dashboard');
     } catch (error) {
         console.error('Error enrolling in course:', error);
         res.status(500).send('Enrollment failed');
