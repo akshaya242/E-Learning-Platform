@@ -176,7 +176,7 @@ try{
     const teacher = await User.findOne(course.instructorId);
     // For simplicity, set the first section as the current section
     const currentSection = courseSections[0];
-    console.log(courseSections);
+   
   res.render('displaycourse', {
     course: course,
     courseSections: courseSections,

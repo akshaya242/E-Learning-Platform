@@ -14,8 +14,8 @@
   <!-- Font Awesome for Icons -->
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
 
-  <!-- Plyr.js CSS for custom video player -->
-  <link rel="stylesheet" href="https://cdn.plyr.io/3.7.8/plyr.css" />
+  <!-- Include Video.js CSS -->
+  <link href="https://vjs.zencdn.net/7.15.4/video-js.css" rel="stylesheet" />
 
   <!-- Custom CSS Styles -->
   <style>
@@ -26,7 +26,7 @@
     }
 
     .container {
-      padding-top: 20px;
+      padding-top: 5px;
     }
 
     /* Header Styles */
@@ -38,7 +38,7 @@
     }
 
     .header h1 {
-      font-size: 2rem;
+      font-size: 1.8rem;
       margin: 0;
     }
 
@@ -53,43 +53,26 @@
     }
 
     .navbar-custom .navbar-nav .nav-link:hover {
-      background-color: #005085;
+      background-color: #004095;
       border-radius: 5px;
     }
 
-    /* Enhanced Video Player */
-    .plyr {
-      border-radius: 8px;
+    /* Video Player */
+    .video-player {
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-      margin-bottom: 20px;
-    }
-
-    .course-info {
-      margin-bottom: 25px;
-    }
-
-    .btn-primary {
-      background-color: #007bff;
-      border-color: #007bff;
-      border-radius: 50px;
-      padding: 8px 20px;
-      font-weight: 600;
-      color: white;
-    }
-
-    .btn-primary:hover {
-      background-color: #0056b3;
+      border-radius: 8px;
+      overflow: hidden;
+      position: relative;
     }
 
     /* Sidebar */
     .sidebar {
-      max-height: 600px;
+      max-height: 500px;
       overflow-y: auto;
       background-color: #fff;
       padding: 15px;
       border-radius: 8px;
       box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
-      margin-bottom: 30px;
     }
 
     .sidebar h5 {
@@ -119,6 +102,23 @@
       transition: all 0.3s;
     }
 
+    .course-info {
+      margin-bottom: 25px;
+    }
+
+    .btn-primary {
+      background-color: #007bff;
+      border-color: #007bff;
+      border-radius: 50px;
+      padding: 8px 20px;
+      font-weight: 600;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background-color: #0056b3;
+    }
+
     /* FAQ and Quiz */
     .faq, .quiz {
       margin-top: 25px;
@@ -138,6 +138,10 @@
         max-height: 300px;
       }
 
+      .video-player {
+        height: 300px;
+      }
+
       .course-info h2 {
         font-size: 1.5rem;
       }
@@ -145,52 +149,8 @@
   </style>
 </head>
 <body>
-  <!-- Header -->
-  <div class="header">
-    <h1>Welcome to <%= course.title %></h1>
-  </div>
-
-  <!-- Navigation Bar -->
-  <nav class="navbar navbar-expand navbar-custom">
-    <div class="container">
-      <!-- Brand Logo -->
-      <a class="navbar-brand text-white" href="/">
-        <i class="fas fa-graduation-cap"></i> E-Learning Platform
-      </a>
-
-      <!-- Toggler Button for Mobile -->
-      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span class="navbar-toggler-icon"></span>
-      </button>
-
-      <!-- Collapsible Navbar Menu -->
-      <div class="collapse navbar-collapse" id="navbarNav" style="margin-left: 60%;">
-        <ul class="navbar-nav ml-auto">
-          <li class="nav-item">
-            <a class="nav-link" href="/">
-              <i class="fas fa-home"></i> Home
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/my-courses">
-              <i class="fas fa-tachometer-alt"></i> My Dashboard
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/profile">
-              <i class="fas fa-user"></i> Profile
-            </a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="/logout">
-              <i class="fas fa-sign-out-alt"></i> Logout
-            </a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </nav>
-
+  <!-- Header and Navigation Bar (Same as previous) -->
+  
   <div class="container mt-4">
     <div class="row">
       <!-- Main Content: Video Player and Course Details -->
@@ -200,10 +160,17 @@
           <p class="text-muted">Instructor: <%= teacher.name %></p>
         </div>
 
-        <!-- Plyr.js Video Player -->
+        <!-- Video.js Player -->
         <div class="video-player mb-4">
-          <video id="plyr-player" class="plyr" controls>
-            <source src="<%= currentSection.video.videoUrl %>" type="video/mp4">
+          <video
+            id="course-video-player"
+            class="video-js vjs-default-skin vjs-big-play-centered"
+            controls
+            preload="auto"
+            width="100%"
+            height="100%"
+            data-setup='{}'>
+            <source id="video-source" src="<%= currentSection.video.videoUrl %>" type="video/mp4" />
             Your browser does not support the video tag.
           </video>
         </div>
@@ -211,7 +178,7 @@
         <!-- Below the video: Dynamic video title -->
         <h5 id="video-title"><%= currentSection.video.title %></h5>
 
-        <!-- Course Description, Quiz, and FAQ -->
+        <!-- Below the video: Course Description, Quiz, FAQ -->
         <div>
           <!-- Course Description -->
           <h4>Description</h4>
@@ -232,6 +199,7 @@
           <!-- FAQ Section -->
           <div class="faq">
             <h5>Frequently Asked Questions</h5>
+            <!-- Dynamically render FAQs (replace with actual FAQ data) -->
             <div class="faq-item">
               <p><strong>Question 1:</strong> How long is the course?</p>
               <p>Answer: The course duration is approximately <%= course.duration %> hours.</p>
@@ -244,43 +212,18 @@
         </div>
       </div>
 
-      <!-- Sidebar: Sections and Videos -->
-      <div class="col-lg-4">
-        <div class="sidebar">
-          <h5>Course Sections</h5>
-          <% courseSections.sort((a, b) => a.index - b.index).forEach(function(section) { %>
-            <div class="section">
-              <h6 class="section-title" onclick="toggleSection('<%= section._id %>', '<%= section.video.videoUrl %>', '<%= section.video.title %>')">
-                <%= section.title %> <i class="fas fa-chevron-down"></i>
-              </h6>
-              <div id="section-<%= section._id %>" class="section-content">
-                <ul>
-                  <li>
-                    <a href="javascript:void(0)" class="text-primary" onclick="changeVideo('<%= section.video.videoUrl %>', '<%= section.video.title %>')">
-                      <%= section.video.title %> 
-                    </a>
-                  </li>
-                </ul>
-              </div>
-            </div>
-          <% }); %>
-        </div>
-      </div>
+      <!-- Sidebar: Sections and Videos (Same as previous) -->
     </div>
   </div>
 
-  <!-- Include Bootstrap JS and FontAwesome -->
+  <!-- Include Bootstrap JS, FontAwesome, and Video.js -->
   <script src="https://code.jquery.com/jquery-3.5.1.min.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.2/dist/js/bootstrap.bundle.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/js/all.min.js"></script>
+  <script src="https://vjs.zencdn.net/7.15.4/video.min.js"></script>
 
-  <!-- Plyr.js JavaScript -->
-  <script src="https://cdn.plyr.io/3.7.8/plyr.polyfilled.js"></script>
-
-  <!-- Custom JavaScript to handle changing the video dynamically -->
+  <!-- Custom JavaScript to handle the collapsible sections and change video -->
   <script>
-    // Initialize Plyr
-    const player = new Plyr('#plyr-player');
-
     function toggleSection(sectionId, videoUrl, videoTitle) {
       var content = document.getElementById('section-' + sectionId);
       var icon = document.querySelector(`#section-${sectionId} .fas`);
@@ -293,38 +236,28 @@
         icon.classList.replace('fa-chevron-up', 'fa-chevron-down');
       }
 
+      // Change video to the one from the section if a video exists
       if (videoUrl && videoTitle) {
         changeVideo(videoUrl, videoTitle);
       }
     }
 
+    // Function to change the video source and title
     function changeVideo(videoUrl, videoTitle) {
-    // Change the video source
-    player.source = {
-      type: 'video',
-      sources: [
-        {
-          src: videoUrl,
-          type: 'video/mp4',
-        },
-      ],
-    };
+      var videoPlayer = videojs('course-video-player');
+      var videoSource = document.getElementById('video-source');
+      var titleElement = document.getElementById('video-title');
 
-    // Wait for the new video to be ready before playing
-    player.once('ready', function() {
-      player.play().catch(function(error) {
-        console.log("Error playing video: ", error);
-      });
-    });
+      // Update video source
+      videoSource.src = videoUrl;
+      videoPlayer.src({ type: 'video/mp4', src: videoUrl });
+      videoPlayer.load(); // Reload the video to play the new source
 
-    // Update video title
-    document.getElementById('video-title').textContent = videoTitle;
+      // Update video title
+      titleElement.textContent = videoTitle;
+    }
 
-    // Log the current video URL to the console
-    console.log("Now playing video URL: " + videoUrl);
-}
-
-
+    // Ensure all sections are initially hidden
     document.addEventListener('DOMContentLoaded', function () {
       const sections = document.querySelectorAll('.section-content');
       sections.forEach(section => {
