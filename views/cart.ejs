@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Your Cart</title>
+    <style>
+        /* Embedded CSS for styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            font-size: 2.5em; /* Increased font size */
+            margin-top: 110px; /* Added margin to separate from header */
+            margin-bottom: 20px; /* Added margin for spacing */
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 15px; /* Increased padding for bigger cells */
+            text-align: left;
+            font-size: 1.2em; /* Increased font size for better readability */
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9; /* Alternating row colors */
+        }
+        tr:hover {
+            background-color: #f1f1f1; /* Highlight row on hover */
+        }
+        .total-cost {
+            font-size: 1.5em;
+            font-weight: bold;
+            text-align: right;
+            margin-top: 20px;
+            padding: 10px; /* Added padding for better spacing */
+            border-top: 2px solid #4CAF50; /* Added border above total cost */
+        }
+        .empty-cart {
+            text-align: center;
+            font-size: 1.5em; /* Increased font size */
+            margin-top: 20px; /* Added margin for spacing */
+        }
+        .proceed-button {
+            text-align: right;
+            margin-top: 20px;
+        }
+        .proceed-button form {
+            display: inline;
+        }
+        .proceed-button button {
+            background-color: #4CAF50; /* Green button for proceed */
+            color: white; /* Button text color */
+            border: none; /* Remove border */
+            padding: 10px 20px; /* Padding for button */
+            font-size: 1.2em; /* Font size */
+            cursor: pointer; /* Cursor pointer */
+            transition: background-color 0.3s ease; /* Transition effect */
+        }
+        .proceed-button button:hover {
+            background-color: #45a049; /* Darker green on hover */
+        }
+        button {
+            background-color: #f44336; /* Button background color for remove */
+            color: white; /* Button text color */
+            border: none; /* Remove border */
+            padding: 10px 15px; /* Padding for button */
+            font-size: 1em; /* Increased font size for button */
+            cursor: pointer; /* Cursor style */
+            transition: background-color 0.3s; /* Transition effect */
+        }
+        button:hover {
+            background-color: #d32f2f; /* Darker button color on hover */
+        }
+       
+        /* Embedded CSS for styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f4f4; /* Match body background */
+        }
+        footer {
+            background-color: #333;
+            color: white;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .footer-innerdiv1 {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+        }
+        .footer-ul {
+            list-style: none;
+            padding: 0;
+        }
+        .footer-li {
+            margin: 5px 0;
+        }
+        .footer-li a {
+            color: white; /* Link color */
+            text-decoration: none; /* Remove underline */
+            transition: color 0.3s; /* Transition for hover effect */
+        }
+        .footer-li a:hover {
+            color: #4CAF50; /* Hover color */
+        }
+        .English-btn {
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+            font-size: 1em;
+        }
+        .English-btn:hover {
+            background-color: #45a049; /* Darker green on hover */
+        }
+        .footer-innerdiv2 {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-top: 1px solid #444; /* Divider line */
+            padding-top: 10px;
+        }
+        .copyright-span {
+            margin-left: 20px;
+            color: #686f7a;
+            font-size: 0.9em; /* Smaller font size for copyright */
+        }
+        .ullist-right {
+            list-style: none;
+            display: flex;
+            padding: 0;
+            margin: 0;
+        }
+        .r-li-itm {
+            margin-left: 20px;
+            color: #686f7a; /* Change color to match footer */
+            cursor: pointer; /* Pointer cursor */
+        }
+        .r-li-itm:hover {
+            text-decoration: underline; /* Underline on hover */
+        }
+   
+
+    </style>
+</head>
+<body>
+    <%- include('header.ejs') %>
+
+    <h1>Your Enrolled Courses</h1>
+
+    <% if (enrolledCourses.length > 0) { %>
+        <table>
+            <thead>
+                <tr>
+                    <th>Course Name</th>
+                    <th>Instructor</th>
+                    <th>Cost</th>
+                    <th>Remove</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% enrolledCourses.forEach(function(course) { %>
+                    <tr>
+                        <td><%= course.title || 'N/A' %></td>
+                        <td><%= course.instructorName || 'N/A' %></td>
+                        <td>$<%= course.cost %></td>
+                        <td>
+                            <form action="/cart/remove/<%= course._id %>" method="POST">
+                                <button type="submit">Remove</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+
+        <!-- Display Total Cost Here -->
+        <div class="total-cost">Total Cost: $<%= totalCost %></div>
+
+        <!-- Proceed to Billing Button -->
+        <div class="proceed-button">
+            <form action="/billing" method="GET">
+                <button type="submit">Proceed to Billing</button>
+            </form>
+        </div>
+
+    <% } else { %>
+        <p class="empty-cart">Your cart is empty.</p>
+        <a href="/courses">Continue Shopping</a>
+    <% } %>
+
+
+
+    <footer id="deraj-ab">
+        <div class="footer-innerdiv1">
+            <div class="col1">
+                <ul class="footer-ul">
+                    <li class="footer-li" style="font-weight: 700;">QuikLearn for Business</li>
+                    <li class="footer-li" style="font-weight: 700;">Become an Instructor</li>
+                    <li class="footer-li">Mobile Apps</li>
+                </ul>
+            </div>
+            <div class="col2">
+                <ul class="footer-ul">
+                    <li class="footer-li">About Us</li>
+                    <li class="footer-li">Careers</li>
+                    <li class="footer-li">Blog</li>
+                </ul>
+            </div>
+            <div class="col3">
+                <ul class="footer-ul">
+                    <li class="footer-li">Topics</li>
+                    <li class="footer-li">Support</li>
+                    <li class="footer-li">Affiliate</li>
+                </ul>
+            </div>
+            <div class="col4">
+                <ul class="footer-ul" style="margin: 0px">
+                    <li class="footer-li">
+                        <a href="/adminlogin">
+                            <button class="English-btn">
+                                <span style="margin-left:10px; margin-right: 15px; padding: 5px;">
+                                    <i class="fas fa-globe-asia" style="margin-right: 10px;"></i>Admin Login</span>
+                                <i class="fas fa-angle-up"></i>
+                            </button>
+                        </a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+
+        <div class="footer-innerdiv2">
+            <div class="left-contlist">
+                <a href="/">
+                    <img src="images/logo2.svg" alt="QuikLearn" width="110px">
+                </a>
+                <span class="copyright-span">Copyright © 2024 QuikLearn, Inc.</span>
+            </div>
+
+            <div class="right-contlist">
+                <ul class="ullist-right">
+                    <li class="r-li-itm">Terms</li>
+                    <li class="r-li-itm">Privacy Policy and Cookie Policy</li>
+                    <li class="r-li-itm">Intellectual Property</li>
+                </ul>
+            </div>
+        </div>
+    </footer>
+
+
+</body>
+</html>

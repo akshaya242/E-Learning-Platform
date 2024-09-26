@@ -61,7 +61,7 @@ exports.logout = (req, res) => {
       res.clearCookie('connect.sid', { path: '/' });
 
       // Redirect to the login page (or home)
-      res.redirect('/login');
+      res.redirect('/');
   });
 };
 
