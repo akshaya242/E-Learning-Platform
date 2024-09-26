@@ -4,9 +4,183 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Course</title>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
+   
     <link rel="stylesheet" href="/css/create.css"> <!-- Link to common styles -->
+
+    <style>
+        *{
+            text-decoration: none;
+            box-sizing: border-box;
+        }
+        
+        .dark-theme{
+            --color-background: #181a1e;
+            --color-white: #202528;
+            --color-dark: #edeffd;
+            --color-dark-varient: #a3bdcc;
+            --color-light: rgba(0,0,0,0.4);
+            --box-shadow: 0 2rem 3rem var(--color-light)
+        }
+
+                :root{
+            --color-primary: #02474d;
+            --color-danger: #ff7782;
+            --color-success: #41f1b6;
+            --color-warning: #ffbb55;
+            --color-white: #fff;
+            --color-info: #7d8da1;
+            --color-dark: #363949;
+            --color-light: rgba(132, 139, 200, 0.18);
+            --color-dark-varient: #677483;
+            --color-background: #f6f6f9;
+            
+            --card-border-radius: 2rem;
+            --border-radius-1: 0.4rem;
+            --border-radius-2: 1.2rem;
+
+            --card-padding: 1.8rem;
+            --box-shadow: 0 2rem 3rem var(--color-light)    
+        }
+                body{
+            font-family: 'Poppins', sans-serif;
+            font-size: .88rem;
+            background: var(--color-background);
+            user-select: none;
+            overflow-x: hidden;
+            color: var(--color-dark);
+        }
+        .container{
+            /* position: relative; */
+            /* display: grid; */
+        
+            /* margin: 0 3rem; */
+            /* gap: 1.8rem; */
+            /* grid-template-columns: 14rem auto 23rem; */
+            padding-top: 4rem;
+        }
+                header h3{font-weight: 500;} 
+        header{
+            position: sticky;
+            width: 90vw;
+            z-index: 1000;
+            background-color: var(--color-background);
+        }
+        header.active{box-shadow: var(--box-shadow);}
+
+        header .logo{
+            display: flex;
+            gap: .8rem;
+            margin-right: auto;
+            
+        }
+        header .logo img{
+            /* width: 2rem; */
+            height: 5rem;
+            /* max-height: 100%; */
+        }
+
+        header,
+        header .navbar{
+            display: flex;
+            align-items: center;
+            justify-content: flex-end;
+            padding: 0 3rem;
+            color: var(--color-info);
+        }
+        header .navbar a{
+            display: flex;
+            margin-left: 2rem;
+            gap: 1rem;
+            align-items: center;
+            justify-content: space-between;
+            position: relative;
+            height: 3.7rem;
+            transition: all 300ms ease;
+            padding: 0 2rem;
+        }
+        header .navbar a:hover {
+            padding-top: 1.5rem;
+        }
+        header .navbar a.active{
+            background: var(--color-light);
+            color: var(--color-primary);
+        }
+        header .navbar a.active::before{
+            content: "";
+            background-color: var(--color-primary);
+            position: absolute;
+            height: 5px;
+            width: 100%;
+            left: 0;top: 0;
+        }
+        header #profile-btn{
+            display: none;
+            font-size: 2rem;
+            margin: .5rem 2rem 0 0;
+            cursor: pointer;
+        }
+        header .theme-toggler{
+            background: var(--color-light);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: 1.6rem;
+            width: 4.2rem;
+            cursor: pointer;
+            border-radius: var(--border-radius-1);
+            margin-right: 2rem;
+        }
+        header .theme-toggler span{
+            font-size: 1.2rem;
+            width: 50%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        header .theme-toggler span.active{
+            background-color: var(--color-primary);
+            color: white;
+            border-radius: var(--border-radius-1);
+        }
+
+    </style>
 </head>
 <body>
+    <header>
+        <div class="logo" title="QuikLearn">
+            <img src="/images/logo2.svg" alt="">
+        </div>
+        <div class="navbar">
+            <a href="/teacher/dashboard">
+                <span class="material-icons-sharp">home</span>
+                <h3>Home</h3>
+            </a>
+            <a href="password.html">
+                <span class="material-icons-sharp">password</span>
+                <h3>Change Password</h3>
+            </a>
+            <a href="/teacher/create-course"  class="active">
+                <span class="material-icons-sharp">add_circle</span>
+                <h3>Add Course</h3>
+            </a>
+            <a href="/logout">
+                <span class="material-icons-sharp" onclick="">logout</span>
+                <h3>Logout</h3>
+            </a>
+           
+        </div>
+        <div id="profile-btn">
+            <span class="material-icons-sharp">person</span>
+        </div>
+        <div class="theme-toggler">
+            <span class="material-icons-sharp active">light_mode</span>
+            <span class="material-icons-sharp">dark_mode</span>
+        </div>
+        
+    </header>
+    <div class="container">
     <h1>Create Course</h1>
     
     <form action="/create-course" method="POST">
@@ -50,7 +224,7 @@
             <button type="submit">Submit Course</button>
         </div>
     </form>
-
+</div> 
     <script>
         let sectionIndex = 1;
 

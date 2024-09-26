@@ -4,6 +4,7 @@ const { Course } = require('../models/Course');
 
 
 const FAQ = require('../models/FAQ'); // Make sure to import your FAQ model
+const session = require('express-session');
 
 
 // Home Page Controller
@@ -14,7 +15,8 @@ exports.home = async (req, res) => {
 
         // Retrieve 3 courses from the database
         const courses = await Course.find().limit(3).lean();
-
+        const user = req.session.user ? await User.findById(req.session.user.id) : null;
+        console.log("here is the user: " + user)
         const coursesWithInstructors = await Promise.all(courses.map(async (course) => {
             const instructor = await User.findById(course.instructorId).lean();
             return {
@@ -37,7 +39,7 @@ exports.home = async (req, res) => {
         }));
 
         // Render the homepage with FAQs, teachers, and courses
-        res.render('homepage', { faqs, teachers: teacherData, courses: coursesWithInstructors });
+        res.render('homepage', { faqs, teachers: teacherData, courses: coursesWithInstructors, user });
     } catch (error) {
         console.error(error);
         res.status(500).send('Server Error');
@@ -45,16 +47,19 @@ exports.home = async (req, res) => {
 };
 
 // Static Pages
-exports.aboutUs = (req, res) => {
-    res.render('about', { title: 'About Us' });
+exports.aboutUs =async (req, res) => {
+    const user = req.session.user ? await User.findById(req.session.user.id) : null;
+    res.render('about', { title: 'About Us', user });
 };
 
-exports.contact = (req, res) => {
-    res.render('contact');
+exports.contact = async(req, res) => {
+    const user = req.session.user ? await User.findById(req.session.user.id) : null;
+    res.render('contact', {user});
 };
 exports.getAllFAQs = async (req, res) => {
     try {
         const faqs = await FAQ.find().lean(); // Fetch all FAQs from the database
+        console.log(faqs);
         res.status(200).json(faqs); // Send FAQs as a JSON response
     } catch (error) {
         console.error(error);
@@ -65,17 +70,20 @@ exports.getAllFAQs = async (req, res) => {
 // Courses and Teachers
 exports.course = async (req, res) => {
     const courses = await Course.find();
-    res.render('courses', { courses });
+    const user = req.session.user ? await User.findById(req.session.user.id) : null;
+    res.render('courses', { courses , user});
 };
 
 exports.teacher = async (req, res) => {
     const teachers = await User.find({ role: 'teacher' });
-    res.render('teacher', { teachers });
+    const user = req.session.user ? await User.findById(req.session.user.id) : null;
+    res.render('teacher', { teachers, user });
 };
 
 exports.faqs = async (req, res) => {
     const faqs = await FAQ.find();
-    res.render('faqs', { faqs });
+    const user = req.session.user ? await User.findById(req.session.user.id) : null;
+    res.render('faqs', { faqs, user });
 };
 
 // User Authentication
@@ -116,7 +124,7 @@ exports.handleLogin = async (req, res) => {
             return res.status(400).send('Invalid email or password');
         }
 
-        req.session.user = { id: user._id, name: user.name, role: user.role };
+        req.session.user = { id: user._id, name: user.name, role: user.role ,isVerified:user.isVerified, institution:user.institution ,email:user.email };
         res.redirect('/dashboard');
     } catch (error) {
         console.error(error);
@@ -139,6 +147,8 @@ exports.showDashboard = async (req, res) => {
         name: user.name,
         role: user.role,
         email: user.email,
+        isVerified: user.isVerified,
+        institution:user.institution,
         // Add any other relevant user data
     };
   
@@ -150,8 +160,7 @@ exports.showDashboard = async (req, res) => {
   
         case 'teacher':
           // Fetch courses assigned to the teacher
-          const teacherCourses = await Course.find({ created_by: user._id }); // Assuming created_by field for courses
-          return res.render('teacherDashboard', { user, courses: teacherCourses });
+          return res.redirect('/teacher/dashboard');
   
         case 'student':
           // Fetch courses the student is enrolled in
@@ -189,62 +198,5 @@ exports.updateProfile = async (req, res) => {
     res.render('courses', { courses });
 };
 
-exports.enrollInCourse = async (req, res) => {
-  const userId = req.session.user.id;
-  console.log(userId)
-  const courseId = req.params.courseId;
-
-  try {
-      const enrollment = new Enrollment({ courseId, userId });
-      await enrollment.save();
-
-      // Add the student ID to the course's enrolledStudents array
-      await Course.findByIdAndUpdate(courseId, {
-          $addToSet: { enrolledStudents: userId } // Use $addToSet to avoid duplicates
-      });
-
-      res.redirect('/courses'); // Redirect to courses page after enrollment
-  } catch (error) {
-      console.error('Error enrolling in course:', error);
-      res.status(500).send('Enrollment failed');
-  }
-};
-
-exports.enrollInCourse = async (req, res) => {
-  console.log("Enrollment request received for course ID:", req.params.courseId);
-  const userId = req.session.user.id; // Ensure this ID is correct
-  const courseId = req.params.courseId;
-
-  try {
-      // Check if the student is already enrolled in the course
-      const existingEnrollment = await Enrollment.findOne({ courseId, user_id: userId });
-      
-      if (existingEnrollment) {
-          return res.status(400).send('You are already enrolled in this course.');
-      }
-
-      const enrollment = new Enrollment({
-          courseId,
-          user_id: userId,
-          enrollment_date: new Date(),
-          progress: 0,
-          completionStatus: 'in-progress',
-          certificateLink: null 
-      });
-
-      // Save enrollment data
-      await enrollment.save();
-
-      // Update the course document to append the user's ID to the enrolledStudents array
-      await Course.findByIdAndUpdate(courseId, {
-          $addToSet: { enrolledStudents: userId }
-      });
-
-      res.redirect('/courses'); // Redirect to courses page after enrollment
-  } catch (error) {
-      console.error('Error enrolling in course:', error);
-      res.status(500).send('Enrollment failed');
-  }
-};
 
 

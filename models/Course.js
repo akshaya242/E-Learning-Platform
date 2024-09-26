@@ -16,6 +16,7 @@ const courseSchema = new Schema({
   created_at: { type: Date, default: Date.now },
   updated_at: { type: Date, default: Date.now },
   image: { type: String },
+  cost: { type: Number, default: 0 } 
 });
 
 // Category Schema
