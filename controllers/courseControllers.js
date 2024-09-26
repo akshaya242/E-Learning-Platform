@@ -190,3 +190,24 @@ try{
 }
 
 }
+
+// Unenroll from course controller
+exports.unenrollFromCourse = async (req, res) => {
+  try {
+      // Get course ID from request params
+      const courseId = req.params.courseId;
+      // Get logged-in user ID (assuming it's available in req.user)
+      const userId = req.session.user.id
+      console.log("here: "+ courseId);
+      console.log("here: "+ userId)
+      // Delete the enrollment for the specified course and user
+      await Enrollment.deleteOne({ courseId: courseId, user_id: userId });
+
+      // Redirect the user back to the dashboard after successful unenrollment
+      res.redirect('/dashboard');
+  } catch (error) {
+      console.error('Error unenrolling from course:', error);
+      // Handle the error, possibly redirect to an error page or show an error message
+      res.status(500).send('An error occurred while trying to unenroll from the course.');
+  }
+};

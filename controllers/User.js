@@ -157,7 +157,7 @@ exports.showDashboard = async (req, res) => {
 
       switch (user.role) {
         case 'admin':
-          return res.redirect('/admin'); // Redirect admin to their dashboard
+          return res.redirect('/admin/dashboard'); // Redirect admin to their dashboard
   
         case 'teacher':
           // Fetch courses assigned to the teacher

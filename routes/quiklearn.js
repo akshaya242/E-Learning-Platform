@@ -45,5 +45,6 @@ router.post('/create-course', isAuthenticated, checkUserRole('teacher'), courseC
 // router.get('/course/:courseId', courseControllers.createSectionsForCourse);
 
 router.get('/displaycourse/:courseId',courseControllers.displaycourse);
+router.get('/unenroll/:courseId', courseControllers.unenrollFromCourse)
 
 module.exports = router;
