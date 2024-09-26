@@ -298,7 +298,7 @@
 <div class="navbar">
     <h1>Admin Dashboard</h1>
     <div class="nav-right">
-        <i class="fa-solid fa-hat-cowboy fa-beat-fade fa-lg" style="color: #191a1a;"></i>
+        <h2 ><strong> Admin : </strong></h2>
         <h2><%= login.name %></h2>
         <form action="/logout" method="POST" style="margin: 0;">
             <button class="logout-btn">
@@ -314,6 +314,8 @@
     <h2>Menu</h2>
     <a href="/admin/Dashboard" class="active"><i class="fas fa-users"></i> Users</a>
     <a href="/admin/Course"><i class="fas fa-book"></i> Courses</a>
+    <a href="/admin/Overview"><i class="fas fa-chart-pie"></i> Overview
+    </a>
 </div>
 
 <!-- Main Content Section -->
@@ -322,10 +324,9 @@
         <!-- Users Section -->
         <div class="section" id="users">
             <!-- Heading and Button Container -->
-            <div class="header">
-                <h2 style="display: inline-block;">Users</h2>
-                <button style="background-color: #0056b3;" onclick="toggleAddForm()"><i class="fas fa-user-plus"></i>  Add User</button>
-            </div>
+      
+                <h2>Users <button style="background-color: #2ee10a; margin-left:80%;" onclick="toggleAddForm()"><i class="fas fa-user-plus"></i>  Add User</button></h2>
+    
 
             <!-- Add New User form (Initially hidden) -->
             <div class="add-form" id="add-form" style="display: none;">

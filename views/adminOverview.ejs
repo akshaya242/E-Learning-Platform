@@ -1,0 +1,280 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" integrity="sha512-Kc323vGBEqzTmouAECnVceyQqyqdsSiqLQISBL29aUW4U/M7pSPA/gEUZQqv1cwx4OnYxTxve5UMg5GT6L4JJg==" crossorigin="anonymous" referrerpolicy="no-referrer" />
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f6f9;
+            color: #333;
+        }
+
+        /* Navigation Bar */
+        .navbar {
+            width: 100%;
+            background-color: #a7d1fe;
+            position: fixed;
+            top: 0;
+            left: 0;
+            padding: 15px;
+            z-index: 1000;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            justify-content: space-between; /* Elements on both ends */
+            align-items: center;
+            color: white;
+        }
+
+        .navbar h1 {
+            margin: 0;
+            font-size: 24px;
+            font-weight: 500;
+        }
+
+        .navbar .nav-right {
+            display: flex;
+            align-items: center;
+            gap: 20px; /* Space between admin name and logout button */
+            margin-right: 20px; /* Adjusts right alignment */
+        }
+
+        .navbar .nav-right h2 {
+            margin: 0;
+            font-size: 18px;
+            font-weight: 400;
+        }
+
+        .navbar .logout-btn {
+            background-color: #f44336;
+            color: white;
+            padding: 8px 16px;
+            font-size: 14px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .navbar .logout-btn:hover {
+            background-color: #d32f2f;
+        }
+
+        .logout-btn i {
+            margin-right: 8px; /* Adds space between icon and text */
+        }
+
+        /* Sidebar styles */
+        .sidebar {
+            position: fixed;
+            top: 60px;
+            left: 0;
+            width: 250px;
+            height: calc(100% - 60px);
+            background-color: #343a40;
+            padding: 20px;
+            box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+        }
+
+        .sidebar h2 {
+            color: white;
+            text-align: center;
+            margin-bottom: 30px;
+            font-size: 22px;
+        }
+
+        .sidebar a {
+            color: #adb5bd;
+            display: block;
+            padding: 15px;
+            text-decoration: none;
+            font-size: 18px;
+            margin-bottom: 10px;
+            transition: background 0.3s, color 0.3s;
+        }
+
+        .sidebar a:hover, .sidebar .active {
+            background-color: #007bff;
+            color: white;
+        }
+
+        /* Main content layout */
+        .main-content {
+            margin-left: 270px; /* Sidebar width + some margin */
+            margin-top: 80px; /* To accommodate navbar */
+            padding: 20px;
+        }
+
+        .dashboard {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 20px; /* Added margin for spacing below navbar */
+        }
+
+        .card {
+            flex: 1;
+            min-width: 250px; /* Minimum width for responsiveness */
+            background-color: #ffffff;
+            border-radius: 10px;
+            padding: 20px;
+            box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1, h2 {
+            color: #495057;
+        }
+
+        h2 {
+            font-size: 24px;
+            border-bottom: 2px solid #007bff;
+            padding-bottom: 10px;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            margin-top: 40px;
+            margin-bottom: 20px;
+            font-size: 20px;
+            color: #495057;
+        }
+
+        /* Chart styling */
+        canvas {
+            width: 100%;
+            max-width: 600px; /* Max width for responsive design */
+            margin: 0 auto; /* Centering the chart */
+            border-radius: 8px;
+            background-color: #ffffff; /* Background color for contrast */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+    </style>
+</head>
+<body>
+
+<!-- Navbar Section -->
+<div class="navbar">
+    <h1>Admin Dashboard</h1>
+    <div class="nav-right">
+        <h2><strong> Admin : </strong></h2>
+        <h2><%= login.name %></h2>
+        <form action="/logout" method="POST" style="margin: 0;">
+            <button class="logout-btn">
+                <i class="fas fa-sign-out-alt"></i> Logout
+            </button>
+        </form>
+    </div>
+</div>
+
+<!-- Sidebar Section -->
+<div class="sidebar">
+    <h2>Menu</h2>
+    <a href="/admin/Dashboard" ><i class="fas fa-users"></i> Users</a>
+    <a href="/admin/Course"><i class="fas fa-book"></i> Courses</a>
+    <a href="/admin/Overview" class="active"><i class="fas fa-chart-pie"></i> Overview</a>
+</div>
+
+<!-- Main Content Section -->
+<div class="main-content">
+    <div class="dashboard">
+        <div class="card">
+            <h2>Total Courses</h2>
+            <p><%= totalCourses %></p>
+        </div>
+        <div class="card">
+            <h2>Total Users</h2>
+            <p><%= totalUsers %></p>
+        </div>
+        <div class="card">
+            <h2>Total Teachers</h2>
+            <p><%= totalTeachers %></p>
+        </div>
+        <div class="card">
+            <h2>Total Students</h2>
+            <p><%= totalStudents %></p>
+        </div>
+        <div class="card">
+            <h2>Total Enrollments</h2>
+            <p><%= totalEnrollments %></p>
+        </div>
+        <div class="card">
+            <h2>Average Course Rating</h2>
+            <p><%= avgCourseRating.toFixed(2) %></p>
+        </div>
+    </div>
+
+    <h3>User Distribution by Role</h3>
+    <canvas id="userDistributionChart"></canvas>
+
+    <h3>Popular Courses</h3>
+    <canvas id="popularCoursesChart"></canvas>
+
+    <h3>Monthly Enrollments</h3>
+    <canvas id="monthlyEnrollmentsChart"></canvas>
+</div>
+
+<script>
+    // User Distribution Chart
+    const userDistributionData = <%- JSON.stringify(userDistribution) %>;
+    const roles = userDistributionData.map(data => data._id);
+    const roleCounts = userDistributionData.map(data => data.count);
+    
+    const userDistributionCtx = document.getElementById('userDistributionChart').getContext('2d');
+    new Chart(userDistributionCtx, {
+        type: 'pie',
+        data: {
+            labels: roles,
+            datasets: [{
+                label: 'Users by Role',
+                data: roleCounts,
+                backgroundColor: ['#ff6384', '#36a2eb', '#cc65fe']
+            }]
+        }
+    });
+
+    // Popular Courses Chart
+    const popularCourses = <%- JSON.stringify(popularCourses) %>;
+    const courseTitles = popularCourses.map(course => course.title);
+    const enrollments = popularCourses.map(course => course.studentsEnrolled.length);
+
+    const popularCoursesCtx = document.getElementById('popularCoursesChart').getContext('2d');
+    new Chart(popularCoursesCtx, {
+        type: 'bar',
+        data: {
+            labels: courseTitles,
+            datasets: [{
+                label: 'Enrollments',
+                data: enrollments,
+                backgroundColor: '#36a2eb'
+            }]
+        }
+    });
+
+    // Monthly Enrollments Chart
+    const monthlyEnrollmentsData = <%- JSON.stringify(monthlyEnrollments) %>;
+    const months = monthlyEnrollmentsData.map(e => `${e._id.month}-${e._id.year}`);
+    const enrollmentsCount = monthlyEnrollmentsData.map(e => e.count);
+
+    const monthlyEnrollmentsCtx = document.getElementById('monthlyEnrollmentsChart').getContext('2d');
+    new Chart(monthlyEnrollmentsCtx, {
+        type: 'line',
+        data: {
+            labels: months,
+            datasets: [{
+                label: 'Monthly Enrollments',
+                data: enrollmentsCount,
+                borderColor: '#ff6384',
+                fill: false
+            }]
+        }
+    });
+</script>
+
+</body>
+</html>

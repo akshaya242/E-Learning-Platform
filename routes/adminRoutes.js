@@ -7,11 +7,7 @@ const { ensureAdmin } = require('../middlewares/auth');
 const { User } = require('../models/User');
 
 router.get('/admin/dashboard', adminController.getDashboard);
-router.get('/admin/course', adminController.getCourse);
 router.post('/create-course', ensureAdmin, adminController.createCourse);
-// router.get('/admin',adminController.getDashboard);
-
-
 router.post('/admin/editUser/:id', async (req, res) => {
     const userId = req.params.id;
     const { name, email, role } = req.body;
@@ -64,12 +60,22 @@ router.post('/admin/deleteUser/:id', async (req, res) => {
     const userId = req.params.id;
     try {
         await User.findByIdAndDelete(userId);
+        await Enrollment.deleteMany({courseId: userId });
         res.redirect('/admin/Dashboard'); // Redirect back to the users page
     } catch (error) {
         console.error(error);
         res.status(500).send('Error deleting user');
     }
 });
+//This is for Courses
+router.get('/admin/Course', adminController.getCourses);
+router.post('/admin/Course/add', adminController.addCourse);
+router.post('/admin/Course/edit/:id', adminController.editCourse);
+router.post('/admin/Course/delete/:id', adminController.deleteCourse);
+router.get('/admin/Course/delete/:id', adminController.deleteCourse); 
+
+//This is for overview section
+router.get('/admin/Overview', adminController.getOverview);
 
 
 module.exports = router;

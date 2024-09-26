@@ -35,5 +35,6 @@ router.get('/create-course',isAuthenticated,courseControllers.showCourseCreation
 router.post('/create-course', courseControllers.createCourseInfo);
 // router.get('/course/:courseId', courseControllers.createSectionsForCourse);
 
+router.get('/displaycourse/:courseId',courseControllers.displaycourse);
 
 module.exports = router;
