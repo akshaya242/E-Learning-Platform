@@ -137,12 +137,12 @@
             <div class="leaves">
                 <h2>Teachers on Spotlight</h2>
         
-                
-                <<% if (user) { %>
+
+                <% if (user) { %>
                     <% user.filter(user => user.role === 'teacher').forEach(teacher => { %>
                         <div class="teacher">
                             <div class="profile-photo">
-                                <img src="<%= teacher.photo || '/images/default-teacher.png' %>" alt="Teacher Image">
+                                <img src="/uploads/images/Teacher.jpg" alt="Teacher Image" style="width: 100%; height: auto; object-fit: cover;">
                             </div>
                             <div class="info">
                                 <h3><%= teacher.name %></h3>
