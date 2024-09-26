@@ -10,6 +10,14 @@ function isAuthenticated(req, res, next) {
     }
     res.redirect('/login');
 }
+function checkUserRole(role) {
+    return function (req, res, next) {
+        if (req.session && req.session.user && req.session.user.role === role) {
+            return next();
+        }
+        res.status(403).send('Access denied.'); // Or redirect if needed
+    };
+}
 
 // Public Routes
 router.get('/', controllers.home);
@@ -30,9 +38,10 @@ router.post('/enroll/:courseId', isAuthenticated, courseControllers.enrollInCour
 // Profile
 router.get('/profile', isAuthenticated, controllers.showProfilePage);
 router.post('/profile', isAuthenticated, controllers.updateProfile);
+// Middleware to check if the user is authenticated and has the 'teacher' role
+router.get('/create-course', isAuthenticated, checkUserRole('teacher'), courseControllers.showCourseCreationPage);
+router.post('/create-course', isAuthenticated, checkUserRole('teacher'), courseControllers.createCourseInfo);
 
-router.get('/create-course',isAuthenticated,courseControllers.showCourseCreationPage);
-router.post('/create-course', courseControllers.createCourseInfo);
 // router.get('/course/:courseId', courseControllers.createSectionsForCourse);
 
 router.get('/displaycourse/:courseId',courseControllers.displaycourse);
