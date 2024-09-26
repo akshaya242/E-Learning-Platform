@@ -135,7 +135,7 @@
           padding: 10px;
           margin: 10px;
           width: 360px; /* Set a fixed width for the course container */
-          height: 350px; /* Set a fixed height for the course container */
+          height: 380px; /* Set a fixed height for the course container */
           box-sizing: border-box;
           cursor: pointer;
           text-align: center;
@@ -380,7 +380,7 @@
         <a href="#">Dashboard</a>
         <a href="/cart">My Cart</a>
         <a href="#">Favorites</a>
-        <a href="#">Notes</a>
+        <a href="/notes">Notes</a>
     </div>
 
 
@@ -402,7 +402,10 @@
           <label><input type="checkbox" name="category" value="Arts"> Arts</label>
       </div>
 
-      <button type="submit">Apply Filters</button>
+      <button type="submit" style="background-color: #8a9b9c; height: 50px; width: 50px; margin-bottom: 3%; display: flex; align-items: center; justify-content: center; border: none; border-radius: 50%; color: white; cursor: pointer;font-size: 25px;">
+        <i class="fa fa-filter"></i>
+    </button>
+    
   </form>
 
   <div id="courses-container">
@@ -514,7 +517,7 @@
         checkboxes.forEach(checkbox => categories.push(checkbox.value));
 
         // Construct the URL
-        const url = new URL(`/api/courses/filtered`, window.location.origin);
+        const url = new URL('/api/courses/filtered', window.location.origin);
         if (search) url.searchParams.append('search', search);
         if (categories.length > 0) url.searchParams.append('category', categories);
 
