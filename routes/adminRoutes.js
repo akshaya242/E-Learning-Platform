@@ -6,9 +6,10 @@ const adminController = require('../controllers/adminControllers');
 const { ensureAdmin } = require('../middlewares/auth');
 const { User } = require('../models/User');
 
-router.get('/admin/dashboard', adminController.getDashboard);
+
+router.get('/admin/dashboard',ensureAdmin, adminController.getDashboard);
 router.post('/create-course', ensureAdmin, adminController.createCourse);
-router.post('/admin/editUser/:id', async (req, res) => {
+router.post('/admin/editUser/:id', ensureAdmin,async (req, res) => {
     const userId = req.params.id;
     const { name, email, role } = req.body;
 
@@ -30,7 +31,7 @@ router.post('/admin/editUser/:id', async (req, res) => {
 });
 
 
-router.post('/admin/addUser', async (req, res) => {
+router.post('/admin/addUser',ensureAdmin, async (req, res) => {
     const { name, email, password, role } = req.body;
     
     try {
@@ -56,7 +57,7 @@ router.post('/admin/addUser', async (req, res) => {
     }
 });
 
-router.post('/admin/deleteUser/:id', async (req, res) => {
+router.post('/admin/deleteUser/:id', ensureAdmin,async (req, res) => {
     const userId = req.params.id;
     try {
         await User.findByIdAndDelete(userId);
@@ -68,14 +69,14 @@ router.post('/admin/deleteUser/:id', async (req, res) => {
     }
 });
 //This is for Courses
-router.get('/admin/Course', adminController.getCourses);
-router.post('/admin/Course/add', adminController.addCourse);
-router.post('/admin/Course/edit/:id', adminController.editCourse);
-router.post('/admin/Course/delete/:id', adminController.deleteCourse);
-router.get('/admin/Course/delete/:id', adminController.deleteCourse); 
+router.get('/admin/Course',ensureAdmin, adminController.getCourses);
+router.post('/admin/Course/add',ensureAdmin, adminController.addCourse);
+router.post('/admin/Course/edit/:id',ensureAdmin, adminController.editCourse);
+router.post('/admin/Course/delete/:id',ensureAdmin, adminController.deleteCourse);
+router.get('/admin/Course/delete/:id',ensureAdmin, adminController.deleteCourse); 
 
 //This is for overview section
-router.get('/admin/Overview', adminController.getOverview);
+router.get('/admin/Overview',ensureAdmin, adminController.getOverview);
 
 
 module.exports = router;
