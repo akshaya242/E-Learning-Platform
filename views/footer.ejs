@@ -5,85 +5,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
     <link rel="stylesheet" href="./style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Include FontAwesome for icons -->
-    <style>
-        /* Embedded CSS for styling */
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            padding: 0;
-            background-color: #f4f4f4; /* Match body background */
-        }
-        footer {
-            background-color: #333;
-            color: white;
-            padding: 40px 20px;
-            display: flex;
-            flex-direction: column;
-            justify-content: space-between;
-        }
-        .footer-innerdiv1 {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 20px;
-        }
-        .footer-ul {
-            list-style: none;
-            padding: 0;
-        }
-        .footer-li {
-            margin: 5px 0;
-        }
-        .footer-li a {
-            color: white; /* Link color */
-            text-decoration: none; /* Remove underline */
-            transition: color 0.3s; /* Transition for hover effect */
-        }
-        .footer-li a:hover {
-            color: #4CAF50; /* Hover color */
-        }
-        .English-btn {
-            background-color: #4CAF50;
-            color: white;
-            border: none;
-            padding: 10px 15px;
-            cursor: pointer;
-            transition: background-color 0.3s;
-            font-size: 1em;
-        }
-        .English-btn:hover {
-            background-color: #45a049; /* Darker green on hover */
-        }
-        .footer-innerdiv2 {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-top: 1px solid #444; /* Divider line */
-            padding-top: 10px;
-        }
-        .copyright-span {
-            margin-left: 20px;
-            color: #686f7a;
-            font-size: 0.9em; /* Smaller font size for copyright */
-        }
-        .ullist-right {
-            list-style: none;
-            display: flex;
-            padding: 0;
-            margin: 0;
-        }
-        .r-li-itm {
-            margin-left: 20px;
-            color: #686f7a; /* Change color to match footer */
-            cursor: pointer; /* Pointer cursor */
-        }
-        .r-li-itm:hover {
-            text-decoration: underline; /* Underline on hover */
-        }
-    </style>
 </head>
+
 <body>
     <footer id="deraj-ab">
+ 
         <div class="footer-innerdiv1">
             <div class="col1">
                 <ul class="footer-ul">
@@ -109,26 +35,36 @@
             <div class="col4">
                 <ul class="footer-ul" style="margin: 0px">
                     <li class="footer-li">
-                        <a href="/adminlogin">
-                            <button class="English-btn">
-                                <span style="margin-left:10px; margin-right: 15px; padding: 5px;">
-                                    <i class="fas fa-globe-asia" style="margin-right: 10px;"></i>Admin Login</span>
-                                <i class="fas fa-angle-up"></i>
-                            </button>
-                        </a>
+                       <a href="/adminlogin">
+                        <button class="English-btn">
+                            <span style="margin-left:10px; margin-right: 15px; padding: 5px;">
+                                <i class="fas fa-globe-asia" style="margin-right: 10px;"></i>Admin Login</span>
+                                 
+                            <i class="fas fa-angle-up"></i>
+                        </button>
+                       </a>
                     </li>
                 </ul>
             </div>
         </div>
-
+    
+    
+    
+    
+    
+        <!-- LAST DIV -->
+    
         <div class="footer-innerdiv2">
+            <!-- Div 1  -->
             <div class="left-contlist">
                 <a href="/">
                     <img src="images/logo2.svg" alt="QuikLearn" width="110px">
                 </a>
-                <span class="copyright-span">Copyright © 2024 QuikLearn, Inc.</span>
+                <span class="copyright-span" style="margin-left: 20px; color: #686f7a">Copyright © 2024 QuikLearn, Inc.</span>
             </div>
-
+    
+    
+            <!-- Div 2 -->
             <div class="right-contlist">
                 <ul class="ullist-right">
                     <li class="r-li-itm">Terms</li>
@@ -136,7 +72,8 @@
                     <li class="r-li-itm">Intellectual Property</li>
                 </ul>
             </div>
+    
         </div>
-    </footer>
+    
 </body>
 </html>

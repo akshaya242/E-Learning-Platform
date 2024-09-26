@@ -11,7 +11,8 @@ exports.home = async (req, res) => {
     try {
         // Retrieve 3 FAQs from the database
         const faqs = await FAQ.find().limit(3).lean(); // Use .lean() for better performance
-
+        const userId =(req.session.user) ? req.session.user.id : null;
+        const user = await User.findById(userId);
         // Retrieve 3 courses from the database
         const courses = await Course.find().limit(3).lean();
 
@@ -37,7 +38,7 @@ exports.home = async (req, res) => {
         }));
 
         // Render the homepage with FAQs, teachers, and courses
-        res.render('homepage', { faqs, teachers: teacherData, courses: coursesWithInstructors });
+        res.render('homepage', { faqs, teachers: teacherData, courses: coursesWithInstructors, user });
     } catch (error) {
         console.error(error);
         res.status(500).send('Server Error');
@@ -279,6 +280,7 @@ exports.enrollInCourse = async (req, res) => {
 };
 exports.showCart = async (req, res) => {
     const userId = req.session.user ? req.session.user.id : null;
+    const user = await User.findById(userId);
     if (!userId) {
         return res.status(400).send('User not logged in');
     }
@@ -315,7 +317,7 @@ exports.showCart = async (req, res) => {
         const totalCost = enrolledCourses.reduce((total, course) => total + course.cost, 0);
 
         // Render the cart.ejs and pass the enrolled courses and total cost to it
-        res.render('cart', { enrolledCourses, totalCost });
+        res.render('cart', { enrolledCourses, totalCost, user });
     } catch (error) {
         console.error('Error fetching enrolled courses:', error.message, error.stack);
         res.status(500).send('Server error');
