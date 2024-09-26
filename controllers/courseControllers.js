@@ -168,10 +168,11 @@ exports.displaycourse = async (req,res) => {
 try{
   const login = req.session.user;
   const courseId = req.params.courseId;
-
+  console.log(courseId);
+  // const idforcourse = await Enrollment.find(courseId);
     // Find the course by ID and populate the sections
     const course = await Course.findById(courseId).populate('sectionIds').exec();
-    console.log(course.instructorId);
+    
     const courseSections = await Section.find({ courseId }).exec();
     const teacher = await User.findOne(course.instructorId);
     // For simplicity, set the first section as the current section
