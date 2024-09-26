@@ -222,4 +222,37 @@ exports.getOverview = async (req,res)  => {
         console.error("Error loading admin dashboard:", error);
         res.status(500).send("Server Error");
     }
-}
+};
+
+exports.viewSection = async (req, res) => {
+    try {
+        const login = req.session.login;
+        const courseId = req.params.id;
+        const courseSections = await Section.find({ courseId }).exec();
+        res.render('adminSection',{ courseSections }); // Redirect after successful edit
+    } catch (error) {
+        res.status(500).send('Error updating course.');
+    }
+};
+exports.editedSection = async (req, res) => {
+    try {
+        const { title, description, duration, category, custom_category, created_by } = req.body;
+
+        // Use custom category if provided
+        const finalCategory = category === 'other' ? custom_category : category;
+
+        await Course.findByIdAndUpdate(req.params.id, {
+            title,
+            description,
+            duration,
+            category: finalCategory,
+            created_by,
+            updated_at: Date.now(),
+            image: req.file ? req.file.path : undefined // Assuming image upload is handled
+        });
+
+        res.redirect('/admin/Course'); // Redirect after successful edit
+    } catch (error) {
+        res.status(500).send('Error updating course.');
+    }
+};

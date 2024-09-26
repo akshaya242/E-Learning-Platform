@@ -5,7 +5,10 @@ const bcrypt = require('bcrypt')
 const adminController = require('../controllers/adminControllers');
 const { ensureAdmin } = require('../middlewares/auth');
 const { User } = require('../models/User');
+const { Course } = require('../models/Course');
+const Sections  = require('../models/Sections');
 
+router.use(express.urlencoded({ extended: true }));
 
 router.get('/admin/dashboard',ensureAdmin, adminController.getDashboard);
 router.post('/create-course', ensureAdmin, adminController.createCourse);
@@ -75,8 +78,114 @@ router.post('/admin/Course/edit/:id',ensureAdmin, adminController.editCourse);
 router.post('/admin/Course/delete/:id',ensureAdmin, adminController.deleteCourse);
 router.get('/admin/Course/delete/:id',ensureAdmin, adminController.deleteCourse); 
 
+
 //This is for overview section
 router.get('/admin/Overview',ensureAdmin, adminController.getOverview);
+
+// router.post('/admin/Section/add', async (req, res) => {
+//     const { courseId, title, description, video, quiz } = req.body;
+
+//     try {
+//         const newSection = new Section({
+//             courseId,
+//             title,
+//             description,
+//             video,
+//             quiz
+//         });
+
+//         await newSection.save();
+
+//         // Add the new section ID to the course
+//         await Course.findByIdAndUpdate(courseId, {
+//             $push: { sectionIds: newSection._id }
+//         });
+
+//         res.redirect(`/admin/Course/${courseId}`);
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).send('Server Error');
+//     }
+// });
+
+// // Edit an existing section
+// router.post('/admin/Section/edit/:sectionId', async (req, res) => {
+//     const { sectionId } = req.params;
+//     const { title, description, video, quiz } = req.body;
+
+//     try {
+//         const updatedSection = await Section.findByIdAndUpdate(sectionId, {
+//             title,
+//             description,
+//             video,
+//             quiz
+//         }, { new: true });
+
+//         res.redirect(`/admin/Course/${updatedSection.courseId}`);
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).send('Server Error');
+//     }
+// });
+
+// // Delete a section from a course
+// router.post('/admin/Section/delete/:sectionId', async (req, res) => {
+//     const { sectionId } = req.params;
+
+//     try {
+//         const section = await Section.findByIdAndDelete(sectionId);
+
+//         // Remove the section from the course
+//         await Course.findByIdAndUpdate(section.courseId, {
+//             $pull: { sectionIds: sectionId }
+//         });
+
+//         res.redirect(`/admin/Course/${section.courseId}`);
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).send('Server Error');
+//     }
+// });
+
+
+router.get('/admin/Course/:courseId/sections', async (req, res) => {
+    try {
+        const course = await Course.findById(req.params.courseId).populate('sectionIds');
+        console.log(course.sectionIds); // Log sections to ensure they are populated
+        res.render('adminSection', { course });
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Server Error');
+    }
+});
+
+// Route to handle updating a section
+router.post('/admin/Section/update/:sectionId', async (req, res) => {
+    const { sectionId } = req.params;
+    const { title, description, video, quiz } = req.body;
+
+    try {
+        const updatedSection = await Sections.findByIdAndUpdate(sectionId, {
+            title,
+            description,
+            video: {
+                title: video.title,
+                videoUrl: video.videoUrl,
+                duration: video.duration
+            },
+            quiz: {
+                title: quiz.title,
+                questions: JSON.parse(quiz.questions), // Assuming questions and answers are arrays
+                answers: JSON.parse(quiz.answers)
+            }
+        }, { new: true });
+
+        res.redirect(`/admin/Course/${updatedSection.courseId}/sections`);
+    } catch (error) {
+        console.error(error);
+        res.status(500).send('Server Error');
+    }
+});
 
 
 module.exports = router;
