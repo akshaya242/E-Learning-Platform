@@ -2,6 +2,7 @@ const express = require('express');
 const path = require('path');
 const mongoose = require('mongoose');
 const session = require('express-session');
+const fileUpload = require('express-fileupload');
 
 const app = express();
 const route = require('./routes/quiklearn'); // Route for main application
@@ -21,10 +22,11 @@ const connectMongoDB = async (uri) => {
 
 // Express middleware setup
 app.use(express.urlencoded({ extended: true }));
-app.use(express.json());
-app.use(express.static(path.join(__dirname, "public"))); // Serve static files
-
-// Set the view engine
+app.use(fileUpload());
+// Serve static files
+app.use('/uploads/images', express.static(path.join(__dirname, 'uploads/images')));
+app.use(express.static(path.join(__dirname, "public")));
+// Set the view engine (if you're using one)
 app.set('view engine', 'ejs');
 app.set('views', path.join(__dirname, 'views'));
 
