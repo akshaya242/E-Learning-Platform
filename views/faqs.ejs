@@ -11,68 +11,43 @@
 
   <%- include("header.ejs") %>
 
-<header class="cd-header flex flex-column flex-center">
-  <div class="text-component text-center">
+
+  <div class="cd-header flex flex-column flex-center">
     <h1>Frequenty Asked Questions</h1>
   </div>
-</header>
+
 
 <section class="cd-faq js-cd-faq container max-width-md margin-top-lg margin-bottom-lg">
 	<ul class="cd-faq__categories">
-		<li><a class="cd-faq__category cd-faq__category-selected truncate" href="#basics">General Questions</a></li>
+		
 		<li><a class="cd-faq__category truncate" href="#mobile">Course Information</a></li>
-		<li><a class="cd-faq__category truncate" href="#account">Learning Experience</a></li>
 		<li><a class="cd-faq__category truncate" href="#payments">Payment and Refunds</a></li>
 		<li><a class="cd-faq__category truncate" href="#privacy">Support</a></li>
 		<li><a class="cd-faq__category truncate" href="#delivery">Community and Collaboration</a></li>
+		<li><a class="cd-faq__category cd-faq__category-selected truncate" href="#basics">General Questions</a></li>
 
 	</ul> <!-- cd-faq__categories -->
 
-  
-	<div class="cd-faq__items">
-		<ul id="basics" class="cd-faq__group">
-			<li class="cd-faq__title"><h2>General Questions</h2></li>
-      <% for(i = 0;i < 3;i++) { %>
-			<li class="cd-faq__item">
-				<a class="cd-faq__trigger" href="#0"><span><%= faqs[i].question %></span></a>
-				<div class="cd-faq__content">
-          <div class="text-component">
-            <p><%= faqs[i].answer %></</p>
-          </div>
-				</div> <!-- cd-faq__content -->
-			</li>
-      <% }; %>
-	</div> <!-- cd-faq__items -->
+ 
+	
 
   <div class="cd-faq__items"></div>
 		<ul id="basics" class="cd-faq__group">
+		<li class="cd-faq__title"><h2>Course Information</h2></li>
       <% for(i = 3;i < 6;i++) { %>
-			<li class="cd-faq__title"><h2>Course Information</h2></li>
+			
 			<li class="cd-faq__item">
 				<a class="cd-faq__trigger" href="#0"><span><%= faqs[i].question %></span></a>
 				<div class="cd-faq__content">
           <div class="text-component">
-            <p><%= faqs[i].answer %></</p>
+            <p><%= faqs[i].answer %></p>
           </div>
 				</div> <!-- cd-faq__content -->
 			</li>
       <% }; %>
 	</div> <!-- cd-faq__items -->
 
-  <div class="cd-faq__items">
-		<ul id="basics" class="cd-faq__group">
-			<li class="cd-faq__title"><h2>Learning Experience</h2></li>
-      <% for(i = 6;i < 8;i++) { %>
-			<li class="cd-faq__item">
-				<a class="cd-faq__trigger" href="#0"><span><%= faqs[i].question %></span></a>
-				<div class="cd-faq__content">
-          <div class="text-component">
-            <p><%= faqs[i].answer %></</p>
-          </div>
-				</div> <!-- cd-faq__content -->
-			</li>
-      <% }; %>
-	</div> <!-- cd-faq__items -->
+ 
 
   <div class="cd-faq__items"></div>
 		<ul id="basics" class="cd-faq__group">
@@ -82,7 +57,7 @@
 				<a class="cd-faq__trigger" href="#0"><span><%= faqs[i].question %></span></a>
 				<div class="cd-faq__content">
           <div class="text-component">
-            <p><%= faqs[i].answer %></</p>
+            <p><%= faqs[i].answer %></p>
           </div>
 				</div> <!-- cd-faq__content -->
 			</li>
@@ -97,7 +72,7 @@
 				<a class="cd-faq__trigger" href="#0"><span><%= faqs[i].question %></span></a>
 				<div class="cd-faq__content">
           <div class="text-component">
-            <p><%= faqs[i].answer %></</p>
+            <p><%= faqs[i].answer %></p>
           </div>
 				</div> <!-- cd-faq__content -->
 			</li>
@@ -112,7 +87,22 @@
 				<a class="cd-faq__trigger" href="#0"><span><%= faqs[i].question %></span></a>
 				<div class="cd-faq__content">
           <div class="text-component">
-            <p><%= faqs[i].answer %></</p>
+            <p><%= faqs[i].answer %></p>
+          </div>
+				</div> <!-- cd-faq__content -->
+			</li>
+      <% }; %>
+	</div> <!-- cd-faq__items -->
+
+	<div class="cd-faq__items"></div>
+		<ul id="basics" class="cd-faq__group">
+			<li class="cd-faq__title"><h2>General Questions</h2></li>
+      <% for(i = 0;i < 3;i++) { %>
+			<li class="cd-faq__item">
+				<a class="cd-faq__trigger" href="#0"><span><%= faqs[i].question %></span></a>
+				<div class="cd-faq__content">
+          <div class="text-component">
+            <p><%= faqs[i].answer %></p>
           </div>
 				</div> <!-- cd-faq__content -->
 			</li>

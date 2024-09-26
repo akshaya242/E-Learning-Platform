@@ -3206,26 +3206,20 @@ li:last-child .cd-faq__category {
   }
 }
 .cd-faq__items {
-  position: fixed;
+  position: relative; /* Changed to relative for natural flow in the document */
   z-index: 1;
-  height: 100%;
-  width: 90%;
-  top: 0;
-  right: 0;
+  width: 100%; /* Adjusted to ensure it takes the full width of the container */
   background: hsl(0, 0%, 100%);
   background: var(--cd-color-4);
-  padding: 0 1.25em 1.25em;
   padding: 0 var(--component-padding) var(--space-md);
   overflow: auto;
   -webkit-overflow-scrolling: touch;
   -webkit-backface-visibility: hidden;
   backface-visibility: hidden;
-  -webkit-transform: translateZ(0) translateX(100%);
-  transform: translateZ(0) translateX(100%);
-  transition: -webkit-transform 0.3s;
-  transition: transform 0.3s;
-  transition: transform 0.3s, -webkit-transform 0.3s;
+  transform: none; /* Removed translateX to allow natural stacking */
+  transition: none; /* Removed transition if not necessary */
 }
+
 @media (min-width: 64rem) {
   .cd-faq__items {
     position: static;
@@ -3490,7 +3484,7 @@ body {
   height: 180px;
   height: var(--header-height);
   background-color: hsl(73, 46%, 55%);
-  background-color: var(--cd-color-2);
+  background-color:  var(--color-contrast-lower);
 }
 @media (min-width: 80rem) {
   .cd-header {

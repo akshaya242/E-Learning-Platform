@@ -4,6 +4,7 @@ const { Course } = require('../models/Course');
 
 
 const FAQ = require('../models/FAQ'); // Make sure to import your FAQ model
+const session = require('express-session');
 
 
 // Home Page Controller
@@ -14,7 +15,8 @@ exports.home = async (req, res) => {
 
         // Retrieve 3 courses from the database
         const courses = await Course.find().limit(3).lean();
-
+        const user = req.session.user ? await User.findById(req.session.user.id) : null;
+        console.log("here is the user: " + user)
         const coursesWithInstructors = await Promise.all(courses.map(async (course) => {
             const instructor = await User.findById(course.instructorId).lean();
             return {
@@ -37,7 +39,7 @@ exports.home = async (req, res) => {
         }));
 
         // Render the homepage with FAQs, teachers, and courses
-        res.render('homepage', { faqs, teachers: teacherData, courses: coursesWithInstructors });
+        res.render('homepage', { faqs, teachers: teacherData, courses: coursesWithInstructors, user });
     } catch (error) {
         console.error(error);
         res.status(500).send('Server Error');
@@ -45,12 +47,14 @@ exports.home = async (req, res) => {
 };
 
 // Static Pages
-exports.aboutUs = (req, res) => {
-    res.render('about', { title: 'About Us' });
+exports.aboutUs =async (req, res) => {
+    const user = req.session.user ? await User.findById(req.session.user.id) : null;
+    res.render('about', { title: 'About Us', user });
 };
 
-exports.contact = (req, res) => {
-    res.render('contact');
+exports.contact = async(req, res) => {
+    const user = req.session.user ? await User.findById(req.session.user.id) : null;
+    res.render('contact', {user});
 };
 exports.getAllFAQs = async (req, res) => {
     try {
@@ -66,17 +70,20 @@ exports.getAllFAQs = async (req, res) => {
 // Courses and Teachers
 exports.course = async (req, res) => {
     const courses = await Course.find();
-    res.render('courses', { courses });
+    const user = req.session.user ? await User.findById(req.session.user.id) : null;
+    res.render('courses', { courses , user});
 };
 
 exports.teacher = async (req, res) => {
     const teachers = await User.find({ role: 'teacher' });
-    res.render('teacher', { teachers });
+    const user = req.session.user ? await User.findById(req.session.user.id) : null;
+    res.render('teacher', { teachers, user });
 };
 
 exports.faqs = async (req, res) => {
     const faqs = await FAQ.find();
-    res.render('faqs', { faqs });
+    const user = req.session.user ? await User.findById(req.session.user.id) : null;
+    res.render('faqs', { faqs, user });
 };
 
 // User Authentication
