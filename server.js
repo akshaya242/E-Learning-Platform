@@ -12,10 +12,7 @@ const route3 = require('./routes/adminRoutes'); // Route for admin-related endpo
 // Connect to MongoDB Atlas
 const connectMongoDB = async (uri) => {
     try {
-        await mongoose.connect(uri, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true
-        });
+        await mongoose.connect(uri, {});
         console.log('MongoDB connected');
     } catch (err) {
         console.error('MongoDB connection error:', err);
