@@ -129,10 +129,10 @@
         </div>
 
         <!-- Form for Editing Profile -->
-        <form action="/teacher/updateprofile" method="POST">
+        <form id="editProfileForm" action="/teacher/updateprofile" method="POST">
             <div class="form-group">
                 <label for="name">Name</label>
-                <input type="text" id="name" name="name" value="<%= profile.name %>" required>
+                <input type="text" id="name" name="name" value="<%= login.name %>" required>
             </div>
 
             <div class="form-group">
@@ -161,5 +161,48 @@
             </div>
         </form>
     </div>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            const form = document.getElementById('editProfileForm');
+    
+            form.addEventListener('submit', async function (e) {
+                e.preventDefault(); // Prevent default form submission
+    
+                // Collect form data
+                const formData = new FormData(form);
+                const data = Object.fromEntries(formData.entries());
+    
+                try {
+                    // Send POST request to update profile (fixed the URL to match the form action)
+                    const response = await fetch('/teacher/updateprofile', {
+                        method: 'POST',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(data)
+                    });
+    
+                    // Attempt to parse JSON response
+                    const result = await response.json();
+    
+                    if (response.ok) {
+                        // Profile updated successfully
+                        console.log('Profile updated:', result.profile);
+                        alert('Profile updated successfully!');
+                    } else {
+                        // Handle errors
+                        console.error('Error updating profile:', result.message);
+                        alert(`Error: ${result.message}`);
+                    }
+                } catch (error) {
+                    // Catch network errors, or errors during the fetch
+                    console.error('Fetch error:', error);
+                    alert('Failed to update profile due to a network or server error.');
+                }
+            });
+        });
+    </script>
+    
 </body>
 </html>
