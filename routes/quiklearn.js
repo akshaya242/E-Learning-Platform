@@ -24,7 +24,7 @@ router.get('/teachers', controllers.teacher)
 
 // Dashboard and Courses
 router.get('/dashboard', isAuthenticated, controllers.showDashboard);
-router.get('/courses', isAuthenticated, courseControllers.showCourses);
+router.get('/courses', courseControllers.showCourses);
 router.post('/enroll/:courseId', isAuthenticated, courseControllers.enrollInCourse);
 
 // Profile

@@ -66,7 +66,7 @@ exports.logout = (req, res) => {
 };
 
 exports.showChangePasswordPage = (req, res) => {
-  const user = req.session.user;
+  const user = req.session.user ? req.session.user : null;
   
   if (!user) return res.redirect('/login');  // Ensure the user is logged in
 

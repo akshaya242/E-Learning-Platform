@@ -31,12 +31,13 @@
         <li>
           <a href="/faqs">FAQ</a>
         </li>
-        <li>
-          <a href="/contact">Contact</a>
-        </li>
-        <li>
-          <a href="login">Login</a>
-        </li>
+    
+        <% if (user) { %>
+          <li><a href="/dashboard"><%= user.name %></a></li> <!-- Display user's name -->
+          <li><a href="/logout">Logout</a></li> <!-- Logout option -->
+      <% } else { %>
+          <li><a href="/login">Login</a></li> <!-- Login option -->
+      <% } %>
       </ul>
     </nav>
   </header>
