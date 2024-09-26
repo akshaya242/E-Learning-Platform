@@ -1,8 +1,8 @@
 const bcrypt = require('bcrypt');
 const { User, Profile } = require('../models/User');
 const { Course } = require('../models/Course');
-
-
+const { Enrollment } = require('../models/Enrollment');
+const Billing = require('../models/Billing');  // Adjust the path based on your project structure
 const FAQ = require('../models/FAQ'); // Make sure to import your FAQ model
 
 
@@ -11,7 +11,8 @@ exports.home = async (req, res) => {
     try {
         // Retrieve 3 FAQs from the database
         const faqs = await FAQ.find().limit(3).lean(); // Use .lean() for better performance
-
+        const userId =(req.session.user) ? req.session.user.id : null;
+        const user = await User.findById(userId);
         // Retrieve 3 courses from the database
         const courses = await Course.find().limit(3).lean();
 
@@ -37,12 +38,13 @@ exports.home = async (req, res) => {
         }));
 
         // Render the homepage with FAQs, teachers, and courses
-        res.render('homepage', { faqs, teachers: teacherData, courses: coursesWithInstructors });
+        res.render('homepage', { faqs, teachers: teacherData, courses: coursesWithInstructors, user });
     } catch (error) {
         console.error(error);
         res.status(500).send('Server Error');
     }
 };
+
 
 // Static Pages
 exports.aboutUs = (req, res) => {
@@ -191,6 +193,34 @@ exports.updateProfile = async (req, res) => {
     res.render('courses', { courses });
 };
 
+exports.getFilteredCourses = async (req, res) => {
+    const { search, category } = req.query;
+    let query = {};
+
+    // If search is provided, use case-insensitive regex to search in the title
+    if (search) {
+        query.title = { $regex: search, $options: 'i' }; // Case-insensitive search
+    }
+
+    // If category is provided, filter by category
+    if (category) {
+        if (Array.isArray(category)) {
+            query.category = { $in: category }; // Allow multiple categories
+        } else {
+            query.category = category; // Single category
+        }
+    }
+
+    try {
+        // Fetch the courses based on the query
+        const courses = await Course.find(query);
+        res.json(courses);
+    } catch (err) {
+        console.error(err);
+        res.status(500).json({ error: 'Server error' });
+    }
+};
+
 exports.enrollInCourse = async (req, res) => {
   const userId = req.session.user.id;
   console.log(userId)
@@ -248,5 +278,161 @@ exports.enrollInCourse = async (req, res) => {
       res.status(500).send('Enrollment failed');
   }
 };
+exports.showCart = async (req, res) => {
+    const userId = req.session.user ? req.session.user.id : null;
+    const user = await User.findById(userId);
+    if (!userId) {
+        return res.status(400).send('User not logged in');
+    }
+
+    try {
+        // Fetch all the enrollments for the logged-in user
+        const enrollments = await Enrollment.find({ user_id: userId }).populate('courseId').lean();
+
+        // Filter out any enrollments where the courseId is null
+        const enrolledCourses = enrollments
+            .filter(enrollment => enrollment.courseId !== null)
+            .map(enrollment => ({
+                title: enrollment.courseId.title, // Changed from name to title
+                description: enrollment.courseId.description,
+                instructorId: enrollment.courseId.instructorId, // Use instructorId
+                cost: enrollment.courseId.cost,
+                _id: enrollment.courseId._id
+            }));
+
+        // To get the instructor name, you may need to populate the instructorId
+        const instructorIds = enrolledCourses.map(course => course.instructorId);
+        const instructors = await User.find({ _id: { $in: instructorIds } }).lean();
+        const instructorMap = instructors.reduce((acc, instructor) => {
+            acc[instructor._id] = instructor.name; // Assuming there's a name field in the User model
+            return acc;
+        }, {});
+
+        // Update the enrolledCourses to include instructor names
+        enrolledCourses.forEach(course => {
+            course.instructorName = instructorMap[course.instructorId] || 'N/A'; // Use 'N/A' if not found
+        });
+
+        // Calculate the total cost of all courses in the cart
+        const totalCost = enrolledCourses.reduce((total, course) => total + course.cost, 0);
+
+        // Render the cart.ejs and pass the enrolled courses and total cost to it
+        res.render('cart', { enrolledCourses, totalCost, user });
+    } catch (error) {
+        console.error('Error fetching enrolled courses:', error.message, error.stack);
+        res.status(500).send('Server error');
+    }
+};
 
 
+// Controller to remove an enrolled course from the cart
+exports.removeFromCart = async (req, res) => {
+    const userId = req.session.user.id;
+    const courseId = req.params.courseId;
+
+    try {
+        // Find and delete the enrollment by courseId and user_id
+        const deletedEnrollment = await Enrollment.findOneAndDelete({ user_id: userId, courseId });
+
+        if (!deletedEnrollment) {
+            return res.status(404).send('Enrollment not found');
+        }
+
+        // Redirect back to the cart after successful deletion
+        res.redirect('/cart');
+    } catch (error) {
+        console.error('Error removing course from cart:', error);
+        res.status(500).send('Server error');
+    }
+};
+
+// Controller to show billing page
+exports.showBillingPage = async (req, res) => {
+    const userId = req.session.user.id;
+    if (!userId) {
+        return res.status(400).send('User not logged in');
+    }
+
+    try {
+        // Fetch all the enrollments for the logged-in user
+        const enrollments = await Enrollment.find({ user_id: userId }).populate('courseId').lean();
+
+        // Calculate total cost and prepare course details
+        let totalCost = 0;
+        const enrolledCourses = enrollments
+            .filter(enrollment => enrollment.courseId !== null)
+            .map(enrollment => {
+                const courseCost = enrollment.courseId.cost; // Assuming cost is a field in your Course model
+                totalCost += courseCost;
+                return {
+                    name: enrollment.courseId.title,
+                    description: enrollment.courseId.description,
+                    instructorName: enrollment.courseId.instructorName,
+                    cost: courseCost,
+                };
+            });
+
+        // Render billing page with total cost and enrolled courses
+        res.render('billing', { enrolledCourses, totalCost });
+    } catch (error) {
+        console.error('Error fetching enrolled courses:', error.message, error.stack);
+        res.status(500).send('Server error');
+    }
+};
+
+// Controller to handle checkout form submission
+exports.handleCheckout = async (req, res) => {
+    try {
+        const { name, phone, email, totalCost } = req.body;
+
+        // Validate input fields
+        if (!name || !phone || !email || !totalCost) {
+            return res.status(400).json({ message: 'All fields are required.' });
+        }
+
+        // Create a new billing record
+        const billingRecord = new Billing({
+            name,
+            phone,
+            email,
+            totalCost,
+            // Add userId if needed, e.g. from the session or request
+        });
+
+        // Save the billing record to the database
+        await billingRecord.save();
+
+        // Redirect to transaction page with the user's name and total cost
+        res.redirect(`/payment?name=${encodeURIComponent(name)}&totalCost=${totalCost}`);
+    } catch (error) {
+        console.error('Error during checkout:', error);
+        res.status(500).json({ message: 'Error during checkout', error: error.message });
+    }
+};
+// Render the transaction page
+exports.renderTransactionPage = (req, res) => {
+    const { name, totalCost } = req.query;
+    res.render('payment', { name, totalCost });
+};
+
+// Handle payment submission
+exports.handlePaymentSubmission = async (req, res) => {
+    const { transactionId, amount } = req.body;
+    const name = req.body.name || ""; // Get name from request body or fallback to empty string
+
+    // Validate input fields
+    if (!name || !transactionId || transactionId.length !== 10 || !amount) {
+        return res.status(400).json({ message: 'All fields are required and Transaction ID must be 10 digits.' });
+    }
+
+    try {
+        // Update the billing record with the transaction ID
+        await Billing.findOneAndUpdate({ name }, { transactionId });
+
+        // Send a success response
+        res.status(201).json({ message: 'Payment successful' });
+    } catch (error) {
+        console.error('Error during transaction:', error);
+        res.status(500).json({ message: 'Error during transaction', error: error.message });
+    }
+};

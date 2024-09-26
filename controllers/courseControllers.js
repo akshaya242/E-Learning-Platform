@@ -126,6 +126,8 @@ exports.createCourseSections = async (req, res) => {
 exports.enrollInCourse = async (req, res) => {
     const userId = req.session.user.id;
     const courseId = req.params.courseId;
+    console.log(courseId);
+    console.log(userId)
 
     try {
         const existingEnrollment = await Enrollment.findOne({ courseId, user_id: userId });
@@ -144,10 +146,10 @@ exports.enrollInCourse = async (req, res) => {
 
         await enrollment.save();
         await Course.findByIdAndUpdate(courseId, {
-            $addToSet: { enrolledStudents: userId }
+            $addToSet: { studentsEnrolled: userId }
         });
 
-        res.redirect('/courses');
+        res.redirect('/dashboard');
     } catch (error) {
         console.error('Error enrolling in course:', error);
         res.status(500).send('Enrollment failed');
@@ -162,4 +164,29 @@ exports.showCourseCreationPage = async (req, res) => {
 //   }
 }
 
+exports.displaycourse = async (req,res) => {
+try{
+  const login = req.session.user;
+  const courseId = req.params.courseId;
+  console.log(courseId);
+  // const idforcourse = await Enrollment.find(courseId);
+    // Find the course by ID and populate the sections
+    const course = await Course.findById(courseId).populate('sectionIds').exec();
+    
+    const courseSections = await Section.find({ courseId }).exec();
+    const teacher = await User.findOne(course.instructorId);
+    // For simplicity, set the first section as the current section
+    const currentSection = courseSections[0];
+   
+  res.render('displaycourse', {
+    course: course,
+    courseSections: courseSections,
+    currentSection: currentSection,
+    teacher,
+  });
+}catch  (err) {
+  console.error(err);
+  res.status(500).send('Server Error');
+}
 
+}

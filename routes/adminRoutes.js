@@ -6,13 +6,10 @@ const adminController = require('../controllers/adminControllers');
 const { ensureAdmin } = require('../middlewares/auth');
 const { User } = require('../models/User');
 
-router.get('/admin/dashboard', adminController.getDashboard);
-router.get('/admin/course', adminController.getCourse);
+
+router.get('/admin/dashboard',ensureAdmin, adminController.getDashboard);
 router.post('/create-course', ensureAdmin, adminController.createCourse);
-// router.get('/admin',adminController.getDashboard);
-
-
-router.post('/admin/editUser/:id', async (req, res) => {
+router.post('/admin/editUser/:id', ensureAdmin,async (req, res) => {
     const userId = req.params.id;
     const { name, email, role } = req.body;
 
@@ -34,7 +31,7 @@ router.post('/admin/editUser/:id', async (req, res) => {
 });
 
 
-router.post('/admin/addUser', async (req, res) => {
+router.post('/admin/addUser',ensureAdmin, async (req, res) => {
     const { name, email, password, role } = req.body;
     
     try {
@@ -60,16 +57,26 @@ router.post('/admin/addUser', async (req, res) => {
     }
 });
 
-router.post('/admin/deleteUser/:id', async (req, res) => {
+router.post('/admin/deleteUser/:id', ensureAdmin,async (req, res) => {
     const userId = req.params.id;
     try {
         await User.findByIdAndDelete(userId);
+        await Enrollment.deleteMany({courseId: userId });
         res.redirect('/admin/Dashboard'); // Redirect back to the users page
     } catch (error) {
         console.error(error);
         res.status(500).send('Error deleting user');
     }
 });
+//This is for Courses
+router.get('/admin/Course',ensureAdmin, adminController.getCourses);
+router.post('/admin/Course/add',ensureAdmin, adminController.addCourse);
+router.post('/admin/Course/edit/:id',ensureAdmin, adminController.editCourse);
+router.post('/admin/Course/delete/:id',ensureAdmin, adminController.deleteCourse);
+router.get('/admin/Course/delete/:id',ensureAdmin, adminController.deleteCourse); 
+
+//This is for overview section
+router.get('/admin/Overview',ensureAdmin, adminController.getOverview);
 
 
 module.exports = router;
