@@ -375,7 +375,8 @@
                             </span>
                             <div style="display: flex; align-items: center; gap: 8px;">
                             <button class="edit-btn" onclick="toggleEditCourseForm('<%= course._id %>')">
-                                <i class="fas fa-edit"></i>Edit</button>
+                                <i class="fas fa-edit"></i>Edit Course</button>
+                                <a href="/admin/Course/<%= course._id %>/sections">Manage Sections</a>
                             <form action="/admin/Course/delete/<%= course._id %>" method="POST" style="margin: 0;">
                                 <button type="submit" class="delete-btn">
                                     <i class="fas fa-trash-alt"></i>Delete</button>
