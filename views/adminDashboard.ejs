@@ -355,11 +355,13 @@
                             <button class="edit-btn" onclick="toggleEditForm('<%= user._id %>')">
                                 <i class="fas fa-edit"></i> Edit
                             </button>
-                            <form action="/admin/deleteUser/<%= user._id %>" method="POST" style="margin: 0;">
-                                <button type="submit" class="delete-btn">
-                                    <i class="fas fa-trash-alt"></i> Delete
-                                </button>
-                            </form>
+                            <% if (user.role !== "admin") { %>
+                                <form action="/admin/deleteUser/<%= user._id %>" method="POST" style="margin: 0;">
+                                    <button type="submit" class="delete-btn">
+                                        <i class="fas fa-trash-alt"></i> Delete
+                                    </button>
+                                </form>
+                            <% } %>
                         </div>
                     
                         <!-- Hidden edit form for each user -->

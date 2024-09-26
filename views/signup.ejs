@@ -203,16 +203,17 @@
                     <input type="email" name="email" placeholder="Email" required><br>
                 </div>
                 <div class="inputBx">
-                    <label for="password">Password:</label>
-                    <input type="password" name="password" placeholder="Password" required><br>
-                </div>
+                  <label for="password">Password:</label>
+                  <input type="password" id="password" name="password" placeholder="Password" required oninput="checkPasswordStrength()">
+                  <p id="password-strength-text"></p> <!-- To display the password strength -->
+              </div>
+              
                 <div class="inputBx">
                     <label for="role">Select Role:</label>
                     <select name="role" required>
                         <option value="" disabled selected>Select your role</option>
                         <option value="student" style="color: black; background-color: rgb(19, 217, 224);">Student</option>
                         <option value="teacher" style="color: black; background-color:  rgb(19, 217, 224)">Teacher</option>
-                        <option value="admin" style="color: black; background-color:  rgb(19, 217, 224)">Admin</option>
                     </select><br>
                 </div>
                 <div class="inputBx">
@@ -229,5 +230,34 @@
         <p>Already have an account? <a href="/login">Log In</a></p>
       </div>
   </section>
+
+  <script>
+    function checkPasswordStrength() {
+    var password = document.getElementById("password").value;
+    var strengthText = document.getElementById("password-strength-text");
+  
+    var weakPattern = /^[a-zA-Z0-9]{1,7}$/; // Weak: Less than 8 characters, only letters/numbers
+    var mediumPattern = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)[A-Za-z\d]{8,}$/; // Medium: Letters & numbers, no special char
+    var strongPattern = /^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}$/; // Strong: Needs special character
+    
+   
+    if (!/[!@#$%^&*(),.?":{}|<>]/.test(password)) {
+        strengthText.textContent = "Password must include at least one special character";
+        strengthText.style.color = "red";
+    } else if (weakPattern.test(password)) {
+        strengthText.textContent = "Weak password";
+        strengthText.style.color = "red";
+    } else if (mediumPattern.test(password)) {
+        strengthText.textContent = "Medium password";
+        strengthText.style.color = "orange";
+    } else if (strongPattern.test(password)) {
+        strengthText.textContent = "Strong password";
+        strengthText.style.color = "green";
+    } else {
+        strengthText.textContent = "";
+    }
+}
+
+  </script>
 </body>
 </html>

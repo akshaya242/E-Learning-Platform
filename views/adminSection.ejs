@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sections for <%= course.title %></title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f4f6f9;
+            color: #333;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        h1 {
+            color: #007bff;
+            text-align: center;
+        }
+        ul {
+            list-style-type: none;
+            padding: 0;
+        }
+        li {
+            padding: 15px;
+            border-bottom: 1px solid #e0e0e0;
+            margin-bottom: 20px;
+        }
+        li:last-child {
+            border-bottom: none;
+        }
+        .edit-btn {
+            background-color: #007bff;
+            color: white;
+            border: none;
+            padding: 4px 10px;
+            cursor: pointer;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+        .edit-btn:hover {
+            background-color: #0056b3;
+        }
+        button {
+            background-color: #28a745;
+            color: white;
+            border: none;
+            padding: 10px 15px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        button:hover {
+            background-color: #218838;
+        }
+        #edit-section-form {
+            display: none;
+            padding: 15px;
+            background-color: #f8f9fa;
+            border: 1px solid #e0e0e0;
+            margin-top: 15px;
+            border-radius: 8px;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h1>Sections for <%= course.title %></h1>
+    <ul>
+        <% course.sectionIds.forEach(section => { %>
+            <li>
+                <h2><%= section.title %></h2>
+                <p><strong>Description:</strong> <%= section.description %></p>
+                <p><strong>Video:</strong> <%= section.video.title %> - <a href="<%= section.video.videoUrl %>">Watch</a> (<%= section.video.duration %>)</p>
+                <p><strong>Quiz:</strong> <%= section.quiz.title %></p>
+
+                <!-- Button to toggle and populate the form -->
+                <button class="edit-btn" onclick="populateEditForm('<%= section._id %>', '<%= section.title %>', '<%= section.description %>', '<%= section.video.title %>', '<%= section.video.videoUrl %>', '<%= section.video.duration %>', '<%= section.quiz.title %>', '<%= JSON.stringify(section.quiz.questions) %>', '<%= JSON.stringify(section.quiz.answers) %>')">Edit Section</button>
+            </li>
+        <% }) %>
+    </ul>
+
+    <!-- Edit Section Form (Single form for all sections) -->
+    <div id="edit-section-form">
+        <form id="edit-form" action="" method="POST">
+            <input type="text" name="title" id="edit-title" required />
+            <textarea name="description" id="edit-description"></textarea>
+
+            <!-- Video fields -->
+            <input type="text" name="video[title]" id="edit-video-title" required />
+            <input type="text" name="video[videoUrl]" id="edit-video-url" required />
+            <input type="text" name="video[duration]" id="edit-video-duration" />
+
+            <!-- Quiz fields -->
+            <input type="text" name="quiz[title]" id="edit-quiz-title" required />
+            <textarea name="quiz[questions]" id="edit-quiz-questions"></textarea>
+            <textarea name="quiz[answers]" id="edit-quiz-answers"></textarea>
+
+            <button type="submit">Save Changes</button>
+        </form>
+    </div>
+
+    <!-- Back to course page -->
+    <a href="/admin/Course">Back to Course Dashboard</a>
+</div>
+
+<script>
+    function populateEditForm(id, title, description, videoTitle, videoUrl, videoDuration, quizTitle, quizQuestions, quizAnswers) {
+        // Show the form
+        const form = document.getElementById('edit-section-form');
+        form.style.display = 'block';
+
+        // Populate form fields with the data
+        document.getElementById('edit-title').value = title;
+        document.getElementById('edit-description').value = description;
+        document.getElementById('edit-video-title').value = videoTitle;
+        document.getElementById('edit-video-url').value = videoUrl;
+        document.getElementById('edit-video-duration').value = videoDuration;
+        document.getElementById('edit-quiz-title').value = quizTitle;
+        document.getElementById('edit-quiz-questions').value = quizQuestions;
+        document.getElementById('edit-quiz-answers').value = quizAnswers;
+
+        // Set the form action to the correct endpoint
+        document.getElementById('edit-form').action = `/admin/Section/update/${id}`;
+    }
+</script>
+
+</body>
+</html>
