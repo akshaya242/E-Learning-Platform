@@ -7,317 +7,343 @@
    
     <title>Online Courses</title>
     <style>
-        body {
-    font-family: Arial, sans-serif;
-    margin: 20px;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    background: linear-gradient(to right, #032f3c, #02474d, #046169, #217b7e, #10898d);
-}
-header {
-    width: 100%;
-    background-color: #ffffff;
-    padding: 2rem 5rem; /* Adjust padding as needed */
-    padding-bottom: 0;
-    padding-top: 0;
-    position: fixed; /* Keep the header fixed at the top */
-    top: 0;
-    z-index: 1000;
-    display: flex; /* Use flexbox for layout */
-    justify-content: space-between; /* Distribute items evenly across the header */
-    align-items: center; /* Center items vertically */
-}
-header {
-    background-color: #fff;
-    color: #032f3c;
-    padding: 20px 0;
-}
-#logo {
-    width: 120px; 
-    height: 100px;
-    
-    margin-bottom: 0px; 
-    margin-left: 10px;
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start; /* Align to the left */
-    position:fixed;
-    top: 0px;
-    left: 20px;
-    margin-bottom:  0px;
+      body {
+          font-family: Arial, sans-serif;
+          margin: 20px;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          background: linear-gradient(to right, #032f3c, #02474d, #046169, #217b7e, #10898d);
+      }
 
+      header {
+          width: 100%;
+          background-color: #ffffff;
+          padding: 2rem 5rem; /* Adjust padding as needed */
+          padding-bottom: 0;
+          padding-top: 0;
+          position: fixed; /* Keep the header fixed at the top */
+          top: 0;
+          z-index: 1000;
+          display: flex; /* Use flexbox for layout */
+          justify-content: space-between; /* Distribute items evenly across the header */
+          align-items: center; /* Center items vertically */
+      }
 
-}
-nav {
-    display: flex;
-    justify-content: space-between;
-    max-width: 1200px;
-    margin: 0 auto;
-    margin-right: 50px;
-}
+      header {
+          background-color: #fff;
+          color: #032f3c;
+          padding: 20px 0;
+      }
 
-nav ul {
-    list-style-type: none;
-    display: flex;
-}
+      #logo {
+          width: 120px; 
+          height: 100px;    
+          margin-bottom: 0px; 
+          margin-left: 10px;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start; /* Align to the left */
+          position:fixed;
+          top: 0px;
+          left: 20px;
+          margin-bottom: 0px;
+      }
 
-nav ul li {
-    margin-left: 30px;
-}
+      nav {
+          display: flex;
+          justify-content: space-between;
+          max-width: 1200px;
+          margin: 0 auto;
+          margin-right: 50px;
+      }
 
-nav ul li a {
-    text-decoration: none;
-    color: #032f3c;
-    font-weight:bold;
-    font-size:20px;
-}
-#side-column {
-    display: flex;
-    flex-direction: column;
-    align-items: flex-start;
-    position: fixed;
-    height: 75vh;
-    top: 150px;
-    left: 30px;
-    width: 180px;
-    background-color: #f0f0f0; /* Add your desired background color here */
-    padding: 10px; /* Optional: Add padding for better appearance */
-}
-#side-column a {
-    margin-bottom: 50px;
-    display: block;
-    text-decoration: underline;
-    color: #333;
-    font-weight: bold;
-    font-size: 25px;
-    padding-bottom:25px;
-    margin-top: 20px;
-    transition: transform 0.3s ease, color 0.3s ease; /* Add transition effect for scaling */
-}
+      nav ul {
+          list-style-type: none;
+          display: flex;
+      }
 
-#side-column a:hover {
-    transform: scale(1.1); /* Zoom in on hover */
-    color: #02474d;
-}
-#search-bar {
-    margin-bottom: 60px;
-    width: 100%;
-    max-width: 650px;
-    display: flex;
-    align-items: center;
-    height: 23px;
-    margin-top: 130px;
-}
-#search-input {
-    flex: 1;
-    padding: 10px;
-    font-size: 16px;
-    height: 100%;
-}
-#courses-container {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
-    align-items: flex-start; /* Align items to the top */
-    margin-left: 250px; /* Adjust margin to start from the right edge of the left column */
-    flex-grow: 1; /* Allow the container to grow and fill the available space */
-}
+      nav ul li {
+          margin-left: 30px;
+      }
 
-.course-container {
-    border: 1px solid rgb(82, 80, 80);
-    padding: 10px;
-    margin: 10px;
-    width: 360px; /* Set a fixed width for the course container */
-    height: 350px; /* Set a fixed height for the course container */
-    box-sizing: border-box;
-    cursor: pointer;
-    text-align: center;
-    position: relative;
-    background-color: #f0f0f0;
-    flex: 0 0 auto; /* Prevent containers from growing or shrinking */
-    display: flex; /* Use flex display to align content vertically */
-    flex-direction: column; /* Align content vertically */
-    transition: transform 0.3s ease; /* Add transition effect for scaling */
-}
+      nav ul li a {
+          text-decoration: none;
+          color: #032f3c;
+          font-weight: bold;
+          font-size: 20px;
+      }
 
-.course-container:hover {
-    background-color: #d7d6d6;
-    transform: scale(1.1); /* Zoom in on hover */
-}
+      #side-column {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          position: fixed;
+          height: 75vh;
+          top: 150px;
+          left: 30px;
+          width: 180px;
+          background-color: #f0f0f0; /* Add your desired background color here */
+          padding: 10px; /* Optional: Add padding for better appearance */
+      }
 
-.course-image {
-    flex: 1; /* Expand image to fill remaining space */
-    max-width: 100%; /* Ensure image fits within the container */
-    object-fit: cover; /* Maintain aspect ratio while covering the container */
-}
+      #side-column a {
+          margin-bottom: 50px;
+          display: block;
+          text-decoration: underline;
+          color: #333;
+          font-weight: bold;
+          font-size: 25px;
+          padding-bottom: 25px;
+          margin-top: 20px;
+          transition: transform 0.3s ease, color 0.3s ease; /* Add transition effect for scaling */
+      }
 
-.course-details {
-    flex: 0; /* Ensure details do not grow */
-    margin-top: 10px;
-}
-.tooltip {
-    display: none;
-    position: absolute;
-    background-color: #000;
-    color: #fff;
-    padding: 5px;
-    border-radius: 5px;
-    z-index: 2;
-}
+      #side-column a:hover {
+          transform: scale(1.1); /* Zoom in on hover */
+          color: #02474d;
+      }
 
-#filter-checkboxes {
-    display: none;
-    position: fixed;
-    top: 60px;
-    left: 20px;
-    background-color: #fff;
-    padding: 10px;
-    border: 1px solid #ddd;
-    z-index: 1;
-}
-#filter-checkboxes input {
-    margin-bottom: 5px;
-}
-#filter {
-    margin-bottom: 30px;
-    font-size: 20px;
-    color:#f0f0f0;
-}
-.course-container:hover .tooltip {
-    display: block;
-}
-#search-icon-container{
-    background-color: #dddddd;
-    margin-left:5px;
-    padding: 12px;
-    cursor:pointer;
-    height:23px;
-}
+      #search-bar {
+          margin-bottom: 60px;
+          width: 100%;
+          max-width: 650px;
+          display: flex;
+          align-items: center;
+          height: 23px;
+          margin-top: 130px;
+      }
 
-#side-column,
-.course-container,
-#filter-checkboxes,
-#search-icon-container {
-    border-radius: 10px; /* Adjust the value as needed */
-}
+      #search-input {
+          flex: 1;
+          padding: 10px;
+          font-size: 16px;
+          height: 100%;
+      }
 
-.tooltip {
-    border-radius: 5px; /* Adjust the value as needed */
-}
+      #courses-container {
+          display: flex;
+          flex-wrap: wrap;
+          justify-content: space-around;
+          align-items: flex-start; /* Align items to the top */
+          margin-left: 250px; /* Adjust margin to start from the right edge of the left column */
+          flex-grow: 1; /* Allow the container to grow and fill the available space */
+      }
 
-footer {
-    position: relative;
-    margin-left: 250px;
-    background-color: #fff;
-    padding: 20px;
-    margin-top: 20px; /* Adjust the margin as needed */
-    width: 80%;
-    font-size: 18px;
-    font-weight: bold;
-}
-.footer-innerdiv1 {
-    background-color: white;
-    display: flex;
-    padding: 30px 20px 20px 20px;
-    border-top: 1px solid #e8e9eb;
-    /* margin: 40px 0px 40px 0px; */
-  }
-  
-  .col1 {
-    flex: 3;
-  }
-  
-  .col2, .col3 {
-    flex: 2;
-  }
-  
-  .col4 {
-    flex: 2.6;
-  }
-  
-  .footer-ul {
-    list-style: none;
-    padding: 0px;
-  }
-  
-  .footer-li {
-    cursor: pointer;
-    padding: 0px 5px 15px 5px;
-  }
-  
-  .English-btn {
-    cursor: pointer;
-    float: right;
-    border: none;
-    border-radius: 2px;
-    background: white;
-    color: #686f7a;
-    font-weight: 700;
-    border: 1px solid black;
-    margin-top: 10px;
-    padding: 15px 20px; /* Adjust padding to increase button size */
-    font-size: 18px; /* Adjust font-size to increase text size */
-}
+      .course-container {
+          border: 1px solid rgb(82, 80, 80);
+          padding: 10px;
+          margin: 10px;
+          width: 360px; /* Set a fixed width for the course container */
+          height: 350px; /* Set a fixed height for the course container */
+          box-sizing: border-box;
+          cursor: pointer;
+          text-align: center;
+          position: relative;
+          background-color: #f0f0f0;
+          flex: 0 0 auto; /* Prevent containers from growing or shrinking */
+          display: flex; /* Use flex display to align content vertically */
+          flex-direction: column; /* Align content vertically */
+          transition: transform 0.3s ease; /* Add transition effect for scaling */
+      }
 
-  
-  .English-btn:hover {
-    background-color: #e8e9eb;
-  }
-  
-  .English-btn>i {
-    padding: 10px;
-  }
-  
-  /* FOOTER Last div  CSS*/
-  
-  .footer-innerdiv2 {
-    display: flex;
-    background-color: #fff;
-    justify-content: space-around;
-    box-sizing: border-box;
-    padding: px 10px px 10px;
-    border-top: 1px solid #e8e9eb;
-    border-bottom: 6px solid 	#10898d;
-  }
-  
-  .left-contlist {
-    display: flex;
-    align-items: center;
-    flex-basis: 48%;
-  }
-  
-  .right-contlist {
-    flex-basis: 48%;
-  }
-  
-  .ullist-right {
-    list-style-type: none;
-    display: flex;
-    justify-content: flex-end;
-    padding-top: 2.8rem;
-  }
-  
-  .copyright-span:hover {
-    cursor: auto;
-  }
-  
-  .r-li-itm {
-    font-size: 13px;
-    cursor: pointer;
-    margin-right: 10px;
-  }
-  
-  .r-li-itm:hover {
-    color: #003845;
-    cursor: pointer;
-  }
+      .course-container:hover {
+          background-color: #d7d6d6;
+          transform: scale(1.1); /* Zoom in on hover */
+      }
 
+      .course-details {
+          flex: 0; /* Ensure details do not grow */
+          margin-top: 10px;
+      }
 
+      .tooltip {
+          display: none;
+          position: absolute;
+          background-color: #000;
+          color: #fff;
+          padding: 5px;
+          border-radius: 5px;
+          z-index: 2;
+      }
 
+      #filter-checkboxes {
+          display: none;
+          position: fixed;
+          top: 60px;
+          left: 20px;
+          background-color: #fff;
+          padding: 10px;
+          border: 1px solid #ddd;
+          z-index: 1;
+      }
 
+      #filter-checkboxes input {
+          margin-bottom: 5px;
+      }
 
-    </style>
+      #filter {
+          margin-bottom: 30px;
+          font-size: 20px;
+          color: #f0f0f0;
+      }
+
+      .course-container:hover .tooltip {
+          display: block;
+      }
+
+      #search-icon-container {
+          background-color: #dddddd;
+          margin-left: 5px;
+          padding: 12px;
+          cursor: pointer;
+          height: 23px;
+      }
+
+      #side-column,
+      .course-container,
+      #filter-checkboxes,
+      #search-icon-container {
+          border-radius: 10px; /* Adjust the value as needed */
+      }
+
+      .tooltip {
+          border-radius: 5px; /* Adjust the value as needed */
+      }
+
+      footer {
+          position: relative;
+          margin-left: 250px;
+          background-color: #fff;
+          padding: 20px;
+          margin-top: 20px; /* Adjust the margin as needed */
+          width: 80%;
+          font-size: 18px;
+          font-weight: bold;
+      }
+
+      .footer-innerdiv1 {
+          background-color: white;
+          display: flex;
+          padding: 30px 20px 20px 20px;
+          border-top: 1px solid #e8e9eb;
+      }
+
+      .col1 {
+          flex: 3;
+      }
+
+      .col2, .col3 {
+          flex: 2;
+      }
+
+      .col4 {
+          flex: 2.6;
+      }
+
+      .footer-ul {
+          list-style: none;
+          padding: 0px;
+      }
+
+      .footer-li {
+          cursor: pointer;
+          padding: 0px 5px 15px 5px;
+      }
+
+      .English-btn {
+          cursor: pointer;
+          float: right;
+          border: none;
+          border-radius: 2px;
+          background: white;
+          color: #686f7a;
+          font-weight: 700;
+          border: 1px solid black;
+          margin-top: 10px;
+          padding: 15px 20px; /* Adjust padding to increase button size */
+          font-size: 18px; /* Adjust font-size to increase text size */
+      }
+
+      .English-btn:hover {
+          background-color: #e8e9eb;
+      }
+
+      .English-btn > i {
+          padding: 10px;
+      }
+
+      /* FOOTER Last div CSS */
+      .footer-innerdiv2 {
+          display: flex;
+          background-color: #fff;
+          justify-content: space-around;
+          box-sizing: border-box;
+          padding: 10px; /* Adjust padding for the footer */
+          border-top: 1px solid #e8e9eb;
+          border-bottom: 6px solid #10898d;
+      }
+
+      .left-contlist {
+          display: flex;
+          align-items: center;
+          flex-basis: 48%;
+      }
+
+      .right-contlist {
+          flex-basis: 48%;
+      }
+
+      .contlist {
+          margin-left: 15px;
+          font-weight: bold;
+          cursor: pointer;
+          color: #032f3c;
+      }
+
+      .contlist:hover {
+          text-decoration: underline;
+      }
+
+      /* Responsive Styles */
+      @media (max-width: 768px) {
+          #courses-container {
+              margin-left: 0; /* Center the courses on smaller screens */
+          }
+
+          header {
+              flex-direction: column; /* Stack header items */
+              align-items: flex-start; /* Align header items to the left */
+          }
+
+          nav {
+              flex-direction: column; /* Stack nav items */
+              margin-right: 0; /* Center nav on smaller screens */
+          }
+
+          #side-column {
+              position: relative; /* Position relative on smaller screens */
+              height: auto; /* Allow height to adjust based on content */
+              width: 100%; /* Full width on smaller screens */
+              padding: 10px; /* Add padding */
+          }
+
+          #filter-checkboxes {
+              width: auto; /* Allow filter checkboxes to take full width */
+          }
+
+          .course-container {
+              width: 100%; /* Full width for courses */
+              height: auto; /* Allow height to adjust */
+              margin: 5px 0; /* Adjust margin */
+          }
+
+          .course-image {
+              height: 150px; /* Adjust image height for smaller screens */
+          }
+         
+      }
+  </style>
 </head>
 <body>
     <header>
@@ -352,49 +378,62 @@ footer {
 
     <div id="side-column">
         <a href="#">Dashboard</a>
-        <a href="#">My Cart</a>
-        <a href="#">My Learning</a>
-        <a href="notes.html">Notes</a>
+        <a href="/cart">My Cart</a>
+        <a href="#">Favorites</a>
+        <a href="#">Notes</a>
     </div>
 
-        <div id="search-bar">
-            <input type="text" id="search-input" placeholder="Search courses...">
-        <div id="search-icon-container" onclick="searchCourses()">
-            <i class="fa fa-search"></i>
-        </div>
-    </div>
 
-    <div id="filter">
-        <span>Filter by:</span>
-        <input type="checkbox" id="all-checkbox" onclick="filterCourses()"> All
-        <input type="checkbox" id="cs-checkbox" onclick="filterCourses()"> Computer Science
-        <input type="checkbox" id="math-checkbox" onclick="filterCourses()"> Maths
-        <input type="checkbox" id="eng-checkbox" onclick="filterCourses()"> English
-        <input type="checkbox" id="mgmt-checkbox" onclick="filterCourses()"> Management
-        <input type="checkbox" id="arts-checkbox" onclick="filtercourses()">Arts
-    </div>
-    <div id="courses-container">
-    </div>
-    <div class="course-container">
-      <% courses.forEach(course => { %>
-          <div class="card">
-              <div class="course-name"><%= course.title %></div>
-              <div class="course-img">
-                  <img src=<%=course.image  %> alt="<%= course.title %>">
-              </div>
-              <div class="teacher">
-                  Instructor: <%= course.created_by ? course.created_by.name : 'Unknown' %>  <!-- Safely check for created_by -->
-              </div>
-              <div class="rating">Rating: <%= course.rating || '⭐⭐⭐⭐' %></div> <!-- Display course rating -->
-              <div class="description"><%= course.description %></div>
-              <div>
-                <form action="/enroll/<%= course.id %>" method="POST">
-                  <button type="submit" style="background-color:#217b7e; height: 50px; width: 150px; margin-top: 4%;">Enroll</button>
-                </form>
-              </div>
+    <!-- Form for search and filtering -->
+    <form id="filter-form">
+      <div id="search-bar">
+          <input type="text" id="search-input" placeholder="Search courses by title" name="search">
+          <div id="search-icon-container">
+              <i class="fa fa-search"></i>
           </div>
-      <% }) %>
+      </div>
+
+      <div id="filter">
+          <span>Filter by:</span>
+          <label><input type="checkbox" name="category" value="Computer Science"> Computer Science</label>
+          <label><input type="checkbox" name="category" value="Maths"> Maths</label>
+          <label><input type="checkbox" name="category" value="English"> English</label>
+          <label><input type="checkbox" name="category" value="Management"> Management</label>
+          <label><input type="checkbox" name="category" value="Arts"> Arts</label>
+      </div>
+
+      <button type="submit">Apply Filters</button>
+  </form>
+
+  <div id="courses-container">
+    <% courses.forEach(course => { %>
+      <div class="course-container">
+        <div class="card">
+          <div class="course-name"><%= course.title %></div>
+          <div class="course-img">
+            <img src="<%= course.image %>" alt="<%= course.title %>" style="height: 180px; width: 250px;">
+          </div>
+          <div class="teacher">
+            Instructor: <%= course.created_by ? course.created_by.name : 'Unknown' %>
+          </div>
+          <div class="rating">Rating: <%= course.rating || '⭐⭐⭐⭐' %></div>
+          <div class="description"><%= course.description %></div>
+
+          <!-- Add the course cost here -->
+          <div class="course-cost">
+            Price: $<%= course.cost %>
+          </div>
+
+          <div>
+            <form action="/enroll/<%= course.id %>" method="POST">
+              <button type="submit" style="background-color:#217b7e; height: 50px; width: 150px; margin-top: 4%;">Enroll</button>
+            </form>
+          </div>
+        </div>
+      </div>
+    <% }) %>
   </div>
+    
     <footer>
       <div class="footer-innerdiv1">
         <div class="col1">
@@ -461,7 +500,61 @@ footer {
 </footer>
 
   </footer>
-    <script src="/courses.js"></script>
-      
+  <script>
+    // Handle the filter form submission
+    document.getElementById('filter-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        // Get the search value
+        const search = document.getElementById('search-input').value;
+
+        // Get selected categories (checked checkboxes)
+        const categories = [];
+        const checkboxes = document.querySelectorAll('input[name="category"]:checked');
+        checkboxes.forEach(checkbox => categories.push(checkbox.value));
+
+        // Construct the URL
+        const url = new URL(`/api/courses/filtered`, window.location.origin);
+        if (search) url.searchParams.append('search', search);
+        if (categories.length > 0) url.searchParams.append('category', categories);
+
+        // Fetch courses based on filters
+        fetch(url)
+            .then(response => response.json())
+            .then(data => {
+                const courseList = document.getElementById('courses-container');
+                courseList.innerHTML = '';
+
+                if (data.length > 0) {
+                    data.forEach(course => {
+                        const courseItem = `
+                            <div class="course-container">
+                                <div class="card">
+                                    <div class="course-name">${course.title}</div>
+                                    <div class="course-img">
+                                        <img src="${course.image}" alt="${course.title}" style="height: 180px; width: 250px;">
+                                    </div>
+                                    <div class="teacher">Instructor: ${course.created_by ? course.created_by.name : 'Unknown'}</div>
+                                    <div class="rating">Rating: ${course.rating || '⭐⭐⭐⭐'}</div>
+                                    <div class="description">${course.description}</div>
+                                    <button class="enroll-btn" data-course-id="${course._id}">Enroll</button>
+                                </div>
+                            </div>
+                        `;
+                        courseList.innerHTML += courseItem;
+                    });
+
+                    // Re-attach click event listeners for enroll buttons after filtering
+                    attachEnrollButtonListeners();
+                } else {
+                    courseList.innerHTML = '<p>No courses found.</p>';
+                }
+            })
+            .catch(err => {
+                console.error(err);
+            });
+    });
+</script>
+
 </body>
 </html>

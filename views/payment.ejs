@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Transaction Page</title>
+    <style>
+        /* Reset basic styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Arial', sans-serif;
+            background-color: #f5f5f5;
+            color: #333;
+            padding: 20px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column; /* Changed to column to stack elements vertically */
+            min-height: 100vh;
+        }
+
+        .main-heading {
+            font-size: 2em;
+            color: #333;
+            margin: 20px 0; /* Adds spacing above and below the heading */
+            width: 100%; /* Ensures it spans the full width */
+            text-align: center; /* Centers the text */
+        }
+
+        .payment-container {
+            max-width: 400px;
+            width: 100%;
+            background-color: #fff;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        h1, h2 {
+            margin-bottom: 20px;
+            font-weight: normal;
+        }
+
+        .qr-code {
+            margin: 20px 0;
+            width: 200px;
+            height: 200px;
+        }
+
+        .payment-address {
+            font-size: 0.85em;
+            color: #888;
+            margin-bottom: 15px;
+            word-wrap: break-word;
+        }
+
+        label, .qr-text {
+            font-size: 1em;
+            margin-bottom: 8px;
+        }
+
+        input[type="text"] {
+            width: calc(100% - 20px);
+            padding: 10px;
+            margin-top: 5px;
+            border: 1px solid #ccc;
+            border-radius: 5px;
+            font-size: 1em;
+            margin-bottom: 20px; /* Add margin-bottom for space between input and button */
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background-color: #0070f3;
+            color: white;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #005bb5;
+        }
+    </style>
+</head>
+<body>
+    <div class="main-heading">Transaction Page</div>
+    <div class="payment-container">
+        <h1>Hey <%= name %></h1>
+        <h2>You need to pay $<%= totalCost %></h2>
+
+        <img src="/images/qr-code.jpg" alt="QR Code" class="qr-code" /> <!-- Replace with your QR code image path -->
+
+        <div class="qr-text">Scan this code to complete your payment.</div>
+
+        <p class="payment-address">0x3e85E10D350E1be61397Bc04DD2Da26E97C2b2Eb</p>
+
+        <form action="/payment/submit" method="POST">
+            <label for="transactionId">Transaction ID:</label>
+            <input type="text" id="transactionId" name="transactionId" required maxlength="10" pattern="\d{10}" title="Transaction ID must be 10 digits.">
+
+            <input type="hidden" name="name" value="<%= name %>">
+            <input type="hidden" name="amount" value="<%= totalCost %>">
+            
+            <button type="submit">Submit Transaction</button>
+        </form>
+    </div>
+</body>
+</html>
