@@ -5,7 +5,7 @@ const FAQ = require('../models/Review');       // Import FAQ model
 const {User, Profile} = require('../models/User');
 const { Course, Category } = require('../models/Course'); 
 const path = require('path');
-
+const {Enrollment } =  require('../models/Enrollment')
 
 exports.getDashboard = async (req, res) => {
     try {
@@ -91,13 +91,14 @@ exports.getCourses = async (req, res) => {
 // Add Course
 exports.addCourse = async (req, res) => {
     try {
-      const { title, description, duration, category,custom_category, created_by, role } = req.body;
+      const { title, description, duration,custom_category, created_by, role } = req.body;
+      let { category } = req.body;
       const teacherUser = await User.findOne({ role: 'teacher' });
       // Check if a file is uploaded
       if (!req.files || !req.files.image) {
         return res.status(400).send('No file uploaded.');
       }
-  
+      
       const imageFile = req.files.image;
   
       // Define the upload path
@@ -162,6 +163,7 @@ exports.editCourse = async (req, res) => {
 exports.deleteCourse = async (req, res) => {
     const { id } = req.params;
     try {
+        await Enrollment.deleteMany({courseId: id });
         await Course.findByIdAndDelete(id);
         res.redirect('/admin/Course');
     } catch (error) {

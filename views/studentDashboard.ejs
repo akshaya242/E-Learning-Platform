@@ -66,9 +66,11 @@
             <h1>Progress</h1>
 
             <!-- Dynamic course progress section -->
+             
             <div class="subjects">
                 <% if (courses && courses.length > 0) { %>
                     <% courses.forEach(course => { %>
+                        <a href="/displaycourse/<%= course._id %>">
                         <div class="course-progress">
                             <span class="material-icons-sharp">school</span>
                             <h3><%= course.title %></h3>
@@ -79,8 +81,11 @@
                                     <p><%= course.progress %>%</p>
                                 </div>
                             </div>
+                           
+
                             <small class="text-muted">Last 24 Hours</small>
                         </div>
+                    </a>
                     <% }); %>
                 <% } else { %>
                     <p>No courses enrolled yet.</p>

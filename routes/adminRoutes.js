@@ -60,6 +60,7 @@ router.post('/admin/deleteUser/:id', async (req, res) => {
     const userId = req.params.id;
     try {
         await User.findByIdAndDelete(userId);
+        await Enrollment.deleteMany({courseId: userId });
         res.redirect('/admin/Dashboard'); // Redirect back to the users page
     } catch (error) {
         console.error(error);

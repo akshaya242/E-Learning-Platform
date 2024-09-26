@@ -162,4 +162,28 @@ exports.showCourseCreationPage = async (req, res) => {
 //   }
 }
 
+exports.displaycourse = async (req,res) => {
+try{
+  const login = req.session.user;
+  const courseId = req.params.courseId;
 
+    // Find the course by ID and populate the sections
+    const course = await Course.findById(courseId).populate('sectionIds').exec();
+    console.log(course.instructorId);
+    const courseSections = await Section.find({ courseId }).exec();
+    const teacher = await User.findOne(course.instructorId);
+    // For simplicity, set the first section as the current section
+    const currentSection = courseSections[0];
+    console.log(courseSections);
+  res.render('displaycourse', {
+    course: course,
+    courseSections: courseSections,
+    currentSection: currentSection,
+    teacher,
+  });
+}catch  (err) {
+  console.error(err);
+  res.status(500).send('Server Error');
+}
+
+}
