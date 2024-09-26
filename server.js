@@ -17,7 +17,7 @@ const notesRoutes = require('./routes/notesRoutes');
 // Connect to MongoDB Atlas
 const connectMongoDB = async (uri) => {
     try {
-        await mongoose.connect(uri, {});
+        await mongoose.connect(uri);
         console.log('MongoDB connected');
     } catch (err) {
         console.error('MongoDB connection error:', err);
