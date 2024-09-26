@@ -9,6 +9,10 @@ const route = require('./routes/quiklearn'); // Route for main application
 const route1 = require('./routes/teacherroutes'); // Route for teacher-related endpoints
 const route2 = require('./routes/studentroutes'); // Route for student-related endpoints
 const route3 = require('./routes/adminRoutes'); // Route for admin-related endpoints
+const cartRoutes = require('./routes/cart'); // New cart routes
+const billingRoutes = require('./routes/billingRoutes');
+const paymentRoutes = require('./routes/paymentRoutes');
+const notesRoutes = require('./routes/notesRoutes');
 
 // Connect to MongoDB Atlas
 const connectMongoDB = async (uri) => {
@@ -43,8 +47,14 @@ app.use(session({
         maxAge: 24 * 60 * 60 * 1000 // 24 hours
     }
 }));
+// Route setup
+
 
 // Route handling
+app.use('/billing', billingRoutes);
+app.use('/payment', paymentRoutes);
+app.use('/cart', cartRoutes); 
+app.use('/notes', notesRoutes);
 app.use('/', route);
 app.use('/', route3);
 app.use('/',route1);

@@ -3,10 +3,90 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    <link rel="stylesheet" href="./style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"> <!-- Include FontAwesome for icons -->
+    <title>Your Cart</title>
     <style>
+        /* Embedded CSS for styling */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            padding: 20px;
+            background-color: #f4f4f4;
+        }
+        h1 {
+            text-align: center;
+            color: #333;
+            font-size: 2.5em; /* Increased font size */
+            margin-top: 110px; /* Added margin to separate from header */
+            margin-bottom: 20px; /* Added margin for spacing */
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 20px 0;
+        }
+        table, th, td {
+            border: 1px solid #ddd;
+        }
+        th, td {
+            padding: 15px; /* Increased padding for bigger cells */
+            text-align: left;
+            font-size: 1.2em; /* Increased font size for better readability */
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+        }
+        tr:nth-child(even) {
+            background-color: #f9f9f9; /* Alternating row colors */
+        }
+        tr:hover {
+            background-color: #f1f1f1; /* Highlight row on hover */
+        }
+        .total-cost {
+            font-size: 1.5em;
+            font-weight: bold;
+            text-align: right;
+            margin-top: 20px;
+            padding: 10px; /* Added padding for better spacing */
+            border-top: 2px solid #4CAF50; /* Added border above total cost */
+        }
+        .empty-cart {
+            text-align: center;
+            font-size: 1.5em; /* Increased font size */
+            margin-top: 20px; /* Added margin for spacing */
+        }
+        .proceed-button {
+            text-align: right;
+            margin-top: 20px;
+        }
+        .proceed-button form {
+            display: inline;
+        }
+        .proceed-button button {
+            background-color: #4CAF50; /* Green button for proceed */
+            color: white; /* Button text color */
+            border: none; /* Remove border */
+            padding: 10px 20px; /* Padding for button */
+            font-size: 1.2em; /* Font size */
+            cursor: pointer; /* Cursor pointer */
+            transition: background-color 0.3s ease; /* Transition effect */
+        }
+        .proceed-button button:hover {
+            background-color: #45a049; /* Darker green on hover */
+        }
+        button {
+            background-color: #f44336; /* Button background color for remove */
+            color: white; /* Button text color */
+            border: none; /* Remove border */
+            padding: 10px 15px; /* Padding for button */
+            font-size: 1em; /* Increased font size for button */
+            cursor: pointer; /* Cursor style */
+            transition: background-color 0.3s; /* Transition effect */
+        }
+        button:hover {
+            background-color: #d32f2f; /* Darker button color on hover */
+        }
+       
         /* Embedded CSS for styling */
         body {
             font-family: Arial, sans-serif;
@@ -80,9 +160,58 @@
         .r-li-itm:hover {
             text-decoration: underline; /* Underline on hover */
         }
+   
+
     </style>
 </head>
 <body>
+    <%- include('header.ejs') %>
+
+    <h1>Your Enrolled Courses</h1>
+
+    <% if (enrolledCourses.length > 0) { %>
+        <table>
+            <thead>
+                <tr>
+                    <th>Course Name</th>
+                    <th>Instructor</th>
+                    <th>Cost</th>
+                    <th>Remove</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% enrolledCourses.forEach(function(course) { %>
+                    <tr>
+                        <td><%= course.title || 'N/A' %></td>
+                        <td><%= course.instructorName || 'N/A' %></td>
+                        <td>$<%= course.cost %></td>
+                        <td>
+                            <form action="/cart/remove/<%= course._id %>" method="POST">
+                                <button type="submit">Remove</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+
+        <!-- Display Total Cost Here -->
+        <div class="total-cost">Total Cost: $<%= totalCost %></div>
+
+        <!-- Proceed to Billing Button -->
+        <div class="proceed-button">
+            <form action="/billing" method="GET">
+                <button type="submit">Proceed to Billing</button>
+            </form>
+        </div>
+
+    <% } else { %>
+        <p class="empty-cart">Your cart is empty.</p>
+        <a href="/courses">Continue Shopping</a>
+    <% } %>
+
+
+
     <footer id="deraj-ab">
         <div class="footer-innerdiv1">
             <div class="col1">
@@ -138,5 +267,7 @@
             </div>
         </div>
     </footer>
+
+
 </body>
 </html>
