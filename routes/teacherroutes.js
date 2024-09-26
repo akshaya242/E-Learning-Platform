@@ -12,4 +12,5 @@ router.get('/teacher/create-course',courseControllers.showCourseCreationPage);
 router.post('/teacher/create-course', courseControllers.createCourseInfo);
 router.get('/teacher/editprofile',teacherController.editprofile);
 router.post('/teacher/updateprofile', teacherController.updateProfile);
+//router.get('teacher/updatedprofile',teacherController.exports.updatedProfile)
 module.exports = router;

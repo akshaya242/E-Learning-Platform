@@ -3,6 +3,7 @@ const path = require('path');
 const mongoose = require('mongoose');
 const session = require('express-session');
 
+
 const app = express();
 const route = require('./routes/quiklearn'); // Route for main application
 const route1 = require('./routes/teacherroutes'); // Route for teacher-related endpoints
