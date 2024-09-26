@@ -6,7 +6,7 @@
     <title>Student Dashboard</title>
     <link rel="shortcut icon" href="./images/logo.png">
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
-    <link rel="stylesheet" href="/css/styles.css">
+    <link rel="stylesheet" href="/css/studentdash.css">
     <style>
         .progress {
             display: flex;
@@ -105,7 +105,7 @@
                 
                 <!-- View Course Button -->
                 <button class="my-button">
-                    <a href="/displaycourse/<%= enrollment.courseId.id %>">View Course</a>
+                    <a href="/displaycourse/<%= enrollment.courseId._id %>">View Course</a>
                 </button>
             </div>
         <% }); %>
@@ -137,30 +137,22 @@
             <div class="leaves">
                 <h2>Teachers on Spotlight</h2>
         
-                <div class="teacher">
-                    <div class="profile-photo"><img src="./images/profile-2.jpeg" alt=""></div>
-                    <div class="info">
-                        <h3>The Professor</h3>
-                        <small class="text-muted">Course Name</small>
-                    </div>
-                </div>
-        
-                <div class="teacher">
-                    <div class="profile-photo"><img src="./images/profile-3.jpg" alt=""></div>
-                    <div class="info">
-                        <h3>Lisa Manobal</h3>
-                        <small class="text-muted">Course Name</small>
-                    </div>
-                </div>
-        
-                <div class="teacher">
-                    <div class="profile-photo"><img src="./images/profile-4.jpg" alt=""></div>
-                    <div class="info">
-                        <h3>Himanshu Jindal</h3>
-                        <small class="text-muted">Course Name</small>
-                    </div>
-                </div>
-        
+                
+                <<% if (user) { %>
+                    <% user.filter(user => user.role === 'teacher').forEach(teacher => { %>
+                        <div class="teacher">
+                            <div class="profile-photo">
+                                <img src="<%= teacher.photo || '/images/default-teacher.png' %>" alt="Teacher Image">
+                            </div>
+                            <div class="info">
+                                <h3><%= teacher.name %></h3>
+                                <small class="text-muted"><%= teacher.institution || 'No institution provided' %></small>
+                            </div>
+                        </div>
+                    <% }); %>
+                <% } else { %>
+                    <p>No teachers available.</p>
+            <% } %>
         </div>
         
 

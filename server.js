@@ -4,6 +4,7 @@ const mongoose = require('mongoose');
 const session = require('express-session');
 const fileUpload = require('express-fileupload');
 
+
 const app = express();
 const route = require('./routes/quiklearn'); // Main application routes
 const route1 = require('./routes/teacherroutes'); // Teacher-related endpoints
@@ -18,10 +19,7 @@ const notesRoute = require('./routes/notesRoute'); // Correct the variable name 
 // Connect to MongoDB Atlas
 const connectMongoDB = async (uri) => {
     try {
-        await mongoose.connect(uri, {
-            useNewUrlParser: true,
-            useUnifiedTopology: true
-        });
+        await mongoose.connect(uri);
         console.log('MongoDB connected');
     } catch (err) {
         console.error('MongoDB connection error:', err);

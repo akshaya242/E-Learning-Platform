@@ -414,8 +414,8 @@
         <div class="card">
           <div class="course-name"><%= course.title %></div>
           <div class="course-img">
-            <img src="<%= course.image %>" alt="<%= course.title %>" style="height: 180px; width: 250px;">
-          </div>
+            <img src="<%= course.image || '/images/default-course.jpg' %>" alt="<%= course.title %>" style="height: 180px; width: 250px;">
+        </div>
           <div class="teacher">
             Instructor: <%= course.created_by ? course.created_by.name : 'Unknown' %>
           </div>

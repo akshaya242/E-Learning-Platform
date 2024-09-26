@@ -47,8 +47,10 @@ exports.home = async (req, res) => {
 
 
 // Static Pages
-exports.aboutUs = (req, res) => {
-    res.render('about', { title: 'About Us' });
+exports.aboutUs = async(req, res) => {
+    const userId =(req.session.user) ? req.session.user.id : null;
+        const user = await User.findById(userId);
+    res.render('about', { title: 'About Us', user });
 };
 
 exports.contact = (req, res) => {
@@ -72,13 +74,17 @@ exports.course = async (req, res) => {
 };
 
 exports.teacher = async (req, res) => {
+    const userId =(req.session.user) ? req.session.user.id : null;
+    const user = await User.findById(userId);
     const teachers = await User.find({ role: 'teacher' });
-    res.render('teacher', { teachers });
+    res.render('teacher', { teachers, user });
 };
 
 exports.faqs = async (req, res) => {
+    const userId =(req.session.user) ? req.session.user.id : null;
+        const user = await User.findById(userId);
     const faqs = await FAQ.find();
-    res.render('faqs', { faqs });
+    res.render('faqs', { faqs, user });
 };
 
 // User Authentication

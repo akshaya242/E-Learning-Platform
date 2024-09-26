@@ -29,7 +29,6 @@
     --box-shadow: 0 2rem 3rem var(--color-light)
 }
 
-    
 
 *{
     margin:0;
@@ -80,45 +79,12 @@ b{color: var(--color-dark);}
 .container{
     position: relative;
     display: grid;
-    width: 13%;
-    margin: 0 2rem;
-    gap: 0.7rem;
+    width: 93%;
+    margin: 0 3rem;
+    gap: 1.8rem;
     grid-template-columns: 14rem auto 23rem;
     padding-top: 4rem;
 }
-.edit-profile-btn {
-    display: flex;
-    align-items: center;
-    background: linear-gradient(45deg, #42a5f5, #478ed1); /* Gradient background */
-    color: white;
-    text-decoration: none; /* Remove underline for links */
-    padding: 12px 24px;
-    cursor: pointer;
-    border-radius: 30px; /* Rounded button */
-    font-size: 18px;
-    font-weight: 500;
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Button shadow */
-    transition: background 0.3s, box-shadow 0.3s;
-    text-transform: uppercase;
-    letter-spacing: 1px;
-}
-
-
-.edit-profile-btn .material-icons-sharp {
-    margin: 12px; /* Space between icon and text */
-    font-size: 24px;
-}
-
-.edit-profile-btn:hover {
-    background: linear-gradient(45deg, #478ed1, #42a5f5); /* Hover gradient reversal */
-    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.4); /* Darker shadow on hover */
-}
-
-.edit-profile-btn:active {
-    transform: translateY(2px); /* Slight downward movement on click */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Reduce shadow on click */
-}
-
 header h3{font-weight: 500;} 
 header{
     position: fixed;
@@ -384,7 +350,7 @@ main .timetable.active .closeBtn{
 
 
 /* Right  */
-.right{margin-top: 8.5rem;padding-left: 9.5rem;}
+.right{margin-top: 2.2rem;padding-left: 1.5rem;}
 
 .right .announcements h2{margin-bottom: .8rem;}
 .right .announcements .updates{
@@ -394,21 +360,20 @@ main .timetable.active .closeBtn{
     box-shadow: var(--box-shadow);
     transition: all 300ms ease;
 }
-.right .announcements .updates:hover{box-shadow:#202528;}
+.right .announcements .updates:hover{box-shadow: none;}
 .right .announcements .updates .message{
-    
     gap: 1rem;
     line-height: 1.5;
     padding: .5rem 0;
 }
 
 /* Teachers on leave  */
-.right .leaves{margin-right: 2rem;}
-.right .leaves h2{margin-bottom: 0.8rem;}
+.right .leaves{margin-top: 2rem;}
+.right .leaves h2{margin-bottom: .8rem;}
 .right .leaves .teacher{
     background: var(--color-white);
     display: flex;
-    align-items: right;
+    align-items: center;
     gap: 1rem;
     margin-bottom: .7rem;
     padding: 1.4rem var(--card-padding);
@@ -451,6 +416,7 @@ main .timetable.active .closeBtn{
     }
 }
 
+
 @media screen and (max-width: 768px){
     html{font-size: 10px;}
     header{padding: 0 .8rem;}
@@ -490,60 +456,6 @@ main .timetable.active .closeBtn{
     }
 }
 
-/* Right Sidebar */
-.right-sidebar {
-    width: 25%;
-    background-color: var(--color-white);
-    padding: 20px;
-    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
-    border-radius: 8px;
-    margin-left: auto;
-}
-
-.right-leaves h2 {
-    font-size: 1.5rem;
-    margin-bottom: 1.5rem;
-    color: var(--color-primary);
-    font-weight: 600;
-}
-
-.teacher {
-    display: flex;
-    align-items: center;
-    padding: 10px 0;
-    border-bottom: 1px solid var(--color-light-gray);
-}
-
-.teacher:last-child {
-    border-bottom: none;
-}
-
-.profile-photo img {
-    width: 50px;
-    height: 50px;
-    border-radius: 50%;
-    object-fit: cover;
-    margin-right: 15px;
-}
-
-.info h3 {
-    font-size: 1.2rem;
-    margin: 0;
-    color: var(--color-dark);
-    font-weight: 500;
-}
-
-.info .text-muted {
-    font-size: 0.9rem;
-    color: var(--color-muted);
-}
-
-/* Hover Effect */
-.teacher:hover {
-    background-color: var(--color-light);
-    border-radius: 6px;
-    transition: background-color 0.3s ease-in-out;
-}
 
 .my-button {
     background-color: var(--color-primary); /* Change to your desired color */

@@ -18,7 +18,7 @@
                 <span class="material-icons-sharp">home</span>
                 <h3>Home</h3>
             </a>
-            <a href="password.html">
+            <a href="/change-password">
                 <span class="material-icons-sharp">password</span>
                 <h3>Change Password</h3>
             </a>
@@ -87,22 +87,36 @@
             <div class="subjects">
                 <% courses.forEach(course => { %>
                     <div class="subject">
-                        <!-- Dynamically display different icons based on the course category or other logic -->
+                        <!-- Dynamically display different icons based on the course category -->
                         <span class="material-icons-sharp">
-                            <% if (course.category === 'Engineering') { %>architecture
-                            <% } else if (course.category === 'Mathematics') { %>functions
-                            <% } else if (course.category === 'Computer Science') { %>computer
-                            <% } else if (course.category === 'Database') { %>dns
-                            <% } else if (course.category === 'Networking') { %>router
-                            <% } else { %>school
+                            <% if (course.category === 'Engineering') { %>
+                                architecture
+                            <% } else if (course.category === 'Mathematics') { %>
+                                functions
+                            <% } else if (course.category === 'Computer Science') { %>
+                                computer
+                            <% } else if (course.category === 'Database') { %>
+                                dns
+                            <% } else if (course.category === 'Networking') { %>
+                                router
+                            <% } else { %>
+                                school
                             <% } %>
                         </span>
+                        
                         <h3><%= course.title %></h3>
-                        <h2><!-- Example of progress display, replace 12/14 with actual course data --></h2>
+                        
+                        <!-- Example of progress display (you can replace this logic with actual progress data) -->
+                        <h2></h2>
+            
                         <div class="progress">
-                            <svg><circle cx="38" cy="38" r="36"></circle></svg>
+                            <svg>
+                                <circle cx="38" cy="38" r="36"></circle>
+                            </svg>
+                            
                             <div class="number">
                                 <p>
+                                    <!-- Display course rating if available, else show N/A -->
                                     <% if (course.rating) { %>
                                         <%= Math.round(course.rating * 100) %>%
                                     <% } else { %>
@@ -111,59 +125,98 @@
                                 </p>
                             </div>
                         </div>
+                        
                         <small class="text-muted">Last 24 Hours</small>
                     </div>
                 <% }) %>
             </div>
             
+            
 
             
         </main>
 
-        <div class="right">
-            <div class="announcements">
-                <h2>FAQ'S</h2>
-                <div class="updates">
-                    <!-- Dynamic FAQ Rendering -->
-                    <% faqs.forEach(faq => { %>
-                      <div class="message">
-                        <p><b><%= faq.category %></b><br> <%= faq.question %></p>
-                        <small class="text-muted"><%= faq.answer %></small>
-                        <small class="text-muted"><%= faq.createdAt.toLocaleDateString() %></small>
-                      </div>
-                    <% }) %>
-                  </div>
-                  
+        <div class="container">
+            <div class="right-container ">
+                <!-- Your main content here -->
             </div>
-
-            <div class="leaves">
-                <h2>Teachers     on Spotlight</h2>
-                <div class="teacher">
-                    <div class="profile-photo"><img src="./images/profile-2.jpeg" alt=""></div>
-                    <div class="info">
-                        <h3>The Professor</h3>
-                        <small class="text-muted">Course Name</small>
-                    </div>
-                </div>
-                <div class="teacher">
-                    <div class="profile-photo"><img src="./images/profile-3.jpg" alt=""></div>
-                    <div class="info">
-                        <h3>Lisa Manobal</h3>
-                        <small class="text-muted">Course Name</small>
-                    </div>
-                </div>
-                <div class="teacher">
-                    <div class="profile-photo"><img src="./images/profile-4.jpg" alt=""></div>
-                    <div class="info">
-                        <h3>Himanshu Jindal</h3>
-                        <small class="text-muted">Course Name</small>
+            
+            <div class="container" style="float: right; width: 1000%; margin-right: 60px;">
+                <div class="announcements" style="background-color: #f9f9f9; padding: 15px; border-radius: 20px; box-shadow: 0 4px 8px rgba(0,0,0,0.1); width: 300%; margin-right: 300px;">
+                    <h2>FAQ'S</h2>
+                    <div class="updates">
+                        <!-- Dynamic FAQ Rendering -->
+                        <% faqs.forEach(faq => { %>
+                            <div class="message" style="margin-bottom: 10px; padding-bottom: 10px; border-bottom: 1px solid #eee;">
+                                <p style="font-weight: bold; font-size: 1.1rem;"><b><%= faq.category %></b><br> <%= faq.question %></p>
+                                <small class="text-muted" style="color: #888; display: block; margin-top: 5px;"><%= faq.answer %></small>
+                                <small class="text-muted" style="color: #888; display: block; margin-top: 5px;"><%= faq.createdAt.toLocaleDateString() %></small>
+                            </div>
+                        <% }) %>
                     </div>
                 </div>
             </div>
-
+            
         </div>
-    </div>
 
-    <script src="studentDashboard.js"></script>
+    <script>
+        const sideMenu = document.querySelector("aside");
+        const profileBtn = document.querySelector("#profile-btn");
+        const themeToggler = document.querySelector(".theme-toggler");
+
+        profileBtn.onclick = function() {
+            sideMenu.classList.toggle('active');
+        }
+
+        window.onscroll = () => {
+            sideMenu.classList.remove('active');
+            if(window.scrollY > 0) {
+                document.querySelector('header').classList.add('active');
+            } else {
+                document.querySelector('header').classList.remove('active');
+            }
+        }
+
+        themeToggler.onclick = function() {
+            // Toggle dark theme on the body
+            document.body.classList.toggle('dark-theme');
+
+            // Toggle the active class on both spans for the theme icons
+            themeToggler.querySelector('span:nth-child(1)').classList.toggle('active');
+            themeToggler.querySelector('span:nth-child(2)').classList.toggle('active');
+        };
+
+        let setData = (day) => {
+            document.querySelector('table tbody').innerHTML = ''; // Clear out previous table data
+            let daylist = ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"];
+            document.querySelector('.timetable div h2').innerHTML = daylist[day];
+
+            switch(day) {
+                case 0: day = Sunday; break;
+                case 1: day = Monday; break;
+                case 2: day = Tuesday; break;
+                case 3: day = Wednesday; break;
+                case 4: day = Thursday; break;
+                case 5: day = Friday; break;
+                case 6: day = Saturday; break;
+            }
+
+            day.forEach(sub => {
+                const tr = document.createElement('tr');
+                const trContent = `
+                    <td>${sub.time}</td>
+                    <td>${sub.roomNumber}</td>
+                    <td>${sub.subject}</td>
+                    <td>${sub.type}</td>
+                `;
+                tr.innerHTML = trContent;
+                document.querySelector('table tbody').appendChild(tr);
+            });
+        }
+
+        let now = new Date();
+        let today = now.getDay(); // Get the current day (0-6)
+        let day = today; // Initialize with today's value
+    </script>
 </body>
 </html>

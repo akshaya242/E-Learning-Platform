@@ -3,6 +3,7 @@ const {User, Profile} = require('../models/User');
 const { Course, Category } = require('../models/Course');   
 const { Enrollment } = require('../models/Enrollment');
 const bcrypt = require('bcrypt');
+const path = require('path');
 
 exports.getDashboard = async (req, res) => {
   try {
@@ -32,7 +33,7 @@ exports.getDashboard = async (req, res) => {
     // Fetch courses based on the enrollments (if needed)
     const courseIds = enrollments.map(enrollment => enrollment.courseId);
     const courses = await Course.find({ _id: { $in: courseIds } }).exec();
-
+     const user= await User.find();
     // Fetch announcements related to the logged-in user (could be general or user-specific)
     const announcements = [
       { title: 'Academic', message: 'Summer training internship with Live Projects.', time: '2 Minutes Ago' },
@@ -41,7 +42,7 @@ exports.getDashboard = async (req, res) => {
     ];
 
     // Pass login info, profile, enrolled courses, announcements, and enrollments to the template
-    res.render('studentDashboard', { login, profile, courses, announcements, enrollments, loginUser });
+    res.render('studentDashboard', { login, profile, courses, announcements, enrollments, loginUser,user });
 
   } catch (error) {
     console.error('Error fetching dashboard:', error);  // Log the actual error for debugging
@@ -61,7 +62,7 @@ exports.logout = (req, res) => {
       res.clearCookie('connect.sid', { path: '/' });
 
       // Redirect to the login page (or home)
-      res.redirect('/login');
+      res.redirect('/');
   });
 };
 
@@ -78,6 +79,7 @@ exports.changePassword = async (req, res) => {
   console.log(user);
   try {
     // Ensure the user is logged in
+    
      
     console.log(user);
     if (!user) {
