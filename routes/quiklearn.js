@@ -46,5 +46,11 @@ router.post('/create-course', isAuthenticated, checkUserRole('teacher'), courseC
 
 router.get('/displaycourse/:courseId',courseControllers.displaycourse);
 router.get('/unenroll/:courseId', courseControllers.unenrollFromCourse)
+router.get('/course/edit/:courseId', courseControllers.getCourseForEdit);
+router.post('/course/edit/:courseId', courseControllers.updateCourse);
+router.get('/course/delete/:courseId', courseControllers.deleteCourse)
+router.get('/course/progress/:courseId', courseControllers.progressPerStudent)
+router.get('/course/edit-sections/:courseId', courseControllers.showEditCourseSection)
+// router.post('/course/edit-sections/:courseId', courseControllers.editCourseSection)
 
 module.exports = router;

@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title><%= courseTitle %> Progress</title>
+    <link rel="stylesheet" href="/css/styles.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <style>
+        body {
+            font-family: 'Helvetica Neue', Arial, sans-serif;
+            background-color: #f9f9f9;
+            margin: 0;
+            padding: 20px;
+            color: #333;
+        }
+        header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        h1 {
+            font-size: 2.5em;
+            color: darkcyan;
+        }
+        main {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .card-container {
+            display: flex;
+            justify-content: space-around;
+            width: 100%;
+            max-width: 1200px; /* Max width for the cards */
+            margin-bottom: 20px; /* Space between cards and chart */
+        }
+        .card {
+            background-color: white;
+            border-radius: 8px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            text-align: center;
+            flex: 1; /* Allows cards to grow equally */
+            margin: 0 10px; /* Space between cards */
+        }
+        .card h2 {
+            margin: 10px 0;
+            color: darkcyan;
+        }
+        canvas {
+            max-width: 600px;
+            width: 100%;
+            height: 300px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            background-color: #fff;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+        th {
+            background-color: darkcyan;
+            color: white;
+            font-weight: bold;
+        }
+        tr:hover {
+            background-color: #f1f1f1;
+        }
+        @media (max-width: 600px) {
+            h1 {
+                font-size: 2em;
+            }
+            canvas {
+                height: 250px;
+            }
+            th, td {
+                padding: 10px;
+            }
+            .card-container {
+                flex-direction: column; /* Stack cards vertically on small screens */
+                align-items: center;
+            }
+            .card {
+                margin: 10px 0; /* Space between cards when stacked */
+            }
+        }
+    </style>
+</head>
+<body>
+ 
+        <h1 style="text-align: center;">Progress for <%= courseTitle %></h1>
+
+    <main>
+        <div class="card-container">
+            <div class="card">
+                <h2>Enrollments</h2>
+                <p><%= enrollmentsCount %></p>
+            </div>
+            <div class="card">
+                <h2>Total Revenue</h2>
+                <p>$<%= totalRevenue %></p>
+            </div>
+            <div class="card">
+                <h2>Rating</h2>
+                <p><%= courseRating %></p>
+            </div>
+        </div>
+        <canvas id="progressChart"></canvas>
+        <table>
+            <thead>
+                <tr>
+                    <th>Student Name</th>
+                    <th>Progress (%)</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% studentProgress.forEach(student => { %>
+                    <tr data-name="<%= student.studentName %>" data-progress="<%= student.progress %>">
+                        <td><%= student.studentName %></td>
+                        <td><%= student.progress %></td>
+                    </tr>
+                <% }) %>
+            </tbody>
+        </table>
+    </main>
+    <script>
+        const ctx = document.getElementById('progressChart').getContext('2d');
+
+        // Fetching student names and progress from the table rows
+        const labels = Array.from(document.querySelectorAll('tbody tr')).map(row => row.dataset.name);
+        const data = Array.from(document.querySelectorAll('tbody tr')).map(row => parseFloat(row.dataset.progress));
+
+        const progressChart = new Chart(ctx, {
+            type: 'bar',
+            data: {
+                labels: labels,
+                datasets: [{
+                    label: 'Student Progress',
+                    data: data,
+                    backgroundColor: 'rgba(76, 175, 80, 0.2)',
+                    borderColor: 'rgba(76, 175, 80, 1)',
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100
+                    }
+                }
+            }
+        });
+    </script>
+</body>
+</html>
