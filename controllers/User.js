@@ -174,7 +174,7 @@ exports.showDashboard = async (req, res) => {
           
   
         default:
-          return res.status(403).send('Access denied'); // Handle unknown roles
+          return res.redirect('/login'); // Handle unknown roles
       }
     } catch (error) {
         console.error('Error rendering dashboard:', error);
@@ -441,7 +441,7 @@ exports.handlePaymentSubmission = async (req, res) => {
         await Billing.findOneAndUpdate({ name }, { transactionId });
 
         // Send a success response
-        res.status(201).json({ message: 'Payment successful' });
+        res.redirect('/dashboard');
     } catch (error) {
         console.error('Error during transaction:', error);
         res.status(500).json({ message: 'Error during transaction', error: error.message });

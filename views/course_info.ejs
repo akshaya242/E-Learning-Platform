@@ -5,16 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create Course</title>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons+Sharp" rel="stylesheet">
-   
     <link rel="stylesheet" href="/css/create.css"> <!-- Link to common styles -->
 
     <style>
-        *{
+        * {
             text-decoration: none;
             box-sizing: border-box;
         }
-        
-        .dark-theme{
+
+        .dark-theme {
             --color-background: #181a1e;
             --color-white: #202528;
             --color-dark: #edeffd;
@@ -23,7 +22,7 @@
             --box-shadow: 0 2rem 3rem var(--color-light)
         }
 
-                :root{
+        :root {
             --color-primary: #02474d;
             --color-danger: #ff7782;
             --color-success: #41f1b6;
@@ -34,15 +33,16 @@
             --color-light: rgba(132, 139, 200, 0.18);
             --color-dark-varient: #677483;
             --color-background: #f6f6f9;
-            
+
             --card-border-radius: 2rem;
             --border-radius-1: 0.4rem;
             --border-radius-2: 1.2rem;
 
             --card-padding: 1.8rem;
-            --box-shadow: 0 2rem 3rem var(--color-light)    
+            --box-shadow: 0 2rem 3rem var(--color-light)
         }
-                body{
+
+        body {
             font-family: 'Poppins', sans-serif;
             font-size: .88rem;
             background: var(--color-background);
@@ -50,45 +50,46 @@
             overflow-x: hidden;
             color: var(--color-dark);
         }
-        .container{
-            /* position: relative; */
-            /* display: grid; */
-        
-            /* margin: 0 3rem; */
-            /* gap: 1.8rem; */
-            /* grid-template-columns: 14rem auto 23rem; */
+
+        .container {
             padding-top: 4rem;
         }
-                header h3{font-weight: 500;} 
-        header{
+
+        header h3 {
+            font-weight: 500;
+        }
+
+        header {
             position: sticky;
             width: 90vw;
             z-index: 1000;
             background-color: var(--color-background);
         }
-        header.active{box-shadow: var(--box-shadow);}
 
-        header .logo{
+        header.active {
+            box-shadow: var(--box-shadow);
+        }
+
+        header .logo {
             display: flex;
             gap: .8rem;
             margin-right: auto;
-            
         }
-        header .logo img{
-            /* width: 2rem; */
+
+        header .logo img {
             height: 5rem;
-            /* max-height: 100%; */
         }
 
         header,
-        header .navbar{
+        header .navbar {
             display: flex;
             align-items: center;
             justify-content: flex-end;
             padding: 0 3rem;
             color: var(--color-info);
         }
-        header .navbar a{
+
+        header .navbar a {
             display: flex;
             margin-left: 2rem;
             gap: 1rem;
@@ -99,28 +100,34 @@
             transition: all 300ms ease;
             padding: 0 2rem;
         }
+
         header .navbar a:hover {
             padding-top: 1.5rem;
         }
-        header .navbar a.active{
+
+        header .navbar a.active {
             background: var(--color-light);
             color: var(--color-primary);
         }
-        header .navbar a.active::before{
+
+        header .navbar a.active::before {
             content: "";
             background-color: var(--color-primary);
             position: absolute;
             height: 5px;
             width: 100%;
-            left: 0;top: 0;
+            left: 0;
+            top: 0;
         }
-        header #profile-btn{
+
+        header #profile-btn {
             display: none;
             font-size: 2rem;
             margin: .5rem 2rem 0 0;
             cursor: pointer;
         }
-        header .theme-toggler{
+
+        header .theme-toggler {
             background: var(--color-light);
             display: flex;
             justify-content: space-between;
@@ -131,7 +138,8 @@
             border-radius: var(--border-radius-1);
             margin-right: 2rem;
         }
-        header .theme-toggler span{
+
+        header .theme-toggler span {
             font-size: 1.2rem;
             width: 50%;
             height: 100%;
@@ -139,12 +147,12 @@
             align-items: center;
             justify-content: center;
         }
-        header .theme-toggler span.active{
+
+        header .theme-toggler span.active {
             background-color: var(--color-primary);
             color: white;
             border-radius: var(--border-radius-1);
         }
-
     </style>
 </head>
 <body>
@@ -161,15 +169,14 @@
                 <span class="material-icons-sharp">password</span>
                 <h3>Change Password</h3>
             </a>
-            <a href="/teacher/create-course"  class="active">
+            <a href="/teacher/create-course" class="active">
                 <span class="material-icons-sharp">add_circle</span>
                 <h3>Add Course</h3>
             </a>
             <a href="/logout">
-                <span class="material-icons-sharp" onclick="">logout</span>
+                <span class="material-icons-sharp">logout</span>
                 <h3>Logout</h3>
             </a>
-           
         </div>
         <div id="profile-btn">
             <span class="material-icons-sharp">person</span>
@@ -178,53 +185,57 @@
             <span class="material-icons-sharp active">light_mode</span>
             <span class="material-icons-sharp">dark_mode</span>
         </div>
-        
     </header>
     <div class="container">
-    <h1>Create Course</h1>
-    
-    <form action="/create-course" method="POST">
-        <div>
-            <label for="title">Course Title:</label>
-            <input type="text" id="title" name="title" required>
-        </div>
+        <h1>Create Course</h1>
 
-        <div>
-            <label for="description">Course Description:</label>
-            <textarea id="description" name="description" required></textarea>
-        </div>
-
-        <div>
-            <label for="category">Category:</label>
-            <input type="text" id="category" name="category" required>
-        </div>
-
-        <div>
-            <label for="duration">Duration:</label>
-            <input type="text" id="duration" name="duration" required>
-        </div>
-
-        <div id="sections-container">
-            <h3>Course Sections</h3>
-            <div class="section">
-                <label>Section Title:</label>
-                <input type="text" name="sections[0][title]" required>
-
-                <label>Video URL:</label>
-                <input type="url" name="sections[0][videoUrl]" required>
-
-                <label>Quiz Questions (comma separated):</label>
-                <input type="text" name="sections[0][quizQuestions]" placeholder="Question1, Question2">
+        <form action="/create-course" method="POST">
+            <div>
+                <label for="title">Course Title:</label>
+                <input type="text" id="title" name="title" required>
             </div>
-        </div>
 
-        <button type="button" onclick="addSection()">Add Another Section</button>
+            <div>
+                <label for="description">Course Description:</label>
+                <textarea id="description" name="description" required></textarea>
+            </div>
 
-        <div>
-            <button type="submit">Submit Course</button>
-        </div>
-    </form>
-</div> 
+            <div>
+                <label for="category">Category:</label>
+                <input type="text" id="category" name="category" required>
+            </div>
+
+            <div>
+                <label for="duration">Duration:</label>
+                <input type="text" id="duration" name="duration" required>
+            </div>
+
+            <div>
+                <label for="cost">Course Cost:</label>
+                <input type="number" id="cost" name="cost" min="0" required>
+            </div>
+
+            <div id="sections-container">
+                <h3>Course Sections</h3>
+                <div class="section">
+                    <label>Section Title:</label>
+                    <input type="text" name="sections[0][title]" required>
+
+                    <label>Video URL:</label>
+                    <input type="url" name="sections[0][videoUrl]" required>
+
+                    <label>Quiz Questions (comma separated):</label>
+                    <input type="text" name="sections[0][quizQuestions]" placeholder="Question1, Question2">
+                </div>
+            </div>
+
+            <button type="button" onclick="addSection()">Add Another Section</button>
+
+            <div>
+                <button type="submit">Submit Course</button>
+            </div>
+        </form>
+    </div> 
     <script>
         let sectionIndex = 1;
 

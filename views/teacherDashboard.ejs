@@ -103,38 +103,28 @@
                                 school
                             <% } %>
                         </span>
-                        
+        
                         <h3><%= course.title %></h3>
-                        
-                        <!-- Example of progress display (you can replace this logic with actual progress data) -->
-                        <h2></h2>
-            
-                        <div class="progress">
-                            <svg>
-                                <circle cx="38" cy="38" r="36"></circle>
-                            </svg>
-                            
-                            <div class="number">
-                                <p>
-                                    <!-- Display course rating if available, else show N/A -->
-                                    <% if (course.rating) { %>
-                                        <%= Math.round(course.rating * 100) %>%
-                                    <% } else { %>
-                                        N/A
-                                    <% } %>
-                                </p>
-                            </div>
+        
+                        <!-- Course Image -->
+                        <div class="course-image">
+                            <img src="<%= course.image || '/images/default-course.jpg' %>" alt="<%= course.title %> Image">
+                        </div>
+                        <div class="course-actions" style="margin-top: 15px;"> 
+                            <span class="material-icons-sharp" title="Edit Course" style="margin-left: 4px;" onclick="window.location.href='/course/edit/<%= course.id %>'">edit</span>
+                            <!-- <span class="material-icons-sharp" title="Edit Sections" style="margin-left: 4px;" onclick="window.location.href='/course/edit-sections/<%= course.id %>'">edit</span> -->
+                            <span class="material-icons-sharp" title="View Course Progress" style="margin-left: 4px;" onclick="window.location.href='/course/progress/<%= course.id %>'">show_chart</span>
+                            <span class="material-icons-sharp" title="Delete Course" style="margin-left: 4px;" onclick="window.location.href='/course/delete/<%= course.id %>'">delete</span>
                         </div>
                         
+                        
+        
                         <small class="text-muted">Last 24 Hours</small>
                     </div>
                 <% }) %>
             </div>
-            
-            
-
-            
         </main>
+        
 
         <div class="container">
             <div class="right-container ">

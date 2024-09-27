@@ -107,6 +107,10 @@
                 <button class="my-button">
                     <a href="/displaycourse/<%= enrollment.courseId._id %>">View Course</a>
                 </button>
+                <button class="my-button" style="margin-top: 15px; background-color: red;">
+                    <a href="/unenroll/<%= enrollment.courseId._id %>">Unenroll</a>
+                </button>
+                
             </div>
         <% }); %>
     <% } else { %>
