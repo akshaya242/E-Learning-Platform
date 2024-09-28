@@ -298,7 +298,7 @@
         <div class="nav-right">
             <h2 ><strong> Admin : </strong></h2>
             <h2><%= login.name %></h2>
-            <form action="/logout" method="POST" style="margin: 0;">
+            <form action="/admin/logout" method="POST" style="margin: 0;">
                 <button class="logout-btn">
                     <i class="fas fa-sign-out-alt"></i> Logout
                 </button>
@@ -402,7 +402,8 @@
                 
                                     <select name="created_by" required>
                                         <% teachers.forEach(teacher => { %>
-                                            <option value="<%= teacher._id %>" <%= course.created_by._id.toString() === teacher._id.toString() ? 'selected' : '' %>><%= teacher.name %></option>
+                                            <option value="<%= teacher._id %>" <%= course.created_by && course.created_by._id && course.created_by._id.toString() === teacher._id.toString() ? 'selected' : '' %>><%= teacher.name %></option>
+
                                         <% }) %>
                                     </select>
                 

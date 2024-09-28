@@ -187,5 +187,7 @@ router.post('/admin/Section/update/:sectionId', async (req, res) => {
     }
 });
 
+router.post('/admin/logout', adminController.logout);
+
 
 module.exports = router;
