@@ -256,3 +256,21 @@ exports.editedSection = async (req, res) => {
         res.status(500).send('Error updating course.');
     }
 };
+
+
+exports.logout = (req, res) => {
+    // Destroy the session
+    req.session.destroy((err) => {
+        if (err) {
+            console.log('Error destroying session during logout:', err);
+            return res.status(500).send('An error occurred while logging out.');
+        }
+  
+        // Optionally clear the cookie
+        res.clearCookie('connect.sid', { path: '/' });
+  
+        // Redirect to the login page (or home)
+        res.redirect('/login');
+    });
+  };
+  
